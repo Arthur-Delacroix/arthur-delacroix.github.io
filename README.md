@@ -1,5 +1,7 @@
 欢迎来到Arthur的博客！
 -----
+博客源代码正在整理中
+这个页面先凑合用一下……
 
 ![在独立游戏仓库无后缀](https://raw.github.com/Arthur-Delacroix/IndieGame/master/Documentation/Diagram/Class.svg)
 

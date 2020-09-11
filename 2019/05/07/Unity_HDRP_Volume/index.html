@@ -22,29 +22,38 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Arthur&#39;s Blog">
-<meta property="og:url" content="https://arthur-delacroix.github.io/index.html">
+  <meta name="description" content="官方文档  Volume  Is Global：勾选后Volume变为全局形式，影响整个场景。[1] Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2] Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3] Priority：当两个Volume重叠时，根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity HDRP Volume">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2019/05/07/Unity_HDRP_Volume/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="官方文档  Volume  Is Global：勾选后Volume变为全局形式，影响整个场景。[1] Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2] Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3] Priority：当两个Volume重叠时，根据">
 <meta property="og:locale">
+<meta property="og:image" content="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png">
+<meta property="article:published_time" content="2019-05-07T00:35:07.000Z">
+<meta property="article:modified_time" content="2020-10-12T07:54:25.788Z">
 <meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity 3D">
+<meta property="article:tag" content="Render">
+<meta property="article:tag" content="HDRP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2019/05/07/Unity_HDRP_Volume/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'default'
   };
 </script>
 
-  <title>Arthur's Blog</title>
+  <title>Unity HDRP Volume | Arthur's Blog</title>
   
 
 
@@ -164,7 +173,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -176,6 +185,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Volume"><span class="nav-number">1.</span> <span class="nav-text">Volume</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -232,122 +242,19 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
       
 
       
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2019/06/24/Unity3D_HDRP_VisualEnvironment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/06/24/Unity3D_HDRP_VisualEnvironment/" class="post-title-link" itemprop="url">Unity HDRP Visual Environment</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-06-24 17:55:11" itemprop="dateCreated datePublished" datetime="2019-06-24T17:55:11+08:00">2019-06-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-09-24 14:09:58" itemprop="dateModified" datetime="2020-09-24T14:09:58+08:00">2020-09-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity-3D/" itemprop="url" rel="index"><span itemprop="name">Unity 3D</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>#Visual Environment</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/06/24/Unity3D_HDRP_VisualEnvironment/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2019/05/07/Unity_HDRP_Volume/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -360,10 +267,9 @@
       <meta itemprop="name" content="Arthur's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/07/Unity_HDRP_Volume/" class="post-title-link" itemprop="url">Unity HDRP Volume</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Unity HDRP Volume
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -402,7 +308,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
+        <blockquote>
 <p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
 </blockquote>
 <h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
@@ -415,7 +321,6 @@
 </ul>
 <p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
 
-      
     </div>
 
     
@@ -423,90 +328,32 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-tags">
+              <a href="/tags/Unity-3D/" rel="tag"># Unity 3D</a>
+              <a href="/tags/Render/" rel="tag"># Render</a>
+              <a href="/tags/HDRP/" rel="tag"># HDRP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/01/hello-world/" rel="prev" title="Hello World!">
+                  <i class="fa fa-chevron-left"></i> Hello World!
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/24/Unity3D_HDRP_VisualEnvironment/" rel="next" title="Unity HDRP Visual Environment">
+                  Unity HDRP Visual Environment <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
 
 
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2019/01/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/01/hello-world/" class="post-title-link" itemprop="url">Hello World!</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-01-01 12:46:25" itemprop="dateCreated datePublished" datetime="2019-01-01T12:46:25+08:00">2019-01-01</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-10-12 15:56:23" itemprop="dateModified" datetime="2020-10-12T15:56:23+08:00">2020-10-12</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>终于把个人博客搭建起来了，对于一个html方向完全空白的人来说实属不易啊！</p>
-<p>今后会在博客中不定期更新一些技术文章的心得体会，还有一些简单的个人案例。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-  
 
 
 

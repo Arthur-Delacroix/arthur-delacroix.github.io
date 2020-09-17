@@ -454,8 +454,9 @@ function createUnityInstance(e, t, n) {
         }(l);
         return s
     }(), new Promise(function (e, t) {
-        u.SystemInfo.hasWebGL ? 1 == u.SystemInfo.hasWebGL ? t('Your browser does not support graphics API "WebGL 2.0" which is required for this content.') : u.SystemInfo.hasWasm ? (1 == u.SystemInfo.hasWebGL && u.print('Warning: Your browser does not support "WebGL 2.0" Graphics API, switching to "WebGL 1.0"'), u.startupErrorHandler = t, n(0), u.postRun.push(function () {
+        t();
+        /*u.SystemInfo.hasWebGL ? 1 == u.SystemInfo.hasWebGL ? t('Your browser does not support graphics API "WebGL 2.0" which is required for this content.') : u.SystemInfo.hasWasm ? (1 == u.SystemInfo.hasWebGL && u.print('Warning: Your browser does not support "WebGL 2.0" Graphics API, switching to "WebGL 1.0"'), u.startupErrorHandler = t, n(0), u.postRun.push(function () {
             n(1), delete u.startupErrorHandler, e(l)
-        }), d()) : t("Your browser does not support WebAssembly.") : t("Your browser does not support WebGL.")
+        }), d()) : t("Your browser does not support WebAssembly.") : t("Your browser does not support WebGL.")*/
     })
 }

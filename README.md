@@ -5,9 +5,17 @@
 
 ### TODO
 [1] 自定义首页内容，现在显示了文章列表，想自己定义一些内容
-[2] 不太清楚Google Calendar具体怎么设置，需要再研究一下
-[3] 没有自定义的网站图标 favicon
-[4] 数学公式的引擎没安装
+    - 分类显示文章标题列表
+    - 基本个人信息
+    - 潜入WebGL
+    - 界面相对美化
+[2] 没有自定义的网站图标 favicon
+[3] 数学公式的引擎没安装
+[4] about界面规划
+    - next好像支持插入PDF，可以尝试使用
+    - 基本项目介绍
+    - 基本履历
+    - 演示demo
 
 
 ![在独立游戏仓库无后缀](https://raw.github.com/Arthur-Delacroix/IndieGame/master/Documentation/Diagram/Class.svg)

@@ -10,7 +10,7 @@
   <entry>
     <title>1-1 关于Hexmap</title>
     <url>/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/</url>
-    <content><![CDATA[<h1 id="1-1-关于Hexmap"><a href="#1-1-关于Hexmap" class="headerlink" title="1-1 关于Hexmap"></a>1-1 关于Hexmap</h1><p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
+    <content><![CDATA[<p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
 <p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
 <p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
@@ -19,9 +19,9 @@
 <p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
 <p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
-<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示，</p>
+<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
-<p>　　由<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其内切圆半径是边长的$\frac {\sqrt 3} 2$，也就是 $5 \sqrt3$。（<a href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>）</p>
+<p>　　由<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的$\frac {\sqrt 3} 2$（<a href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
 <p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -38,6 +38,60 @@
         <tag>Unity3D</tag>
         <tag>Game develop</tag>
         <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1-2 构建地图单元容器</title>
+    <url>/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/</url>
+    <content><![CDATA[<p>　　在1-1中，我们用代码创建了一个正六边形地图单元的基本结构，接下来，为了构建正六边形地图系统，首先需要构建一个正六边形地图单元实例。首先创建<code>HexCell</code>组件。这里不在此脚本中填写任何代码。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来在场景中创建一个Plane，重命名为Hex Cell，挂载<code>HexCell</code>组件，并且把这个Plane创建为Prefab。如下图：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-cell-plane.png"></p>
+<p>　　然后创建一个空物体，命名为Hex Grid，用来容纳地图单元。创建<code>HexGrid</code>脚本，并声明三个变量，分别表示在该容器中，地图单元的行数、列数和地图单元预置，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每一行有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//表示每一列有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放地图单元格的预置</span></span><br><span class="line">    <span class="keyword">public</span> HexCell cellPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-grid.png"></p>
+<p>　　地图单元的容器创建完成后，将Width和Height的值都设置为6，将之前创建好的HexCell预置拖入Hex Cell框内。</p>
+<p>　　现在，需要完成创建地图单元的代码，这里使用一个嵌套的for循环来创建地图单元，Width为每一行中有多少个地图单元，Height为行数。最后，将创建好的地图单元实例，存储在一个二维数组中，便于后期的查找和修改。<code>HexGrid</code>脚本添加代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//存放实例化的地图单元</span></span><br><span class="line">HexCell[] cells;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//根据长度和宽度，初始化数组大小</span></span><br><span class="line">	cells = <span class="keyword">new</span> HexCell[height * width];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//从左下角开始，依次往右，每一行为 width 个单元后，上移一行</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; height; z++) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">		&#123;</span><br><span class="line">			CreateCell(x, z, i++);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建一个地图单元</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>地图单元是 横行中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>地图单元是 粽列中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>地图单元在<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//声明一个Vector3，用来</span></span><br><span class="line">	Vector3 position;</span><br><span class="line">	position.x = x * <span class="number">10f</span>;</span><br><span class="line">	position.y = <span class="number">0f</span>;</span><br><span class="line">	position.z = z * <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//在数组cells的i位置实例化地图单元</span></span><br><span class="line">	<span class="comment">//cell用来给这个被实例化的单元设置父级和位置</span></span><br><span class="line">	HexCell cell;</span><br><span class="line">	cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">	cell = cells[i];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置被实例化地图单元的父级和位置</span></span><br><span class="line">	cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">	cell.transform.localPosition = position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这里要注意一点，在Unity中，一个默认Panel为10x10单位。所以在<code>CreateCell</code>方法中，<code>position.x = x * 10f</code>和<code>position.z = z * 10f</code>中的10f便是Panel的边长，要每次移动Panel边长的距离，让各个地图元素相邻。生成效果如下：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/square-grid-of-planes.png"></p>
+<p>　　至此，已经成功的生成了由正方形单元组成的地图网格。但是由于每个地图单元是紧紧相邻的，在Game窗口中很难快速定位每一个地图单元的位置，如果是正六边形的地图单元，这种情况还可能更加混乱。下一步，为了方便以后的调试和更加直观的查看，我们将为每一个地图单元加上自身的坐标。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
       </tags>
   </entry>
   <entry>
@@ -118,31 +172,6 @@
 </li>
 </ul>
 <p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
 ]]></content>
       <categories>
         <category>Unity 3D</category>

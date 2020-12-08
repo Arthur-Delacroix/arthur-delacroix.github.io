@@ -22,28 +22,28 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。 　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。  　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是">
+  <meta name="description" content="在上一章中，我们重新排列了每个地图单元的坐标值，并且添加了Y维度的坐标轴。随着项目不断复杂。在Unity runtime下，选中一个地图单元后，在Inspector门面板只能看到coordinates这个变量的名称，而不是显示这个地图单元的坐标值。如下图所示：  　　虽然我们选中一个地图单元后，可以通过观察Scene窗口中它的坐标值，来确定这个地图单元的位置。但是在Inspector中增加坐标">
 <meta property="og:type" content="article">
-<meta property="og:title" content="1-1 关于Hexmap">
-<meta property="og:url" content="https://arthur-delacroix.github.io/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/index.html">
+<meta property="og:title" content="1-7 将坐标值显示在Inspector上">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
-<meta property="og:description" content="地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。 　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。  　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是">
+<meta property="og:description" content="在上一章中，我们重新排列了每个地图单元的坐标值，并且添加了Y维度的坐标轴。随着项目不断复杂。在Unity runtime下，选中一个地图单元后，在Inspector门面板只能看到coordinates这个变量的名称，而不是显示这个地图单元的坐标值。如下图所示：  　　虽然我们选中一个地图单元后，可以通过观察Scene窗口中它的坐标值，来确定这个地图单元的位置。但是在Inspector中增加坐标">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png">
-<meta property="article:published_time" content="2020-09-26T05:03:27.000Z">
-<meta property="article:modified_time" content="2020-12-03T09:01:04.910Z">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-1.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-2.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-3.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-4.png">
+<meta property="article:published_time" content="2020-10-01T18:40:30.000Z">
+<meta property="article:modified_time" content="2020-12-18T08:03:14.712Z">
 <meta property="article:author" content="Arthur Delacroix">
 <meta property="article:tag" content="Unity3D">
 <meta property="article:tag" content="Game develop">
 <meta property="article:tag" content="Hex Map">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png">
+<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-1.png">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/">
 
 
 <script class="page-configurations">
@@ -56,7 +56,7 @@
   };
 </script>
 
-  <title>1-1 关于Hexmap | Arthur's Blog</title>
+  <title>1-7 将坐标值显示在Inspector上 | Arthur's Blog</title>
   
 
 
@@ -292,7 +292,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -305,7 +305,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          1-1 关于Hexmap
+          1-7 将坐标值显示在Inspector上
         </h1>
 
         <div class="post-meta-container">
@@ -316,7 +316,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-09-26 13:03:27" itemprop="dateCreated datePublished" datetime="2020-09-26T13:03:27+08:00">2020-09-26</time>
+      <time title="创建时间：2020-10-02 02:40:30" itemprop="dateCreated datePublished" datetime="2020-10-02T02:40:30+08:00">2020-10-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -341,7 +341,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -359,26 +359,30 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
-<p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
-<p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
-<p>　　而斜向位置的相邻地图单元，两者中点的距离为正方形单元边长的 $\sqrt 2$ 倍，也就是红色箭头表示的距离。</p>
-<p>　　由于相邻的地图单元之间有两种不同的距离，这种差异化的距离在实际游戏中会比较难处理。所以，有些游戏中，只会选择在地图单元的水平和垂直方向移动，从而避免距离差异化带来的问题。但是，这样在一定程度上减少了游戏的多样性与可玩性。</p>
-<p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
-<p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
-<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
-<p>　　由<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的$\frac {\sqrt 3} 2$（<a target="_blank" rel="noopener" href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
-<p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>　　在上一章中，我们重新排列了每个地图单元的坐标值，并且添加了Y维度的坐标轴。随着项目不断复杂。在Unity runtime下，选中一个地图单元后，在Inspector门面板只能看到<code>coordinates</code>这个变量的名称，而不是显示这个地图单元的坐标值。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-1.png"></p>
+<p>　　虽然我们选中一个地图单元后，可以通过观察Scene窗口中它的坐标值，来确定这个地图单元的位置。但是在Inspector中增加坐标值显示，会更加方便美观。接下来我们实现这个功能。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用来显示在Inspector上cell坐标</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> x, z;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的X坐标值</span></span><br><span class="line"><span class="comment">//public int X &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> X</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的Z坐标值</span></span><br><span class="line"><span class="comment">//public int Z &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Z</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 重载默认的构造函数</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>为转换后的X坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>为转换后的Z坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HexCoordinates</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//X = x;</span></span><br><span class="line">    <span class="comment">//Z = z;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.z = z;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>　　脚本创建完成后，让我们来继续观察一下正六边形单元。在正六边形排列的形式有两种，一类是边朝上，一类是角朝上。为了方便之后的计算，我们选择角朝上的排列类型。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png"></p>
-<p>　　在<code>HexMetrics</code>类中添加如下代码，通过正六边形的中点、外接圆半径、内切圆半径定义正六边形的六个顶点</p>
-<figure class="highlight csharp"><figcaption><span>exMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line">    <span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　这样，基本的地图单元就创建完成了，下一步，要创建一个二维数组，来存放实例化到场景中的地图单元，并且记录每个地图单元在该数组中的位置。</p>
+<p>　　如下图所示，我们利用<code>[SerializeField]</code>将X和Y的坐标值显示在了Inspector面板上。但是这两个坐标值是可编辑状态，这并不是我们希望达到的效果。因为坐标值应该是固定不变的，而且这样竖向排列也不美观。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-2.png"></p>
+<p>　　为了解决这个问题，我们为HexCoordinates创建一个自定义特性来改变它的显示方式。</p>
+<p>　　在项目中创建Editor文件夹，并且在该文件夹内创建<code>HexCoordinatesDrawer.cs</code>脚本。这是一个只用于编辑器的脚本，扩展自<code>UnityEditor.PropertyDrawer</code>，并且需要<code>UnityEditor.CustomPropertyDrawer</code>特性来让其正确关联起来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CustomPropertyDrawer(typeof(HexCoordinates))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCoordinatesDrawer</span> : <span class="title">PropertyDrawer</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　<code>HexCoordinatesDrawer</code>继承了<code>PropertyDrawer</code>，<code>PropertyDrawers</code>通过<code>OnGUI()</code>方法显示其内容，该方法提供了要在其中绘制的屏幕矩形、序列化的属性数据以及它所属的字段的标签。这里添加OnGUI()方法，在此方法中重新绘制X和Z的坐标。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Rect position, SerializedProperty property, GUIContent label</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，只需要提取出X和Z的坐标，使用HexCoordinates中重载的ToString()方法在指定的位置重新绘制GUI即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将X和Z的坐标从HexCoordinates中提取出来</span></span><br><span class="line">HexCoordinates coordinates = <span class="keyword">new</span> HexCoordinates(</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;x&quot;</span>).intValue,</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;z&quot;</span>).intValue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-3.png"></p>
+<p>　　现在，坐标可以正确的显示出来了。但是这里只显示了数字，丢失了类型名。这里使用EditorGUI.PrefoxLabel()方法来或能重新绘制类型名。这个方法还有一个往外的好处，它可以返回一个经过吊证的矩形，该矩形与右侧的做标数值显示区域大小刚好匹配。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//绘制坐标的类型名称</span></span><br><span class="line">position = EditorGUI.PrefixLabel(position, label);</span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
+
+<p>　　最终效果如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-4.png"></p>
+<p>　　现在，我们在Unity中进行调试的时候，选中了某一个地图单元，Inspector面板中变回显示这个单元格的X Y Z坐标了。下一步，我们将添加一些简单的交互，当出表点击地图单元的时候，嚷被点击的地图单元改变颜色。</p>
 
     </div>
 
@@ -397,14 +401,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/09/17/Hexo/Part2/" rel="prev" title="Unity3D WebGL 相关踩坑记录 2">
-                  <i class="fa fa-chevron-left"></i> Unity3D WebGL 相关踩坑记录 2
+                <a href="/2020/10/01/HexMap/1-6%20%E4%BF%AE%E6%94%B9%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E5%9D%90%E6%A0%87/" rel="prev" title="1-6 修改正六边形地图单元的坐标">
+                  <i class="fa fa-chevron-left"></i> 1-6 修改正六边形地图单元的坐标
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/" rel="next" title="1-2 构建地图单元容器">
-                  1-2 构建地图单元容器 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

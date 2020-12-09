@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">12</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,127 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">1-8 获取鼠标点击位置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-03 17:50:07" itemprop="dateCreated datePublished" datetime="2020-10-03T17:50:07+08:00">2020-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在之前的章节中，我们完成了一个正六边形地图系统的基本框架。但是目前这个地图系统是无法与玩家产生任何交互的。在一般策略游戏中，地图系统最基本的交互方式，就是响应玩家的鼠标点击事件。即玩家鼠标左键单击一个地图单元，这个地图单元便会改变颜色，或者播放一段预置的动画，来响应玩家的操作。我们可以通过鼠标向场景中发射一条射线的方式，来检测鼠标是否点击在了某个地图单元上。</p>
+<p>　　目前，我们先把交互代码放在<code>HexGrid.cs</code>脚本里，随着项目在之后的章节中不断完善，将会把与玩家交互的代码移动到其他的脚本中。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//之后鼠标点击交互相关代码会移动到其他脚本中</span></span><br><span class="line">    <span class="comment">//检测鼠标左键是否点击</span></span><br><span class="line">    <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        HandleInput();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 鼠标左键单击会调用此方法，以鼠标为发射点，经过主摄像机练成射线</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 检测射线穿过Collider的位置</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//射线起点为鼠标位置，经过主摄像机</span></span><br><span class="line">    Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//检测射线是否碰撞到了collider</span></span><br><span class="line">    RaycastHit hit;</span><br><span class="line">    <span class="keyword">if</span> (Physics.Raycast(inputRay, <span class="keyword">out</span> hit))</span><br><span class="line">    &#123;</span><br><span class="line">        TouchCell(hit.point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 将射线的触碰点转换到自身的坐标系中</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>触碰到的collider的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + position);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们完成了鼠标左键单击后发射一条射线的功能，这条射线如果穿过了一个带有Collider组件的模型，那么将会返回一个Vector3的位置信息。但是，现在的地图单元是没有Collider组件的，我们在HexMesh.cs脚本中为它添加MeshCollider组件。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为了检测射线碰撞Collider</span></span><br><span class="line"><span class="keyword">private</span> MeshCollider meshCollider;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化MeshFilter组件的，实例化hexMesh，并给其命名</span></span><br><span class="line">    GetComponent&lt;MeshFilter&gt;().mesh = hexMesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">    hexMesh.name = <span class="string">&quot;Hex Mesh&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为HexMesh物体添加MeshCollider组件</span></span><br><span class="line">    meshCollider = gameObject.AddComponent&lt;MeshCollider&gt;();</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　为Hex Mesh这个物体添加了<code>MeshCollider</code>组件后，我们需要将创建的Mesh数据赋值给<code>MeshCollider</code>组件，这样它就可以根据Mesh信息成成碰撞网格了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    meshCollider.sharedMesh = hexMesh;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，射线穿过Hex Mesh这个物体时，通过<code>MeshCollider</code>组件就可以返回射线的碰撞信息了。</p>
+<p>　　可能会有小伙伴问，为什么不使用更简单高效的<code>Box Collider</code>？这是因为<code>Box Collider</code>不能很准确的吻合正六边形地图单元的轮廓，尤其是在3个地图单元相邻的情况下，<code>Box Collider</code>可能会重叠到一起，最终导致我们无法判断鼠标到底点击在了哪个地图单元上。而且随着项目的不断深入，我们的地形单元并不会一直保持在同意水平面上。所以使用<code>MeshCollider</code>会更加方便计算和判断。</p>
+<p>　　以上代码完成后，我们在Unity的Scene窗口中点击任意一个地图单元，Console窗口中就会输出鼠标点击的坐标信息了。但是这个信息并没有体现出我们具体点击的是哪一个地图单元，所以需要将鼠标的点击的坐标信息，转换成六边形的坐标信息。这个步骤需要在HexCoordinates.cs中进行。</p>
+<p>　　我们需要在首先要在HexGrid.TouchCell方法内，添加对HexCoordinates.cs中发发的调用，这个方法命名为FromPosition，专门用来将射线触碰MeshCollider的坐标，转换成正六边形地图的坐标。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + coordinates.ToString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们来思考FromPosition这个方法要处理的事情。要将原有的射线触碰Collider信息转换成正六边形地图信息，可以将X、Y、Z几个轴向分开处理。这里首先处理X轴坐标，只需要将转换前的坐标除以地图单元的宽度即可，而且当Z值为0的时候，X和Y是护卫相反数的。在这里我们先假设Z值为0，所以很容易就能得出X和Y的值。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexCoordinates <span class="title">FromPosition</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//当Z为0的时候，X和Y互为相反数</span></span><br><span class="line">    <span class="comment">//X的值可以通过 实际X的值除以2倍内切圆半径来得到</span></span><br><span class="line">    <span class="keyword">float</span> x = position.x / (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br><span class="line">    <span class="keyword">float</span> y = -x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，Z不为0的时候，我们需要对X和Y进行偏移，才能得出正确的结果。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> offset = position.z / (HexMetrics.outerRadius * <span class="number">3f</span>);</span><br><span class="line">x -= offset;</span><br><span class="line">y -= offset;</span><br></pre></td></tr></table></figure>
+
+<p>　　当计算出X和Y的值后，我们可以利用X+Y+Z=0这个特性，求出Z的坐标。然后将这些坐标进行四舍五入，就可以得到转换后的正六边形地图坐标了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
+
+<p>　　以上这些步骤虽然看起来没什么问题，但是仔细想一下就会发现，这样计算的最终坐标，很可能相加并不为0.让我们来加一段验证这个想法的代码：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="comment">//验证X+Y+Z是否为0</span></span><br><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    Debug.LogWarning(<span class="string">&quot;rounding error!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
+
+<p>　　我们再次运行程序的时候发现，这个报错信息确实会弹出。而且是发生在鼠标点击的位置接近正六边形边界的时候。所以应该是在四舍五的过程中出现了问题，因为离地图单元的中心越远，四舍五入时舍去的值就越多，所以我们做一个合理的假设：舍去值更大的坐标是错误的。</p>
+<p>　　知道了产生错误的原因，解决起来就比较简单了。解决方法就是废弃具有最大舍去增量的坐标值，然后用其它的两个坐标去重新构建它。这里我们只需要去重建X和Z，不需要关注Y，因为Y本来就是由X和Z求得的。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">float</span> dX = Mathf.Abs(x - iX);</span><br><span class="line">    <span class="keyword">float</span> dY = Mathf.Abs(y - iY);</span><br><span class="line">    <span class="keyword">float</span> dZ = Mathf.Abs(-x - y - iZ);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断哪个舍去的值最多</span></span><br><span class="line">    <span class="comment">//利用X+Y+Z=0的特性，使用两个舍去较小的值得，求出社区较大的那个</span></span><br><span class="line">    <span class="keyword">if</span> (dX &gt; dY &amp;&amp; dX &gt; dZ)</span><br><span class="line">    &#123;</span><br><span class="line">        iX = -iY - iZ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (dZ &gt; dY)</span><br><span class="line">    &#123;</span><br><span class="line">        iZ = -iX - iY;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　通过判断，我们重新计算四舍五入中，舍去的值最多的那个坐标。这样我们就得到了最终正确结果。</p>
+<p>　　在下一章中，我们利用本章判断鼠标点击在哪个地图单元上的功能，给被点击的地图单元改变颜色，让地图系统拥有最基本的交互。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1297,117 +1418,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/" class="post-title-link" itemprop="url">Unity HDRP Visual Environment</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-06-24 17:55:11" itemprop="dateCreated datePublished" datetime="2019-06-24T17:55:11+08:00">2019-06-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity-3D/" itemprop="url" rel="index"><span itemprop="name">Unity 3D</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>#Visual Environment</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1463,13 +1473,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">27k</span>
+    <span title="站点总字数">31k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24 分钟</span>
+    <span title="站点阅读时长">28 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -8,6 +8,152 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Unity3D WebGL 相关踩坑记录 2</title>
+    <url>/2020/09/17/Hexo/Part2/</url>
+    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
+<ul>
+<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
+</li>
+<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
+</li>
+<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
+</li>
+<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
+</li>
+<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遗留问题</p>
+<ul>
+<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Unity WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity3D WebGL 相关踩坑记录 1</title>
+    <url>/2020/09/15/Hexo/Part1/</url>
+    <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
+<ul>
+<li>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。</li>
+<li>自定义加载 Logo 和背景色等样式，未找到修改位置。</li>
+<li>触摸等交互方式要适配移动端。目前使用了lean。</li>
+<li>UI等界面元素适配移动端。</li>
+<li>将 WebGL 内容嵌入 Hexo Next 博客中。</li>
+</ul>
+<p>非重要修改点为：</p>
+<ul>
+<li>默认全屏，或者有窗口尺寸选项，这个可能要通过JS来实现。</li>
+<li>加载时的自定义 Logo ，目前测试可以使用 PNG 和 Base64 编码的图片，理论上应该可以使用 SVG 格式的图片，有待测试。 </li>
+<li>加载时候的界面背景色未找到修改的位置。</li>
+</ul>
+<h5 id="Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告"><a href="#Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告" class="headerlink" title="Unity3D WebGL 在移动端上不再弹出移动端浏览器警告"></a>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">compatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">/*UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup(&quot;Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : [&quot;Edge&quot;, &quot;Firefox&quot;, &quot;Chrome&quot;, &quot;Safari&quot;].indexOf(UnityLoader.SystemInfo.browser) == -1 ? e.popup(&quot;Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : t() : e.popup(&quot;Your browser does not support WebGL&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: r</span></span><br><span class="line"><span class="comment">	&#125;])*/</span></span><br><span class="line">&#125;,</span><br><span class="line">buildCompatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;undefined&quot;</span> == <span class="keyword">typeof</span> e.graphicsAPI) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; e.graphicsAPI.length; t++) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = e.graphicsAPI[t];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 2.0&quot;</span> == r &amp;&amp; <span class="number">2</span> == UnityLoader.SystemInfo.hasWebGL) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 1.0&quot;</span> == r &amp;&amp; UnityLoader.SystemInfo.hasWebGL &gt;= <span class="number">1</span>) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            e.print(<span class="string">&quot;Warning: Unsupported graphics API &quot;</span> + r)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ! <span class="number">1</span></span><br><span class="line">       &#125;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">//n() ? !UnityLoader.SystemInfo.hasThreads &amp;&amp; e.multithreading ? r(&quot;Your browser does not support multithreading.&quot;) : t() : r(&quot;Your browser does not support any of the required graphics API for this content.&quot;)</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>当使用Unity3D 2019.4发布了WebGL项目后，会在Build目录下生成一个UnityLoader.js文件，这个文件感觉主要是加载Unity3D WebGL的内容，而且是一个压缩版的。</p>
+<ol>
+<li>使用网上的JS格式美化工具，将整个JS代码进行格式美化，使代码可读。  </li>
+<li>要修改的代码集中在2628到2654行之间，不同的代码格式美化工具，可能行数会有不同。</li>
+<li>找到 <code>compatibilityCheck: function(e, t, r)</code> 和 <code>buildCompatibilityCheck: function(e, t, r)</code> 这两个方法，将其方法体注释掉，添加 <code>t();</code> </li>
+</ol>
+<p>注意，这样虽然屏蔽了所有浏览器的警告提示，可以在手机浏览器，包括微信内，都可以打开 Unity3D WebGL 的内容。但是在某些浏览器内因为内核的问题，导致内容不会加载，也没有相关提示，只显示一个灰色的色块。目前已知有问题的浏览器是Mac端的Safari。</p>
+<h5 id="Unity3D-WebGL-代码嵌入-Hexo-Next-页面中"><a href="#Unity3D-WebGL-代码嵌入-Hexo-Next-页面中" class="headerlink" title="Unity3D WebGL 代码嵌入 Hexo Next 页面中"></a>Unity3D WebGL 代码嵌入 Hexo Next 页面中</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;Build/UnityLoader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">UnityLoader.instantiate(<span class="string">&quot;unityContainer&quot;</span>, <span class="string">&quot;Build/WebGL_Build.json&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;unityContainer&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 800px; height: 450px;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
+<li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
+<li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Unity WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
+<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+</blockquote>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
+<ul>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+</ul>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<hr>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>0-0 关于Hex Map系列文章</title>
     <url>/2020/09/25/HexMap/0-0%20%E5%85%B3%E4%BA%8EHex%20Map%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/</url>
     <content><![CDATA[<p>　　偶然间在Unity论坛上发现了Jasper Flick大神的文章，顺藤摸瓜，发现Jasper Flick大神还有一个网站，专门写各种各样的教程和技术文章，每一篇都非常有价值。在征得大神同意后，决定挖个深坑，把六边形地图系统的文章翻译出来，同时可以精进自己的技术和英语水平。</p>
@@ -134,56 +280,6 @@
       </tags>
   </entry>
   <entry>
-    <title>1-3 创建地图单元坐标UI</title>
-    <url>/2020/09/28/HexMap/1-3%20%E5%88%9B%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87UI/</url>
-    <content><![CDATA[<p>　　在之前的步骤中，我们已经生成了一个6x6的矩形地图网格，为了方便之后的调试与观察，这里需要显示每个地图单元在地图网格内的坐标。</p>
-<p>　　在场景中创建一个Canvas，并且按照以下步骤对Canvas作出修改：</p>
-<ol>
-<li>将Canvas设置为“Hex Grid”的子物体</li>
-<li>重命名为Hex Grid Canvas</li>
-<li>删除Graphic Raycaster组件</li>
-<li>将Canvas组件的Render Mode属性设置为<code>World Space</code></li>
-<li>在x轴方向旋转90度</li>
-<li>设置Canvas Scaler组件的Dynamic Pixels Per Unit值为10</li>
-<li>删除场景中的“EventSystem”物体</li>
-</ol>
-<p>下图为Hex Grid Canvas设置完成后的效果：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-1.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-2.png"></p>
-<p>　　对Canvas做好属性设置之后，创建一个Text子物体，具体设置步骤如下：</p>
-<ol>
-<li>Text重命名为Hex Cell Label</li>
-<li>Width为5，Height为15</li>
-<li>Text组件的Font Size值为4</li>
-<li>Text组件的Alignment为水平居中、垂直居中</li>
-<li>删除Text组件中默认的初始文字内容</li>
-<li>将Hex Cell label创建为Prefab</li>
-</ol>
-<p>下图为Hex Cell label设置完成后的效果：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-3.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-4.png"></p>
-<p>　　接下来，需要在创建地图单元的时候，同时创建Hex Cell Label，并且把自身的坐标位置显示出来。根据这个思路修改脚本，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span> </span><br><span class="line">&#123;</span><br><span class="line">  …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放显示地图单元坐标的Text Prefab</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text cellLabelPrefab;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Text Prefab的父级Canvas</span></span><br><span class="line">    <span class="keyword">private</span> Canvas gridCanvas;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">        <span class="comment">//获取Hex Grid子物体下d Canvas组件</span></span><br><span class="line">        gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　添加代码完成后，将Hex Grid Canvas设置为Hex Grid的子物体，这样才能使<code>gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</code>正常执行。最后将之前创建的Hex Cell Label预置拖入<code>Hex Grid</code>脚本的<code>cellLabelPrefab</code>变量中。效果如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-5.png"></p>
-<p>　　创建了Hex Grid Canvas和Hex Cell Label的联系之后，接着要在创建地图单元的时候，同时实例化Hex Cell Label预置，位置与实例化的Hex Cell位置相对应，同时显示出实例化Hex Cell在数组中的位置，也就是坐标，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置该label的父级，也就是canvas</span></span><br><span class="line">    label.rectTransform.SetParent(gridCanvas.transform, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置label的位置，与被实例化的cell位置相同</span></span><br><span class="line">    label.rectTransform.anchoredPosition = <span class="keyword">new</span> Vector2(position.x, position.z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置label的文字，就是cell在数组中的位置</span></span><br><span class="line">    label.text = x.ToString() + <span class="string">&quot;\n&quot;</span> + z.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　代码完成后，运行效果如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-6.png"></p>
-<p>　　下一章里，我们要重新排列地图单元的位置，使其符合正六边形地图单元的排列方式。</p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>1-4 正六边形地图单元的排列方式</title>
     <url>/2020/09/29/HexMap/1-4%20%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E6%8E%92%E5%88%97%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p>　　上一章中，我们将每个地图单元的坐标显示了出来，这样能更加方便的在Game窗口中查看每个地图单元的坐标信息，方便之后的调试和修改。但是，现在所有的地图单元，是按照正方形地图系统的模式排列的，而整六边形地图系统中，地图单元的排列如下图所示：</p>
@@ -254,6 +350,56 @@
 <p>　　最后还有一点需要讨论，为什么我们不合并重叠的顶点？</p>
 <p>　　其实完全可以合并，并且还能将“面数”进行优化，比如只使用4个三角形面片就可以拼接成一个正六边形，而不是6个，但是在之后的步骤中，还会对正六边形地图元素作出一些其他的改动，如果现在优化顶点和面数，可能会导致之后的步骤变得更加复杂和难以处理。</p>
 <p>　　这一章我们已经生成了正确的正六边形地图元素，下一章将会重新排列这些地图元素的坐标，为之后的计算便捷做准备。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1-3 创建地图单元坐标UI</title>
+    <url>/2020/09/28/HexMap/1-3%20%E5%88%9B%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87UI/</url>
+    <content><![CDATA[<p>　　在之前的步骤中，我们已经生成了一个6x6的矩形地图网格，为了方便之后的调试与观察，这里需要显示每个地图单元在地图网格内的坐标。</p>
+<p>　　在场景中创建一个Canvas，并且按照以下步骤对Canvas作出修改：</p>
+<ol>
+<li>将Canvas设置为“Hex Grid”的子物体</li>
+<li>重命名为Hex Grid Canvas</li>
+<li>删除Graphic Raycaster组件</li>
+<li>将Canvas组件的Render Mode属性设置为<code>World Space</code></li>
+<li>在x轴方向旋转90度</li>
+<li>设置Canvas Scaler组件的Dynamic Pixels Per Unit值为10</li>
+<li>删除场景中的“EventSystem”物体</li>
+</ol>
+<p>下图为Hex Grid Canvas设置完成后的效果：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-1.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-2.png"></p>
+<p>　　对Canvas做好属性设置之后，创建一个Text子物体，具体设置步骤如下：</p>
+<ol>
+<li>Text重命名为Hex Cell Label</li>
+<li>Width为5，Height为15</li>
+<li>Text组件的Font Size值为4</li>
+<li>Text组件的Alignment为水平居中、垂直居中</li>
+<li>删除Text组件中默认的初始文字内容</li>
+<li>将Hex Cell label创建为Prefab</li>
+</ol>
+<p>下图为Hex Cell label设置完成后的效果：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-3.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-4.png"></p>
+<p>　　接下来，需要在创建地图单元的时候，同时创建Hex Cell Label，并且把自身的坐标位置显示出来。根据这个思路修改脚本，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span> </span><br><span class="line">&#123;</span><br><span class="line">  …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放显示地图单元坐标的Text Prefab</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text cellLabelPrefab;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Text Prefab的父级Canvas</span></span><br><span class="line">    <span class="keyword">private</span> Canvas gridCanvas;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">        <span class="comment">//获取Hex Grid子物体下d Canvas组件</span></span><br><span class="line">        gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　添加代码完成后，将Hex Grid Canvas设置为Hex Grid的子物体，这样才能使<code>gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</code>正常执行。最后将之前创建的Hex Cell Label预置拖入<code>Hex Grid</code>脚本的<code>cellLabelPrefab</code>变量中。效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-5.png"></p>
+<p>　　创建了Hex Grid Canvas和Hex Cell Label的联系之后，接着要在创建地图单元的时候，同时实例化Hex Cell Label预置，位置与实例化的Hex Cell位置相对应，同时显示出实例化Hex Cell在数组中的位置，也就是坐标，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置该label的父级，也就是canvas</span></span><br><span class="line">    label.rectTransform.SetParent(gridCanvas.transform, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置label的位置，与被实例化的cell位置相同</span></span><br><span class="line">    label.rectTransform.anchoredPosition = <span class="keyword">new</span> Vector2(position.x, position.z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置label的文字，就是cell在数组中的位置</span></span><br><span class="line">    label.text = x.ToString() + <span class="string">&quot;\n&quot;</span> + z.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　代码完成后，运行效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-6.png"></p>
+<p>　　下一章里，我们要重新排列地图单元的位置，使其符合正六边形地图单元的排列方式。</p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -446,149 +592,52 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity3D WebGL 相关踩坑记录 1</title>
-    <url>/2020/09/15/Hexo/Part1/</url>
-    <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
-<ul>
-<li>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。</li>
-<li>自定义加载 Logo 和背景色等样式，未找到修改位置。</li>
-<li>触摸等交互方式要适配移动端。目前使用了lean。</li>
-<li>UI等界面元素适配移动端。</li>
-<li>将 WebGL 内容嵌入 Hexo Next 博客中。</li>
-</ul>
-<p>非重要修改点为：</p>
-<ul>
-<li>默认全屏，或者有窗口尺寸选项，这个可能要通过JS来实现。</li>
-<li>加载时的自定义 Logo ，目前测试可以使用 PNG 和 Base64 编码的图片，理论上应该可以使用 SVG 格式的图片，有待测试。 </li>
-<li>加载时候的界面背景色未找到修改的位置。</li>
-</ul>
-<h5 id="Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告"><a href="#Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告" class="headerlink" title="Unity3D WebGL 在移动端上不再弹出移动端浏览器警告"></a>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">compatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">/*UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup(&quot;Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : [&quot;Edge&quot;, &quot;Firefox&quot;, &quot;Chrome&quot;, &quot;Safari&quot;].indexOf(UnityLoader.SystemInfo.browser) == -1 ? e.popup(&quot;Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : t() : e.popup(&quot;Your browser does not support WebGL&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: r</span></span><br><span class="line"><span class="comment">	&#125;])*/</span></span><br><span class="line">&#125;,</span><br><span class="line">buildCompatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;undefined&quot;</span> == <span class="keyword">typeof</span> e.graphicsAPI) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; e.graphicsAPI.length; t++) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = e.graphicsAPI[t];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 2.0&quot;</span> == r &amp;&amp; <span class="number">2</span> == UnityLoader.SystemInfo.hasWebGL) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 1.0&quot;</span> == r &amp;&amp; UnityLoader.SystemInfo.hasWebGL &gt;= <span class="number">1</span>) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            e.print(<span class="string">&quot;Warning: Unsupported graphics API &quot;</span> + r)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ! <span class="number">1</span></span><br><span class="line">       &#125;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">//n() ? !UnityLoader.SystemInfo.hasThreads &amp;&amp; e.multithreading ? r(&quot;Your browser does not support multithreading.&quot;) : t() : r(&quot;Your browser does not support any of the required graphics API for this content.&quot;)</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+    <title>2-1 计算相邻的地图单元的位置</title>
+    <url>/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>　　上一章中我们完成了改变单个地图单元颜色的功能。但是通过观察可以发现，如果相邻的两个地图单元颜色不相同，他们之间的颜色过渡会显得非常的生硬。两者的对比效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-5.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-1.png"></p>
+<p>　　观察对比图可以发现，地图单元之间拥有颜色过渡后，视觉效果会更好一些。在接下来的部分，我们暂时将改变色时重新构建整个地图Mesh的问题放一边，重点放在视觉表现上面。</p>
+<p>　　要想产生平滑的颜色过渡，我们首先需要知道每个地图单元与谁相邻，才可以得到相邻地图单元的颜色，进一步进行颜色的平滑过渡。在这里我们创建一个新的脚本，命名为<code>HexDirection</code>，其中声明一个枚举，用来标识一个地图单元与其相邻的其他地图单元的方位。其分别为东北（NE）、东（ E )、东南(SE)、西南(SW)、西(W)、西北(NW)。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-2.png"></p>
+<figure class="highlight csharp"><figcaption><span>HexDirection.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//表示相邻cell方位的枚举</span></span><br><span class="line"><span class="comment">//从左上角顺时针依次开始</span></span><br><span class="line"><span class="comment">//参考图：http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-2.png</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> HexDirection</span><br><span class="line">&#123;</span><br><span class="line">    NE,</span><br><span class="line">    E, </span><br><span class="line">    SE, </span><br><span class="line">    SW, </span><br><span class="line">    W, </span><br><span class="line">    NW</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>当使用Unity3D 2019.4发布了WebGL项目后，会在Build目录下生成一个UnityLoader.js文件，这个文件感觉主要是加载Unity3D WebGL的内容，而且是一个压缩版的。</p>
-<ol>
-<li>使用网上的JS格式美化工具，将整个JS代码进行格式美化，使代码可读。  </li>
-<li>要修改的代码集中在2628到2654行之间，不同的代码格式美化工具，可能行数会有不同。</li>
-<li>找到 <code>compatibilityCheck: function(e, t, r)</code> 和 <code>buildCompatibilityCheck: function(e, t, r)</code> 这两个方法，将其方法体注释掉，添加 <code>t();</code> </li>
-</ol>
-<p>注意，这样虽然屏蔽了所有浏览器的警告提示，可以在手机浏览器，包括微信内，都可以打开 Unity3D WebGL 的内容。但是在某些浏览器内因为内核的问题，导致内容不会加载，也没有相关提示，只显示一个灰色的色块。目前已知有问题的浏览器是Mac端的Safari。</p>
-<h5 id="Unity3D-WebGL-代码嵌入-Hexo-Next-页面中"><a href="#Unity3D-WebGL-代码嵌入-Hexo-Next-页面中" class="headerlink" title="Unity3D WebGL 代码嵌入 Hexo Next 页面中"></a>Unity3D WebGL 代码嵌入 Hexo Next 页面中</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;Build/UnityLoader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">UnityLoader.instantiate(<span class="string">&quot;unityContainer&quot;</span>, <span class="string">&quot;Build/WebGL_Build.json&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;unityContainer&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 800px; height: 450px;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
-<li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
-<li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity3D WebGL 相关踩坑记录 2</title>
-    <url>/2020/09/17/Hexo/Part2/</url>
-    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
-<ul>
-<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
-</li>
-<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
-</li>
-<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
-</li>
-<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
-</li>
-<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>遗留问题</p>
-<ul>
-<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
 <blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+<p>关于枚举类型<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/enum">MSDN连接</a></br><br>可以使用<code>enum</code>关键字来定义枚举，是有名字的有序列表。这种类型的变量可以使用这些名称中的一个作为它的值，每个名称都对应一个数字，默认情况下从0开始。当你需要有限长度的可命名有序列表时，这些非常有用。<br>实际上枚举就是简单的整数。你可以对它们进行加、减操作，转换成整数再转回来。同样也可以转换成少数其他类型，但整数是其基本类型。</p>
 </blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
-<hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+<p>　　回到HexCell.cs脚本中，在开头部分添加一个数组，用来存储相邻地图单元的实例。这里将该数组设置为Private，并使用<code>[SerializeField]</code>标记这个变量，使其能够在Inspector面板中显示出来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用来存储每个cell的 相邻cell实例</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> HexCell[] neighbors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在这里，我们会保留相邻地图单元的引用，虽然可以通过坐标来直接获取相邻地图单元，但是在有引用关系的情况下会更加方便一些，而且保留引用关系在之后的一些操作中也很便利。</p>
+<p>　　回到Unity中，选中Hex Cell的预置，我们可以看到neighbors变量已经显示在了Inspector面板上。因为每个地图单元最多可以有6个相邻地图单元。所以这里将neighbors数组的长度设置为6。效果如下：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-3.png"></p>
+<p>　　接下来在HexCell.cs脚本中，创建一个公共方法，用来获取<code>neighbors</code>数组中的内容。因为之前声明的<code>HexDirection</code>枚举，其取值范围在0-5之间，同时<code>neighbors</code>数组长度为6，所以这里不用检查数组下标是否越界。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 用来获取neighbors中相应方位cell的实例</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意，虽然HexDirection取值为0-5，neighbors长度为6，不会越界</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 但是不是所有cell都有6个相邻的cell_neighbor，所以可能取出为空，之后会添加判断</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位 枚举<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>相应方位cell 的实例<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> HexCell <span class="title">GetNeighbor</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> neighbors[(<span class="keyword">int</span>)direction];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为<code>neighbors</code>数组为private，所以还需要一个将相邻地图单元实例赋值到数组中的一个方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 将相邻的cell实例赋值到neighbors中对应的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意neighbors的索引下标，应与HexDirection方位的int值对应</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>相邻cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetNeighbor</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        neighbors[(<span class="keyword">int</span>)direction] = cell;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为方位是相对的。例如一个地图单元A，其E方位的地图单元实例为B，那么也可以说A在B的W方位。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-4.png"></p>
+<p>　　所以在获取自身相邻地图单元实例的时候，同时将自身加入其相邻单元格实例的<code>neighbors</code>数组中。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 将相邻的cell实例赋值到neighbors中对应的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意neighbors的索引下标，应与HexDirection方位的int值对应</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>相邻cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetNeighbor</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        neighbors[(<span class="keyword">int</span>)direction] = cell;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//在赋值自身的neighbors实例的同时，也将自身实例赋值到相邻cell的neighbors数组中</span></span><br><span class="line">        cell.neighbors[(<span class="keyword">int</span>)direction.Opposite()] = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，让我们到HexDirection.cs脚本中完成<code>Oppositie()</code>方法。这个方法主要是将地图单元自身实例，添加到相邻地图单元<code>neighbors</code>数组中的对应位置。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexDirection.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexDirectionExtensions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-4.png</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 根据 相邻cell 位于 自身cell 的位置，获得 自身cell 位于 相邻cell 的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 也就是得到相反位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexDirection <span class="title">Opposite</span>(<span class="params"><span class="keyword">this</span> HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//return (int)direction &lt; 3 ? (direction + 3) : (direction - 3);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//已知了 相邻cell 的位置，自身cell位置与相邻cell位置相反</span></span><br><span class="line">        <span class="comment">//即 W(1) - E(4)这样的对应关系，之间正好相差3</span></span><br><span class="line">        <span class="keyword">if</span> ((<span class="keyword">int</span>)direction &lt; <span class="number">3</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (direction + <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (direction - <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>什么是扩展方法？<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>Unity 3D</category>
+        <category>Unity3D Hex Map</category>
       </categories>
       <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
       </tags>
   </entry>
 </search>

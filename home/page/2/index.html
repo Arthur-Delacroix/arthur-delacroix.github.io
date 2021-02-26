@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,114 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/" class="post-title-link" itemprop="url">1-1 关于Hexmap</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-26 13:03:27" itemprop="dateCreated datePublished" datetime="2020-09-26T13:03:27+08:00">2020-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
+<p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
+<p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
+<p>　　而斜向位置的相邻地图单元，两者中点的距离为正方形单元边长的 $\sqrt 2$ 倍，也就是红色箭头表示的距离。</p>
+<p>　　由于相邻的地图单元之间有两种不同的距离，这种差异化的距离在实际游戏中会比较难处理。所以，有些游戏中，只会选择在地图单元的水平和垂直方向移动，从而避免距离差异化带来的问题。但是，这样在一定程度上减少了游戏的多样性与可玩性。</p>
+<p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
+<p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
+<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
+<p>　　由<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的$\frac {\sqrt 3} 2$（<a target="_blank" rel="noopener" href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
+<p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　脚本创建完成后，让我们来继续观察一下正六边形单元。在正六边形排列的形式有两种，一类是边朝上，一类是角朝上。为了方便之后的计算，我们选择角朝上的排列类型。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png"></p>
+<p>　　在<code>HexMetrics</code>类中添加如下代码，通过正六边形的中点、外接圆半径、内切圆半径定义正六边形的六个顶点</p>
+<figure class="highlight csharp"><figcaption><span>exMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line">    <span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　这样，基本的地图单元就创建完成了，下一步，要创建一个二维数组，来存放实例化到场景中的地图单元，并且记录每个地图单元在该数组中的位置。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/4ca99fba905d26cc215b4b68bbb2ded305e4eb2b">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -932,7 +1040,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -943,13 +1051,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">38k</span>
+    <span title="站点总字数">42k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35 分钟</span>
+    <span title="站点阅读时长">38 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

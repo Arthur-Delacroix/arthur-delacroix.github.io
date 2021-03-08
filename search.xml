@@ -484,6 +484,7 @@
 <blockquote>
 <p>什么是扩展方法？<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
 </blockquote>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/18aca13c0edcfd279b0b54cd0fedbfaea4b91f9e">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -520,6 +521,31 @@
 <p>　　通过观察和代码可以发现，在整个地图系统中，并不是每个地图单元都有全部的6个相邻地图单元，也就是说，在边缘处的地图单元，其Neighbors数组并没有填满。有些边缘处地图单元最多有5个与其相邻的地图单元，最少的则有2个。</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-6.png"></p>
 <p>　　现在，我们已经将所有的地图单元建立了相互的链接关系，这是颜色混合的前置工作之一。接下来会进行一些代码的调整，并实现单元格之间颜色过渡的效果。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7179c3b1142fb19b7e922def8f85e8fbb74f1a6a">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-3 重构部分现有方法</title>
+    <url>/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>　　在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。<br>　　首先回到<code>HexMetrics.cs</code>脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的<code>Vector3[] corners</code>枚举设置为私有了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetFirstCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction+1位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetSecondtCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来回到<code>HexMesh.cs</code>脚本中，在<code>private void Triangulate(HexCell cell)</code>方法中，我们可以替换掉之前使用<code>corners</code>枚举获取顶点的代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//private void Triangulate(HexCell cell)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取单个cell的中点位置</span></span><br><span class="line">    Vector3 center = cell.transform.localPosition;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.GetFirstCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为有了HexDirection，这里不再直接使用corners枚举来获取cell的顶点位置信息，而使用HexDirection方位来获取</span></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="comment">//for (int i = 0; i &lt; 6; i++)</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    //构建三角面片</span></span><br><span class="line">    <span class="comment">//    AddTriangle(</span></span><br><span class="line">    <span class="comment">//        center,</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i],</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i + 1]</span></span><br><span class="line">    <span class="comment">//    );</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，我们新建一个<code>Triangulate(HexCell cell)</code>方法，使用HexDirection方位来循环添加单个地图单元的6个点点位置信息。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 使用HexDirection方位，为单个cell循环添加其6个顶点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 此方法之后会进行优化合并</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (HexDirection d = HexDirection.NE; d &lt;= HexDirection.NW; d++)</span><br><span class="line">    &#123;</span><br><span class="line">        Triangulate(d, cell);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，前置的一些准备工作就完成了，我们将之前直接使用<code>corners</code>枚举的代码，替换为了使用HexDirection方位的代码，避免了一些复杂的计算，也保证了<code>corners</code>的安全性。<br>　　接下来的章节中，我们将开始实现两个地图单元之间颜色混合的功能了。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b7679f24ac0bec07b992cb7429ad9c785061c601">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -606,31 +632,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Unity HDRP Visual Environment</title>
     <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
     <content><![CDATA[<p>#Visual Environment</p>
@@ -666,6 +667,31 @@
 </li>
 </ul>
 <p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
 ]]></content>
       <categories>
         <category>Unity 3D</category>

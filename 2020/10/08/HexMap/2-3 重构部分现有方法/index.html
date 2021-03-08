@@ -22,22 +22,23 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：  Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。 自定义加载 Logo 和背景色等样式，未找到修改位置。 触摸等交互方式要适配移动端。目前使用了lean。 UI等界面元素适配移动端。 将 WebGL 内容嵌入 Hexo Next 博客中。  非重要修改点为：  默认全屏，或者有窗口尺寸选项，这个可">
+  <meta name="description" content="在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。　　首先回到HexMetrics.cs脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的Vector3[] corners枚举设置为私有了。 HexMetrics.cs1234567891011121314151617181920212">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity3D WebGL 相关踩坑记录 1">
-<meta property="og:url" content="https://arthur-delacroix.github.io/2020/09/15/Hexo/Part1/index.html">
+<meta property="og:title" content="2-3 重构部分现有方法">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
-<meta property="og:description" content="Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：  Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。 自定义加载 Logo 和背景色等样式，未找到修改位置。 触摸等交互方式要适配移动端。目前使用了lean。 UI等界面元素适配移动端。 将 WebGL 内容嵌入 Hexo Next 博客中。  非重要修改点为：  默认全屏，或者有窗口尺寸选项，这个可">
+<meta property="og:description" content="在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。　　首先回到HexMetrics.cs脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的Vector3[] corners枚举设置为私有了。 HexMetrics.cs1234567891011121314151617181920212">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-15T03:23:16.000Z">
-<meta property="article:modified_time" content="2020-10-07T07:04:22.590Z">
+<meta property="article:published_time" content="2020-10-08T02:49:11.000Z">
+<meta property="article:modified_time" content="2021-05-28T02:59:24.997Z">
 <meta property="article:author" content="Arthur Delacroix">
-<meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="Unity WebGL">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="Game develop">
+<meta property="article:tag" content="Hex Map">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/2020/09/15/Hexo/Part1/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/">
 
 
 <script class="page-configurations">
@@ -50,7 +51,7 @@
   };
 </script>
 
-  <title>Unity3D WebGL 相关踩坑记录 1 | Arthur's Blog</title>
+  <title>2-3 重构部分现有方法 | Arthur's Blog</title>
   
 
 
@@ -198,7 +199,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -210,7 +211,6 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Unity3D-WebGL-%E5%9C%A8%E7%A7%BB%E5%8A%A8%E7%AB%AF%E4%B8%8A%E4%B8%8D%E5%86%8D%E5%BC%B9%E5%87%BA%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AD%A6%E5%91%8A"><span class="nav-number">1.</span> <span class="nav-text">Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Unity3D-WebGL-%E4%BB%A3%E7%A0%81%E5%B5%8C%E5%85%A5-Hexo-Next-%E9%A1%B5%E9%9D%A2%E4%B8%AD"><span class="nav-number">2.</span> <span class="nav-text">Unity3D WebGL 代码嵌入 Hexo Next 页面中</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -287,7 +287,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/15/Hexo/Part1/">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -300,7 +300,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Unity3D WebGL 相关踩坑记录 1
+          2-3 重构部分现有方法
         </h1>
 
         <div class="post-meta-container">
@@ -311,7 +311,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-09-15 11:23:16" itemprop="dateCreated datePublished" datetime="2020-09-15T11:23:16+08:00">2020-09-15</time>
+      <time title="创建时间：2020-10-08 10:49:11" itemprop="dateCreated datePublished" datetime="2020-10-08T10:49:11+08:00">2020-10-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -319,7 +319,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
         </span>
     </span>
 
@@ -336,7 +336,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -354,36 +354,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
-<ul>
-<li>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。</li>
-<li>自定义加载 Logo 和背景色等样式，未找到修改位置。</li>
-<li>触摸等交互方式要适配移动端。目前使用了lean。</li>
-<li>UI等界面元素适配移动端。</li>
-<li>将 WebGL 内容嵌入 Hexo Next 博客中。</li>
-</ul>
-<p>非重要修改点为：</p>
-<ul>
-<li>默认全屏，或者有窗口尺寸选项，这个可能要通过JS来实现。</li>
-<li>加载时的自定义 Logo ，目前测试可以使用 PNG 和 Base64 编码的图片，理论上应该可以使用 SVG 格式的图片，有待测试。 </li>
-<li>加载时候的界面背景色未找到修改的位置。</li>
-</ul>
-<h5 id="Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告"><a href="#Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告" class="headerlink" title="Unity3D WebGL 在移动端上不再弹出移动端浏览器警告"></a>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">compatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">/*UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup(&quot;Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : [&quot;Edge&quot;, &quot;Firefox&quot;, &quot;Chrome&quot;, &quot;Safari&quot;].indexOf(UnityLoader.SystemInfo.browser) == -1 ? e.popup(&quot;Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : t() : e.popup(&quot;Your browser does not support WebGL&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: r</span></span><br><span class="line"><span class="comment">	&#125;])*/</span></span><br><span class="line">&#125;,</span><br><span class="line">buildCompatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;undefined&quot;</span> == <span class="keyword">typeof</span> e.graphicsAPI) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; e.graphicsAPI.length; t++) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = e.graphicsAPI[t];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 2.0&quot;</span> == r &amp;&amp; <span class="number">2</span> == UnityLoader.SystemInfo.hasWebGL) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 1.0&quot;</span> == r &amp;&amp; UnityLoader.SystemInfo.hasWebGL &gt;= <span class="number">1</span>) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            e.print(<span class="string">&quot;Warning: Unsupported graphics API &quot;</span> + r)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ! <span class="number">1</span></span><br><span class="line">       &#125;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">//n() ? !UnityLoader.SystemInfo.hasThreads &amp;&amp; e.multithreading ? r(&quot;Your browser does not support multithreading.&quot;) : t() : r(&quot;Your browser does not support any of the required graphics API for this content.&quot;)</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+        <p>　　在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。<br>　　首先回到<code>HexMetrics.cs</code>脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的<code>Vector3[] corners</code>枚举设置为私有了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetFirstCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction+1位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetSecondtCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>当使用Unity3D 2019.4发布了WebGL项目后，会在Build目录下生成一个UnityLoader.js文件，这个文件感觉主要是加载Unity3D WebGL的内容，而且是一个压缩版的。</p>
-<ol>
-<li>使用网上的JS格式美化工具，将整个JS代码进行格式美化，使代码可读。  </li>
-<li>要修改的代码集中在2628到2654行之间，不同的代码格式美化工具，可能行数会有不同。</li>
-<li>找到 <code>compatibilityCheck: function(e, t, r)</code> 和 <code>buildCompatibilityCheck: function(e, t, r)</code> 这两个方法，将其方法体注释掉，添加 <code>t();</code> </li>
-</ol>
-<p>注意，这样虽然屏蔽了所有浏览器的警告提示，可以在手机浏览器，包括微信内，都可以打开 Unity3D WebGL 的内容。但是在某些浏览器内因为内核的问题，导致内容不会加载，也没有相关提示，只显示一个灰色的色块。目前已知有问题的浏览器是Mac端的Safari。</p>
-<h5 id="Unity3D-WebGL-代码嵌入-Hexo-Next-页面中"><a href="#Unity3D-WebGL-代码嵌入-Hexo-Next-页面中" class="headerlink" title="Unity3D WebGL 代码嵌入 Hexo Next 页面中"></a>Unity3D WebGL 代码嵌入 Hexo Next 页面中</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;Build/UnityLoader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">UnityLoader.instantiate(<span class="string">&quot;unityContainer&quot;</span>, <span class="string">&quot;Build/WebGL_Build.json&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;unityContainer&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 800px; height: 450px;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>　　接下来回到<code>HexMesh.cs</code>脚本中，在<code>private void Triangulate(HexCell cell)</code>方法中，我们可以替换掉之前使用<code>corners</code>枚举获取顶点的代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//private void Triangulate(HexCell cell)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取单个cell的中点位置</span></span><br><span class="line">    Vector3 center = cell.transform.localPosition;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.GetFirstCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为有了HexDirection，这里不再直接使用corners枚举来获取cell的顶点位置信息，而使用HexDirection方位来获取</span></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="comment">//for (int i = 0; i &lt; 6; i++)</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    //构建三角面片</span></span><br><span class="line">    <span class="comment">//    AddTriangle(</span></span><br><span class="line">    <span class="comment">//        center,</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i],</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i + 1]</span></span><br><span class="line">    <span class="comment">//    );</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
-<li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
-<li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
-</ul>
+<p>　　最后，我们新建一个<code>Triangulate(HexCell cell)</code>方法，使用HexDirection方位来循环添加单个地图单元的6个点点位置信息。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 使用HexDirection方位，为单个cell循环添加其6个顶点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 此方法之后会进行优化合并</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (HexDirection d = HexDirection.NE; d &lt;= HexDirection.NW; d++)</span><br><span class="line">    &#123;</span><br><span class="line">        Triangulate(d, cell);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，前置的一些准备工作就完成了，我们将之前直接使用<code>corners</code>枚举的代码，替换为了使用HexDirection方位的代码，避免了一些复杂的计算，也保证了<code>corners</code>的安全性。<br>　　接下来的章节中，我们将开始实现两个地图单元之间颜色混合的功能了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b7679f24ac0bec07b992cb7429ad9c785061c601">Github代码</a></p>
 
     </div>
 
@@ -393,22 +374,20 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
-              <a href="/tags/Unity-WebGL/" rel="tag"># Unity WebGL</a>
+              <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+              <a href="/tags/Game-develop/" rel="tag"># Game develop</a>
+              <a href="/tags/Hex-Map/" rel="tag"># Hex Map</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/" rel="prev" title="Unity HDRP Visual Environment">
-                  <i class="fa fa-chevron-left"></i> Unity HDRP Visual Environment
+                <a href="/2020/10/07/HexMap/2-2%20%E9%93%BE%E6%8E%A5%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/" rel="prev" title="2-2 链接相邻的力图单元">
+                  <i class="fa fa-chevron-left"></i> 2-2 链接相邻的力图单元
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/09/17/Hexo/Part2/" rel="next" title="Unity3D WebGL 相关踩坑记录 2">
-                  Unity3D WebGL 相关踩坑记录 2 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

@@ -557,6 +557,105 @@
       </tags>
   </entry>
   <entry>
+    <title>2-4 混合三角面片颜色</title>
+    <url>/2020/10/09/HexMap/2-4%20%E6%B7%B7%E5%90%88%E4%B8%89%E8%A7%92%E9%9D%A2%E7%89%87%E9%A2%9C%E8%89%B2/</url>
+    <content><![CDATA[<p>　　在上一章中我们因为引入了HexDirection枚举，所以对一些方法进行了重构。接下来需要实现相邻两个地图单元的颜色混合功能。这里首先需要修改<code>HexMesh.cs</code>脚本中的<code>AddTriangleColor</code>方法。这个方法原本的参数只有一个，在构建三角面片的时候，会将这个参数的颜色信息赋值到三角面片的三个顶点信息中。为了实现颜色混合，需要再添加两个参数，让三角面片的每个顶点分别有不同的颜色值。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点分别赋予不同的颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>第一个顶点的颜色信息(中心点的颜色)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>第二个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c3&quot;&gt;</span>第三个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color c1, Color c2, Color c3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，我们在构建三角面片的时候就可以进行颜色的混合了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">    AddTriangleColor(cell.color, neighbor.color, neighbor.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　运行以上代码的时候，Unity会产生一个空引用异常。这是因为，并不是每个地图单元都有6个与之相邻的地图单元。所以，这里要进行一次判断。当一个方位上没有地图单元的时候，就用自身的颜色代替。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    <span class="comment">//?? 为 可空合并运算符，即cell.GetNeighbor(direction)的值为null时，使用 cell的值</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction) ?? cell;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-4-1.png"></p>
+<blockquote>
+<p>“??”的含义：<br>这被称为可空合并运算符，简单来说”a??b”即”a!=null?a:b”的简写。<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/nullable-value-types#conversion-from-a-nullable-value-type-to-an-underlying-type">MSDN连接</a>，“从可为空的值类型转换为基础类型”部分。<br>这里有个小诡计，因为Unity在把一个东西与组件比较时会自定义,(注:Unity中判断一个对象不为空时可以直接写成if(someThings),这在C#原本语法里是没有的)而这个运算符会绕过它并直接与null比较,不过这是销毁对象时才需要考虑的问题。</p>
+</blockquote>
+<p>　　现在，我们虽然完成了相邻地图单元之间的颜色混合，但是视觉效果显得非常奇怪，完全不是我们想象中的样子。接下来我们需要慢慢解决这些问题。下一章中，我们将会让颜色混合更加平滑。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ddd6faa23d19d72ca918668864dabaedf2ab35b3">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
+<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+</blockquote>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
+<ul>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+</ul>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<hr>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Unity3D WebGL 相关踩坑记录 1</title>
     <url>/2020/09/15/Hexo/Part1/</url>
     <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
@@ -629,77 +728,6 @@
       <tags>
         <tag>Hexo</tag>
         <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
-<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
-<hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
       </tags>
   </entry>
 </search>

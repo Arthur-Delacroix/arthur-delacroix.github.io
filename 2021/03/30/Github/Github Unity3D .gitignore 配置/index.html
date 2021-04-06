@@ -22,27 +22,22 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。 1 GitHub Streak Stats Streak Stats   Streak Stats theme">
+  <meta name="description" content="在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Github Profile 相关配置">
-<meta property="og:url" content="https://arthur-delacroix.github.io/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="Github Unity3D .gitignore 配置">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
-<meta property="og:description" content="在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。 1 GitHub Streak Stats Streak Stats   Streak Stats theme">
+<meta property="og:description" content="在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github-readme-streak-stats.herokuapp.com/?user=Arthur-Delacroix&theme=vue&hide_border=true">
-<meta property="og:image" content="https://github-readme-stats.anuraghazra1.vercel.app/api?username=Arthur-Delacroix&theme=vue&hide_border=true&hide_title=true&count_private=true">
-<meta property="og:image" content="https://github-readme-stats.vercel.app/api/top-langs/?username=Arthur-Delacroix&layout=compact&theme=vue&card_width=445&hide_border=true">
-<meta property="og:image" content="https://github-profile-trophy.vercel.app/?username=Arthur-Delacroix&theme=flat&column=3&margin-h=15&margin-w=15&&no-bg=true&no-frame=true">
-<meta property="article:published_time" content="2021-03-22T22:17:53.000Z">
-<meta property="article:modified_time" content="2021-06-14T09:19:25.773Z">
+<meta property="article:published_time" content="2021-03-30T10:43:07.000Z">
+<meta property="article:modified_time" content="2021-07-27T08:11:13.505Z">
 <meta property="article:author" content="Arthur Delacroix">
-<meta property="article:tag" content="Github Blog">
-<meta property="article:tag" content="Profile">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="Unity3D">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github-readme-streak-stats.herokuapp.com/?user=Arthur-Delacroix&theme=vue&hide_border=true">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/">
 
 
 <script class="page-configurations">
@@ -55,7 +50,7 @@
   };
 </script>
 
-  <title>Github Profile 相关配置 | Arthur's Blog</title>
+  <title>Github Unity3D .gitignore 配置 | Arthur's Blog</title>
   
 
 
@@ -203,7 +198,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -215,7 +210,6 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-GitHub-Streak-Stats"><span class="nav-number">1.</span> <span class="nav-text">1 GitHub Streak Stats</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Stats-Card"><span class="nav-number">2.</span> <span class="nav-text">2 Stats Card</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Trophy"><span class="nav-number">3.</span> <span class="nav-text">Trophy</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -292,7 +286,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -305,7 +299,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Github Profile 相关配置
+          Github Unity3D .gitignore 配置
         </h1>
 
         <div class="post-meta-container">
@@ -316,7 +310,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-23 06:17:53" itemprop="dateCreated datePublished" datetime="2021-03-23T06:17:53+08:00">2021-03-23</time>
+      <time title="创建时间：2021-03-30 18:43:07" itemprop="dateCreated datePublished" datetime="2021-03-30T18:43:07+08:00">2021-03-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -341,7 +335,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -359,36 +353,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>　　在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。</p>
-<h4 id="1-GitHub-Streak-Stats"><a href="#1-GitHub-Streak-Stats" class="headerlink" title="1 GitHub Streak Stats"></a>1 GitHub Streak Stats</h4><blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/DenverCoder1/github-readme-streak-stats">Streak Stats</a></p>
-</blockquote>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/DenverCoder1/github-readme-streak-stats/blob/main/docs/themes/README.md">Streak Stats theme</a></p>
-</blockquote>
-<p>　　这个图片会动态的显示你Github总的贡献数量和最近一次最长的连续贡献数。主要参数是设置用户名和主题外观。代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-streak-stats.herokuapp.com&#x2F;?user&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-streak-stats.herokuapp.com/?user=Arthur-Delacroix&theme=vue&hide_border=true" alt="GitHub Streak"></p>
-<h4 id="2-Stats-Card"><a href="#2-Stats-Card" class="headerlink" title="2 Stats Card"></a>2 Stats Card</h4><blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/anuraghazra/github-readme-stats">Stats Card</a></p>
-</blockquote>
-<p>　　这个动态图片分为2种，一种是显示总的Star数量、总提交数等。另一种是显示当前所有仓库用到的语言种类以及其占比。其他的还有指定仓库的状态卡片、周动态统计等卡片。其中除了一般的主题颜色、边框粗细等参数，在Stats Card中还可以隐藏具体的某一项，例如可以隐藏当前Star数量。具体的参数以及其作用，可以查看Stats Card Github主页。<br>　　Stats Card示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.anuraghazra1.vercel.app&#x2F;api?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true&amp;hide_title&#x3D;true&amp;count_private&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-stats.anuraghazra1.vercel.app/api?username=Arthur-Delacroix&theme=vue&hide_border=true&hide_title=true&count_private=true"></p>
-<p>　　Top Languages Card示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.vercel.app&#x2F;api&#x2F;top-langs&#x2F;?username&#x3D;Arthur-Delacroix&amp;layout&#x3D;compact&amp;theme&#x3D;vue&amp;card_width&#x3D;445&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Arthur-Delacroix&layout=compact&theme=vue&card_width=445&hide_border=true"></p>
-<h4 id="Trophy"><a href="#Trophy" class="headerlink" title="Trophy"></a>Trophy</h4><blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/ryo-ma/github-profile-trophy">Trophy</a></p>
-</blockquote>
-<p>　　Trophy是一个生成奖杯图片的工具，它会根据你的各项数值进行SSS到C的评级，具体评级标准可以在其Github主页上查看。以下是Trophy的实例代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-profile-trophy.vercel.app&#x2F;?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;flat&amp;column&#x3D;3&amp;margin-h&#x3D;15&amp;margin-w&#x3D;15&amp;&amp;no-bg&#x3D;true&amp;no-frame&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-profile-trophy.vercel.app/?username=Arthur-Delacroix&theme=flat&column=3&margin-h=15&margin-w=15&&no-bg=true&no-frame=true"></p>
-
+        <p>　　在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英文句号开头的文件为隐藏文件，如果要显示隐藏文件，可以按下快捷键<code>Command + Shift + .</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"># Unity3D generated file and folders</span><br><span class="line">[Ll]ibrary&#x2F;</span><br><span class="line">[Tt]emp&#x2F;</span><br><span class="line">[Oo]bj&#x2F;</span><br><span class="line">[Bb]uild&#x2F;</span><br><span class="line">[Bb]uilds&#x2F;</span><br><span class="line">[Ll]ogs&#x2F;</span><br><span class="line">[Uu]serSettings&#x2F;</span><br><span class="line">[Mm]emoryCaptures&#x2F;</span><br><span class="line">&#x2F;ignore.conf</span><br><span class="line">*.private</span><br><span class="line">*.private.meta</span><br><span class="line">^*.private.[0-9]+$</span><br><span class="line">^*.private.[0-9]+.meta$</span><br><span class="line">.collabignore</span><br><span class="line">**&#x2F;Assets&#x2F;AddressableAssetsData&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;assets&#x2F;addressableassetsdata&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;Assets&#x2F;StreamingAssets&#x2F;aa.meta</span><br><span class="line">**&#x2F;assets&#x2F;streamingassets&#x2F;*&#x2F;aa&#x2F;*</span><br><span class="line"></span><br><span class="line"># Unity3D generated PlasticSCM flies</span><br><span class="line">&#x2F;Assets&#x2F;Plugins&#x2F;PlasticSCM*</span><br><span class="line">&#x2F;assets&#x2F;plugins&#x2F;PlasticSCM*</span><br><span class="line"></span><br><span class="line"># Asset store tools plugin</span><br><span class="line">[Aa]ssets&#x2F;AssetStoreTools*</span><br><span class="line">**&#x2F;assets&#x2F;assetstoretools</span><br><span class="line"></span><br><span class="line"># Visual Studio cache directory</span><br><span class="line">.vs&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle cache directory</span><br><span class="line">.gradle&#x2F;</span><br><span class="line"></span><br><span class="line"># Autogenerated VS&#x2F;MD&#x2F;Consulo solution and project files</span><br><span class="line">ExportedObj&#x2F;</span><br><span class="line">.consulo&#x2F;</span><br><span class="line">*.csproj</span><br><span class="line">*.unityproj</span><br><span class="line">*.sln</span><br><span class="line">*.suo</span><br><span class="line">*.tmp</span><br><span class="line">*.user</span><br><span class="line">*.userprefs</span><br><span class="line">*.pidb</span><br><span class="line">*.booproj</span><br><span class="line">*.svd</span><br><span class="line">*.pdb</span><br><span class="line">*.mdb</span><br><span class="line">*.opendb</span><br><span class="line">*.VC.db</span><br><span class="line"></span><br><span class="line"># Unity3D generated meta files</span><br><span class="line">*.pidb.meta</span><br><span class="line">*.pdb.meta</span><br><span class="line">*.mdb.meta</span><br><span class="line"></span><br><span class="line"># Unity3D generated file on crash reports</span><br><span class="line">sysinfo.txt</span><br><span class="line"></span><br><span class="line"># Builds</span><br><span class="line">*.apk</span><br><span class="line">*.unitypackage</span><br><span class="line"></span><br><span class="line"># Crashlytics generated file</span><br><span class="line">crashlytics-build.properties</span><br><span class="line"></span><br><span class="line"># Mac files</span><br><span class="line">.DS_Store*</span><br><span class="line"></span><br><span class="line"># Windows files</span><br><span class="line">Thumbs.db</span><br><span class="line">Desktop.ini</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -397,22 +363,19 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Github-Blog/" rel="tag"># Github Blog</a>
-              <a href="/tags/Profile/" rel="tag"># Profile</a>
+              <a href="/tags/Github/" rel="tag"># Github</a>
+              <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/03/19/Github/Github%20badge/" rel="prev" title="Github badge">
-                  <i class="fa fa-chevron-left"></i> Github badge
+                <a href="/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/" rel="prev" title="Github Profile 相关配置">
+                  <i class="fa fa-chevron-left"></i> Github Profile 相关配置
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/" rel="next" title="Github Unity3D .gitignore 配置">
-                  Github Unity3D .gitignore 配置 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

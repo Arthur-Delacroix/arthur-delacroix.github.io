@@ -22,22 +22,25 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英">
+  <meta name="description" content="在上一章中我们完成了双色混合区域连接的优化，现在来继续完成三色混合区域。根据上一张的思路，三色混合区域依然是在HexMesh.TriangulateConnection方法中处理。 HexMesh.cs123456789101112131415private void Triangulate(HexDirection direction, HexCell cell)&amp;#123;    …">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Github Unity3D .gitignore 配置">
-<meta property="og:url" content="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="2-12 优化三色混合区域">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/17/HexMap/2-12%20%E4%BC%98%E5%8C%96%E4%B8%89%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
-<meta property="og:description" content="在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英">
+<meta property="og:description" content="在上一章中我们完成了双色混合区域连接的优化，现在来继续完成三色混合区域。根据上一张的思路，三色混合区域依然是在HexMesh.TriangulateConnection方法中处理。 HexMesh.cs123456789101112131415private void Triangulate(HexDirection direction, HexCell cell)&amp;#123;    …">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-30T10:43:07.000Z">
-<meta property="article:modified_time" content="2021-07-27T08:11:13.505Z">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-12-1.png">
+<meta property="article:published_time" content="2020-10-17T09:49:22.000Z">
+<meta property="article:modified_time" content="2021-06-06T08:14:08.000Z">
 <meta property="article:author" content="Arthur Delacroix">
 <meta property="article:tag" content="Unity3D">
-<meta property="article:tag" content="Github">
+<meta property="article:tag" content="Game develop">
+<meta property="article:tag" content="Hex Map">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-12-1.png">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/17/HexMap/2-12%20%E4%BC%98%E5%8C%96%E4%B8%89%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
 
 
 <script class="page-configurations">
@@ -50,7 +53,7 @@
   };
 </script>
 
-  <title>Github Unity3D .gitignore 配置 | Arthur's Blog</title>
+  <title>2-12 优化三色混合区域 | Arthur's Blog</title>
   
 
 
@@ -286,7 +289,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/17/HexMap/2-12%20%E4%BC%98%E5%8C%96%E4%B8%89%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -299,7 +302,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Github Unity3D .gitignore 配置
+          2-12 优化三色混合区域
         </h1>
 
         <div class="post-meta-container">
@@ -310,7 +313,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-30 18:43:07" itemprop="dateCreated datePublished" datetime="2021-03-30T18:43:07+08:00">2021-03-30</time>
+      <time title="创建时间：2020-10-17 17:49:22" itemprop="dateCreated datePublished" datetime="2020-10-17T17:49:22+08:00">2020-10-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -318,7 +321,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Github/" itemprop="url" rel="index"><span itemprop="name">Github</span></a>
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
         </span>
     </span>
 
@@ -335,7 +338,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -353,8 +356,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>　　在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英文句号开头的文件为隐藏文件，如果要显示隐藏文件，可以按下快捷键<code>Command + Shift + .</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"># Unity3D generated file and folders</span><br><span class="line">[Ll]ibrary&#x2F;</span><br><span class="line">[Tt]emp&#x2F;</span><br><span class="line">[Oo]bj&#x2F;</span><br><span class="line">[Bb]uild&#x2F;</span><br><span class="line">[Bb]uilds&#x2F;</span><br><span class="line">[Ll]ogs&#x2F;</span><br><span class="line">[Uu]serSettings&#x2F;</span><br><span class="line">[Mm]emoryCaptures&#x2F;</span><br><span class="line">&#x2F;ignore.conf</span><br><span class="line">*.private</span><br><span class="line">*.private.meta</span><br><span class="line">^*.private.[0-9]+$</span><br><span class="line">^*.private.[0-9]+.meta$</span><br><span class="line">.collabignore</span><br><span class="line">**&#x2F;Assets&#x2F;AddressableAssetsData&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;assets&#x2F;addressableassetsdata&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;Assets&#x2F;StreamingAssets&#x2F;aa.meta</span><br><span class="line">**&#x2F;assets&#x2F;streamingassets&#x2F;*&#x2F;aa&#x2F;*</span><br><span class="line"></span><br><span class="line"># Unity3D generated PlasticSCM flies</span><br><span class="line">&#x2F;Assets&#x2F;Plugins&#x2F;PlasticSCM*</span><br><span class="line">&#x2F;assets&#x2F;plugins&#x2F;PlasticSCM*</span><br><span class="line"></span><br><span class="line"># Asset store tools plugin</span><br><span class="line">[Aa]ssets&#x2F;AssetStoreTools*</span><br><span class="line">**&#x2F;assets&#x2F;assetstoretools</span><br><span class="line"></span><br><span class="line"># Visual Studio cache directory</span><br><span class="line">.vs&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle cache directory</span><br><span class="line">.gradle&#x2F;</span><br><span class="line"></span><br><span class="line"># Autogenerated VS&#x2F;MD&#x2F;Consulo solution and project files</span><br><span class="line">ExportedObj&#x2F;</span><br><span class="line">.consulo&#x2F;</span><br><span class="line">*.csproj</span><br><span class="line">*.unityproj</span><br><span class="line">*.sln</span><br><span class="line">*.suo</span><br><span class="line">*.tmp</span><br><span class="line">*.user</span><br><span class="line">*.userprefs</span><br><span class="line">*.pidb</span><br><span class="line">*.booproj</span><br><span class="line">*.svd</span><br><span class="line">*.pdb</span><br><span class="line">*.mdb</span><br><span class="line">*.opendb</span><br><span class="line">*.VC.db</span><br><span class="line"></span><br><span class="line"># Unity3D generated meta files</span><br><span class="line">*.pidb.meta</span><br><span class="line">*.pdb.meta</span><br><span class="line">*.mdb.meta</span><br><span class="line"></span><br><span class="line"># Unity3D generated file on crash reports</span><br><span class="line">sysinfo.txt</span><br><span class="line"></span><br><span class="line"># Builds</span><br><span class="line">*.apk</span><br><span class="line">*.unitypackage</span><br><span class="line"></span><br><span class="line"># Crashlytics generated file</span><br><span class="line">crashlytics-build.properties</span><br><span class="line"></span><br><span class="line"># Mac files</span><br><span class="line">.DS_Store*</span><br><span class="line"></span><br><span class="line"># Windows files</span><br><span class="line">Thumbs.db</span><br><span class="line">Desktop.ini</span><br></pre></td></tr></table></figure>
+        <p>　　在上一章中我们完成了双色混合区域连接的优化，现在来继续完成三色混合区域。根据上一张的思路，三色混合区域依然是在<code>HexMesh.TriangulateConnection</code>方法中处理。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取相邻方位的下一个方位 的cell</span></span><br><span class="line">    HexCell nextNeighbor = cell.GetNeighbor(direction.Next());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里三个彼此相邻的cell都存在的时候，才会创建三角形混合区域</span></span><br><span class="line">    <span class="keyword">if</span> (nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里注意，最后的v2只是临时占位，并不是三角形的最后一个顶点位置</span></span><br><span class="line">        AddTriangle(v2, v4, v2);</span><br><span class="line">        AddTriangleColor(cell.color, neighbor.color, nextNeighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这里注意，在<code>AddTriangle(v2, v4, v2);</code>中，最后的<code>v2</code>并不是三色混合区域中最后的一个顶点位置。我们应该通过第二个相邻地图单元的位置来计算得出这个顶点的位置。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//v2 + HexMetrics.GetBridge(direction.Next()) 为三角形的最后一个顶点位置</span></span><br><span class="line">    <span class="comment">//首先通过HexMetrics.GetBridge(direction.Next()获取 相邻的第二个cell的矩形连接区域宽度，可以理解为一个向量</span></span><br><span class="line">    <span class="comment">//v2顶点位置再加上这个向量，得出了三角形最后一个顶点的位置</span></span><br><span class="line">    AddTriangle(v2, v4, v2 + HexMetrics.GetBridge(direction.Next()));</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-12-1.png"></p>
+<p>　　修改完代码之后，虽然视觉效果上基本没有问题了。但是通过分析代码，其实可以发现现在的三色混合区域是有重叠的。为了去掉重叠的三色混合区域，只需要在NE和E方向生成三色混合区域即可。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里三个彼此相邻的cell都存在的时候，才会创建三角形混合区域</span></span><br><span class="line">    <span class="comment">//if (nextNeighbor != null)</span></span><br><span class="line">    <span class="comment">//为了避免三角形混合区域的重叠，这里只需要生成NE和E方位的即可</span></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　修改代码之后，我们就完成了所有连接区域的优化工作。而且也解决了之前边缘处颜色混合视觉效果不正确的问题。在之后的章节中，我们要给现在的地图增加高低差的功能，让地图具有更多的细节和变化。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/2357e5b9b5b38f5157ee5fcb9a99191c9347c97e">Github代码</a></p>
+
     </div>
 
     
@@ -364,18 +378,22 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
-              <a href="/tags/Github/" rel="tag"># Github</a>
+              <a href="/tags/Game-develop/" rel="tag"># Game develop</a>
+              <a href="/tags/Hex-Map/" rel="tag"># Hex Map</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/" rel="prev" title="Github Profile 相关配置">
-                  <i class="fa fa-chevron-left"></i> Github Profile 相关配置
+                <a href="/2020/10/16/HexMap/2-11%20%E4%BC%98%E5%8C%96%E5%8F%8C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/" rel="prev" title="2-11 优化双色混合区域">
+                  <i class="fa fa-chevron-left"></i> 2-11 优化双色混合区域
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/" rel="next" title="Github Markdown 中的公式书写">
+                  Github Markdown 中的公式书写 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

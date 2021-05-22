@@ -22,26 +22,25 @@
     var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点">
+  <meta name="description" content="在上一章中我们为地图单元添加了高度属性，并完成了简单的UI，来为被点击的地图单元赋值高度信息。但是在构建地图Mesh的时候，并没有将这个高度值应用到被点击的地图单元上。这里我们就来实现这个功能，首先将HexCell 中的elevation字段转换为属性。 HexCell.cs12345678910111213private int elevation;public int Elevation&amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2-9 创建3色颜色混合区域">
-<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/index.html">
+<meta property="og:title" content="3-3 设置地图单元Mesh的高度">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/20/HexMap/3-3%20%E8%AE%BE%E7%BD%AE%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83Mesh%E7%9A%84%E9%AB%98%E5%BA%A6/index.html">
 <meta property="og:site_name" content="Arthur&#39;s Blog">
-<meta property="og:description" content="在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点">
+<meta property="og:description" content="在上一章中我们为地图单元添加了高度属性，并完成了简单的UI，来为被点击的地图单元赋值高度信息。但是在构建地图Mesh的时候，并没有将这个高度值应用到被点击的地图单元上。这里我们就来实现这个功能，首先将HexCell 中的elevation字段转换为属性。 HexCell.cs12345678910111213private int elevation;public int Elevation&amp;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png">
-<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-2.png">
-<meta property="article:published_time" content="2020-10-14T07:10:55.000Z">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-3-1.png">
+<meta property="article:published_time" content="2020-10-20T02:38:51.000Z">
 <meta property="article:modified_time" content="2021-06-06T08:14:08.000Z">
 <meta property="article:author" content="Arthur Delacroix">
 <meta property="article:tag" content="Unity3D">
 <meta property="article:tag" content="Game develop">
 <meta property="article:tag" content="Hex Map">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png">
+<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-3-1.png">
 
 
-<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/20/HexMap/3-3%20%E8%AE%BE%E7%BD%AE%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83Mesh%E7%9A%84%E9%AB%98%E5%BA%A6/">
 
 
 <script class="page-configurations">
@@ -54,7 +53,7 @@
   };
 </script>
 
-  <title>2-9 创建3色颜色混合区域 | Arthur's Blog</title>
+  <title>3-3 设置地图单元Mesh的高度 | Arthur's Blog</title>
   
 
 
@@ -290,7 +289,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/20/HexMap/3-3%20%E8%AE%BE%E7%BD%AE%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83Mesh%E7%9A%84%E9%AB%98%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -303,7 +302,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2-9 创建3色颜色混合区域
+          3-3 设置地图单元Mesh的高度
         </h1>
 
         <div class="post-meta-container">
@@ -314,7 +313,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-10-14 15:10:55" itemprop="dateCreated datePublished" datetime="2020-10-14T15:10:55+08:00">2020-10-14</time>
+      <time title="创建时间：2020-10-20 10:38:51" itemprop="dateCreated datePublished" datetime="2020-10-20T10:38:51+08:00">2020-10-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -339,7 +338,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -357,19 +356,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>　　在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。<br>　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点的颜色是地图单元自身的颜色，第二个顶点的颜色是三个相邻地图三个颜色的混合值，第三个顶点的颜色是双色混合区域的颜色的平均值。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//矩形两色混合区域的中间过渡色</span></span><br><span class="line">    Color bridgeColor = (cell.color + neighbor.color) * <span class="number">0.5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, bridgeColor);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//组成cell的每个三角形区域，有1个矩形混色区域和2个三角形三色混合区域</span></span><br><span class="line">    <span class="comment">//生成其中一个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v1, center + HexMetrics.GetFirstCorner(direction), v3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为第一个三角形三色混合区域赋值颜色</span></span><br><span class="line">    <span class="comment">//自身颜色、三个相邻cell的平均色、矩形混合区域中间色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span>,</span><br><span class="line">        bridgeColor</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>　　在上一章中我们为地图单元添加了高度属性，并完成了简单的UI，来为被点击的地图单元赋值高度信息。但是在构建地图Mesh的时候，并没有将这个高度值应用到被点击的地图单元上。这里我们就来实现这个功能，首先将<code>HexCell </code>中的<code>elevation</code>字段转换为属性。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elevation;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        elevation = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png"></p>
-<p>　　使用同样的方式，我们使用相同的方式来生成矩形颜色混合区域右侧侧的三角形。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v2, v4, HexMetrics.GetSecondCorner(direction));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域的颜色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        bridgeColor,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　然后在赋值高度的同时，修改地图单元Mesh的垂直坐标。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        elevation = <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在获取高度等级的时候，同时为cell的Mesh赋值相应的高度值</span></span><br><span class="line">        Vector3 position = transform.localPosition;</span><br><span class="line">        position.y = <span class="keyword">value</span> * HexMetrics.elevationStep;</span><br><span class="line">        transform.localPosition = position;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-2.png"></p>
-<p>　　现在我们就得到了比之前更好的视觉效果。而且我们还可以自定义颜色混合区域的面积大小，来改变整个地图的视觉效果。但是我们发现，在地图边缘处相邻地图单元的颜色过渡依然存在一些问题。不过我们先暂时忽略这个问题，把注意力放在优化和网格合并上。</p>
+<p>　　因为将<code>elevation</code>字段转换为了属性，回到<code>HexMapEditor.EditCell</code>里将赋值语句的错误修改掉，</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cell.color = activeColor;</span><br><span class="line">    cell.Elevation = activeElevation;</span><br><span class="line">    hexGrid.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-3-1.png"></p>
 <blockquote>
-<p>为什么有了颜色混合区域，混合后的效果依然不好看？<br>这是线性颜色混合的极限了。事实上纯色之间的颜色混合效果都不是很好，未来的章节中将会升级到地形材质并做一些更漂亮的混合。</p>
+<p>MeshCollider是否能吻合新的高度地图?<br>旧版本的Unity需要在设置相同的Mesh信息之前先把MeshCollider设为null，它只是假设Mesh的数据不会改改变,所以只有不同的Mesh（或者null）能触发碰撞器的刷新，现在已经没这个必要了。所以我们现在的方法：在三角构建之后重新分配MeshCollider的Mesh信息，这是可行的。</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/424789c59c98b442ddb87db3c92f362cf00452af">Github代码</a></p>
+<p>　　现在通过UI设置高度之后，点击一个地图单元，我们就可以看到被点击的地图单元升高了对应的高度。但是这里还有两个问题：<br>　　第一：跟随地图单元的坐标并没有随着地图单元的高度高边而改变，当地图单元高度变化的时候，其对应的坐标依然还是在水平高度上。<br>　　第二：地图单元之间的连接错误。颜色混合区域连接着两个相邻的地图单元，当两个地图单元的垂直高度不相同的时候，颜色混合区域应该依然连接着两个地图单元，因为高度不同只是被拉伸了而已。<br>　　在接下来的章节中，我们将会解决这些问题。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/9d32f7a5dfb884a2ff1c1ed30155d8de854e2455">Github代码</a></p>
 
     </div>
 
@@ -388,13 +389,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/13/HexMap/2-8%20%E5%88%9B%E5%BB%BA%E5%8F%8C%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/" rel="prev" title="2-8 创建双色颜色混合区域">
-                  <i class="fa fa-chevron-left"></i> 2-8 创建双色颜色混合区域
+                <a href="/2020/10/19/HexMap/3-2%20%E7%AE%80%E5%8D%95%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E9%AB%98%E5%BA%A6%E7%BC%96%E8%BE%91%E5%99%A8/" rel="prev" title="3-2 简单的地图单元高度编辑器">
+                  <i class="fa fa-chevron-left"></i> 3-2 简单的地图单元高度编辑器
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/" rel="next" title="2-10 颜色混合区域优化">
-                  2-10 颜色混合区域优化 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/" rel="next" title="Github Markdown 中的公式书写">
+                  Github Markdown 中的公式书写 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

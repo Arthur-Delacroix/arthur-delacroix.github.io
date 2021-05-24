@@ -456,77 +456,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
-<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
-<hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>0-0 关于Hex Map系列文章</title>
     <url>/2020/09/25/HexMap/0-0%20%E5%85%B3%E4%BA%8EHex%20Map%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/</url>
     <content><![CDATA[<p>　　偶然间在Unity论坛上发现了Jasper Flick大神的文章，顺藤摸瓜，发现Jasper Flick大神还有一个网站，专门写各种各样的教程和技术文章，每一篇都非常有价值。在征得大神同意后，决定挖个深坑，把六边形地图系统的文章翻译出来，同时可以精进自己的技术和英语水平。</p>
@@ -544,6 +473,40 @@
 <li><p><a href="https://www.redblobgames.com/grids/hexagons/">相关文章</a> </p>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1-1 关于Hexmap</title>
+    <url>/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/</url>
+    <content><![CDATA[<p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
+<p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
+<p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
+<p>　　而斜向位置的相邻地图单元，两者中点的距离为正方形单元边长的 $\sqrt 2$ 倍，也就是红色箭头表示的距离。</p>
+<p>　　由于相邻的地图单元之间有两种不同的距离，这种差异化的距离在实际游戏中会比较难处理。所以，有些游戏中，只会选择在地图单元的水平和垂直方向移动，从而避免距离差异化带来的问题。但是，这样在一定程度上减少了游戏的多样性与可玩性。</p>
+<p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
+<p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
+<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
+<p>　　由<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的 $\frac {\sqrt 3} 2$（<a href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
+<p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　脚本创建完成后，让我们来继续观察一下正六边形单元。在正六边形排列的形式有两种，一类是边朝上，一类是角朝上。为了方便之后的计算，我们选择角朝上的排列类型。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png"></p>
+<p>　　在<code>HexMetrics</code>类中添加如下代码，通过正六边形的中点、外接圆半径、内切圆半径定义正六边形的六个顶点</p>
+<figure class="highlight csharp"><figcaption><span>exMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line">    <span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　这样，基本的地图单元就创建完成了，下一步，要创建一个二维数组，来存放实例化到场景中的地图单元，并且记录每个地图单元在该数组中的位置。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/4ca99fba905d26cc215b4b68bbb2ded305e4eb2b">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -579,40 +542,6 @@
 
 <p>　　这样，我们就完成了一个很简单的地图编辑器，在一组单选按钮组中选择一个颜色后，点击任意的地图单元，这个地图单元就会变成相应的颜色。虽然在改变颜色的过程中，我们是通过重新构建整个六边形地图做到的，但是目前市局效果和逻辑是正确的。<br>　　在接下来的章节中，我们会先将注意力放在视觉效果部分，首先要让地图单元之间的颜色过渡更加自然，然后添加地形的高低起伏。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/1c74505102f46c26e21321d230a123a27a3d991c">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1-1 关于Hexmap</title>
-    <url>/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/</url>
-    <content><![CDATA[<p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
-<p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
-<p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
-<p>　　而斜向位置的相邻地图单元，两者中点的距离为正方形单元边长的 $\sqrt 2$ 倍，也就是红色箭头表示的距离。</p>
-<p>　　由于相邻的地图单元之间有两种不同的距离，这种差异化的距离在实际游戏中会比较难处理。所以，有些游戏中，只会选择在地图单元的水平和垂直方向移动，从而避免距离差异化带来的问题。但是，这样在一定程度上减少了游戏的多样性与可玩性。</p>
-<p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
-<p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
-<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
-<p>　　由<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的 $\frac {\sqrt 3} 2$（<a href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
-<p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　脚本创建完成后，让我们来继续观察一下正六边形单元。在正六边形排列的形式有两种，一类是边朝上，一类是角朝上。为了方便之后的计算，我们选择角朝上的排列类型。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png"></p>
-<p>　　在<code>HexMetrics</code>类中添加如下代码，通过正六边形的中点、外接圆半径、内切圆半径定义正六边形的六个顶点</p>
-<figure class="highlight csharp"><figcaption><span>exMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line">    <span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　这样，基本的地图单元就创建完成了，下一步，要创建一个二维数组，来存放实例化到场景中的地图单元，并且记录每个地图单元在该数组中的位置。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/4ca99fba905d26cc215b4b68bbb2ded305e4eb2b">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -784,6 +713,43 @@
       </tags>
   </entry>
   <entry>
+    <title>1-7 将坐标值显示在Inspector上</title>
+    <url>/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/</url>
+    <content><![CDATA[<p>　　在上一章中，我们重新排列了每个地图单元的坐标值，并且添加了Y维度的坐标轴。随着项目不断复杂。在Unity runtime下，选中一个地图单元后，在Inspector门面板只能看到<code>coordinates</code>这个变量的名称，而不是显示这个地图单元的坐标值。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-1.png"></p>
+<p>　　虽然我们选中一个地图单元后，可以通过观察Scene窗口中它的坐标值，来确定这个地图单元的位置。但是在Inspector中增加坐标值显示，会更加方便美观。接下来我们实现这个功能。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//用来显示在Inspector上cell坐标</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> x, z;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的X坐标值</span></span><br><span class="line"><span class="comment">//public int X &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> X</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的Z坐标值</span></span><br><span class="line"><span class="comment">//public int Z &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Z</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 重载默认的构造函数</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>为转换后的X坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>为转换后的Z坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HexCoordinates</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//X = x;</span></span><br><span class="line">    <span class="comment">//Z = z;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.z = z;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　如下图所示，我们利用<code>[SerializeField]</code>将X和Y的坐标值显示在了Inspector面板上。但是这两个坐标值是可编辑状态，这并不是我们希望达到的效果。因为坐标值应该是固定不变的，而且这样竖向排列也不美观。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-2.png"></p>
+<p>　　为了解决这个问题，我们为HexCoordinates创建一个自定义特性来改变它的显示方式。</p>
+<p>　　在项目中创建Editor文件夹，并且在该文件夹内创建<code>HexCoordinatesDrawer.cs</code>脚本。这是一个只用于编辑器的脚本，扩展自<code>UnityEditor.PropertyDrawer</code>，并且需要<code>UnityEditor.CustomPropertyDrawer</code>特性来让其正确关联起来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CustomPropertyDrawer(typeof(HexCoordinates))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCoordinatesDrawer</span> : <span class="title">PropertyDrawer</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　<code>HexCoordinatesDrawer</code>继承了<code>PropertyDrawer</code>，<code>PropertyDrawers</code>通过<code>OnGUI()</code>方法显示其内容，该方法提供了要在其中绘制的屏幕矩形、序列化的属性数据以及它所属的字段的标签。这里添加OnGUI()方法，在此方法中重新绘制X和Z的坐标。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Rect position, SerializedProperty property, GUIContent label</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，只需要提取出X和Z的坐标，使用HexCoordinates中重载的ToString()方法在指定的位置重新绘制GUI即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//将X和Z的坐标从HexCoordinates中提取出来</span></span><br><span class="line">HexCoordinates coordinates = <span class="keyword">new</span> HexCoordinates(</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;x&quot;</span>).intValue,</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;z&quot;</span>).intValue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-3.png"></p>
+<p>　　现在，坐标可以正确的显示出来了。但是这里只显示了数字，丢失了类型名。这里使用EditorGUI.PrefoxLabel()方法来或能重新绘制类型名。这个方法还有一个往外的好处，它可以返回一个经过吊证的矩形，该矩形与右侧的做标数值显示区域大小刚好匹配。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//绘制坐标的类型名称</span></span><br><span class="line">position = EditorGUI.PrefixLabel(position, label);</span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
+
+<p>　　最终效果如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-4.png"></p>
+<p>　　现在，我们在Unity中进行调试的时候，选中了某一个地图单元，Inspector面板中变回显示这个单元格的X Y Z坐标了。下一步，我们将添加一些简单的交互，当出表点击地图单元的时候，嚷被点击的地图单元改变颜色。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1-6 修改正六边形地图单元的坐标</title>
     <url>/2020/10/01/HexMap/1-6%20%E4%BF%AE%E6%94%B9%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E5%9D%90%E6%A0%87/</url>
     <content><![CDATA[<p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
@@ -826,43 +792,6 @@
 <p>　　完成以上代码后，回到Unity，点击Play按钮查看效果如下图。这样我们在不改变mesh排列的情况下，重新排列了每个地图单元的坐标。并且添加了Y维度的坐标轴，完善了整个地图的坐标系统。</p>
 <p>　　下一章，我们会使用脚本将计算好的坐标显示在Inspector上，这样将更加便于我们调试和观察坐标的变化。</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-6-5.png"></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1-7 将坐标值显示在Inspector上</title>
-    <url>/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/</url>
-    <content><![CDATA[<p>　　在上一章中，我们重新排列了每个地图单元的坐标值，并且添加了Y维度的坐标轴。随着项目不断复杂。在Unity runtime下，选中一个地图单元后，在Inspector门面板只能看到<code>coordinates</code>这个变量的名称，而不是显示这个地图单元的坐标值。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-1.png"></p>
-<p>　　虽然我们选中一个地图单元后，可以通过观察Scene窗口中它的坐标值，来确定这个地图单元的位置。但是在Inspector中增加坐标值显示，会更加方便美观。接下来我们实现这个功能。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//用来显示在Inspector上cell坐标</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> x, z;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的X坐标值</span></span><br><span class="line"><span class="comment">//public int X &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> X</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//存储重新计算后的Z坐标值</span></span><br><span class="line"><span class="comment">//public int Z &#123; get; private set; &#125;</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Z</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> z;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 重载默认的构造函数</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>为转换后的X坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>为转换后的Z坐标赋初始值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HexCoordinates</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//X = x;</span></span><br><span class="line">    <span class="comment">//Z = z;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.z = z;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　如下图所示，我们利用<code>[SerializeField]</code>将X和Y的坐标值显示在了Inspector面板上。但是这两个坐标值是可编辑状态，这并不是我们希望达到的效果。因为坐标值应该是固定不变的，而且这样竖向排列也不美观。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-2.png"></p>
-<p>　　为了解决这个问题，我们为HexCoordinates创建一个自定义特性来改变它的显示方式。</p>
-<p>　　在项目中创建Editor文件夹，并且在该文件夹内创建<code>HexCoordinatesDrawer.cs</code>脚本。这是一个只用于编辑器的脚本，扩展自<code>UnityEditor.PropertyDrawer</code>，并且需要<code>UnityEditor.CustomPropertyDrawer</code>特性来让其正确关联起来。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CustomPropertyDrawer(typeof(HexCoordinates))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCoordinatesDrawer</span> : <span class="title">PropertyDrawer</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　<code>HexCoordinatesDrawer</code>继承了<code>PropertyDrawer</code>，<code>PropertyDrawers</code>通过<code>OnGUI()</code>方法显示其内容，该方法提供了要在其中绘制的屏幕矩形、序列化的属性数据以及它所属的字段的标签。这里添加OnGUI()方法，在此方法中重新绘制X和Z的坐标。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Rect position, SerializedProperty property, GUIContent label</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，只需要提取出X和Z的坐标，使用HexCoordinates中重载的ToString()方法在指定的位置重新绘制GUI即可。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//将X和Z的坐标从HexCoordinates中提取出来</span></span><br><span class="line">HexCoordinates coordinates = <span class="keyword">new</span> HexCoordinates(</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;x&quot;</span>).intValue,</span><br><span class="line">    property.FindPropertyRelative(<span class="string">&quot;z&quot;</span>).intValue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-3.png"></p>
-<p>　　现在，坐标可以正确的显示出来了。但是这里只显示了数字，丢失了类型名。这里使用EditorGUI.PrefoxLabel()方法来或能重新绘制类型名。这个方法还有一个往外的好处，它可以返回一个经过吊证的矩形，该矩形与右侧的做标数值显示区域大小刚好匹配。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinatesDrawer.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//绘制坐标的类型名称</span></span><br><span class="line">position = EditorGUI.PrefixLabel(position, label);</span><br><span class="line"><span class="comment">//利用HexCoordinates中重载的ToString方法，显示坐标</span></span><br><span class="line">GUI.Label(position, coordinates.ToString());</span><br></pre></td></tr></table></figure>
-
-<p>　　最终效果如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-7-4.png"></p>
-<p>　　现在，我们在Unity中进行调试的时候，选中了某一个地图单元，Inspector面板中变回显示这个单元格的X Y Z坐标了。下一步，我们将添加一些简单的交互，当出表点击地图单元的时候，嚷被点击的地图单元改变颜色。</p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1015,26 +944,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2-10 颜色混合区域优化</title>
-    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
-<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
-<blockquote>
-<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-11 优化双色混合区域</title>
     <url>/2020/10/16/HexMap/2-11%20%E4%BC%98%E5%8C%96%E5%8F%8C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在上一章中，我们分析了应该如何进对颜色混合区域进行面数的优化，现在我们来实现这一功能。<br>　　首先我们来优化矩形颜色混合区域，也就是两个相邻地图单元的双色混合区域。目前的混合区域是使用两个矩形进行颜色混合，也就是4个三角面片。在这里我们把一侧的的颜色混合区域宽度增加一倍。也就是在<code>HexMetrics.GetBridge</code>方法中，不再需要乘以0.5。</p>
@@ -1057,6 +966,26 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-11-4.png"></p>
 <p>　　最后，我们完成了双色混合区域连接的优化，现在相邻地图单元之间只有两个三角面片组成了双色混合区域，相比之前所用的三角面片减少了一半。在下一章中，我们来优化三色混合区域。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/f6c7cbaba2870fa1d23907486e02e468e003f5cd">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-10 颜色混合区域优化</title>
+    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
+<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
+<blockquote>
+<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1398,6 +1327,32 @@
       </tags>
   </entry>
   <entry>
+    <title>3-4 修复地图单元坐标</title>
+    <url>/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/</url>
+    <content><![CDATA[<p>　　在上一章中我们实现了通过UI设置地图单元的高度，点击任意一个地图单元后，该地图单元的高度会根据UI的值发生改变。但是跟随地图单元的坐标文字却没有随着改变，在这一章中我们来解决这个问题。<br>　　要让地图单元的坐标发生改变，就要让每个地图单元获取到自身UI的<code>RectTransform</code>实例，以便接下来改变其高度。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//自身坐标UI的RectTransform组件实例</span></span><br><span class="line">    <span class="keyword">public</span> RectTransform uiRect;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到<code>HexGrid.cs</code>中，在<code>CreateCell</code>方法的最后，让每个地图单元获取其UI的RectTransform组件实例</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell对应UI的rectTransform组件实例</span></span><br><span class="line">    cell.uiRect = label.rectTransform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们就可以在<code>HexCell.Elevation.set</code>方法中进行对应UI高度的设置了。这里要注意，我们之前在设置地图单元做标canvas的时候，在x方向旋转了90度。所以这里应该是在z轴负方向进行高度设置，而不是y轴。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置cell对应UI的高度</span></span><br><span class="line">        Vector3 uiPosition = uiRect.localPosition;</span><br><span class="line">        uiPosition.z = elevation * (-HexMetrics.elevationStep);</span><br><span class="line">        uiRect.localPosition = uiPosition;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们在UI上设置好高度后，点击任意地图单元，其对应的地图坐标会随着被点击的地图单元高度变化而变化。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-4-1.png"></p>
+<p>　　现在地图单元的UI显示已经修复了。在下一章中，我们来修复两个相邻且高度不同的地图单元之间连接区域断开的问题。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ceaedbd85012c17d79abfeb1e802ff59293a5ef2">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Unity3D WebGL 相关踩坑记录 1</title>
     <url>/2020/09/15/Hexo/Part1/</url>
     <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
@@ -1470,6 +1425,77 @@
       <tags>
         <tag>Hexo</tag>
         <tag>Unity WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
+<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+</blockquote>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
+<ul>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+</ul>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<hr>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
       </tags>
   </entry>
 </search>

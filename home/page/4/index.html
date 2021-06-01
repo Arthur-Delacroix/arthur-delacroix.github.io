@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">39</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">40</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,111 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/29/HexMap/1-4%20%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E6%8E%92%E5%88%97%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/29/HexMap/1-4%20%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E6%8E%92%E5%88%97%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">1-4 正六边形地图单元的排列方式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-29 14:55:04" itemprop="dateCreated datePublished" datetime="2020-09-29T14:55:04+08:00">2020-09-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　上一章中，我们将每个地图单元的坐标显示了出来，这样能更加方便的在Game窗口中查看每个地图单元的坐标信息，方便之后的调试和修改。但是，现在所有的地图单元，是按照正方形地图系统的模式排列的，而整六边形地图系统中，地图单元的排列如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-4-1.png"></p>
+<p>　　通过观察上图发现，水平方向上，两个正六边形地图单元的距离为2倍的内切圆半径。垂直方向上，两个正六边形地图单元的距离为1.5倍的外接圆半径。根据观察结果修改代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  …</span><br><span class="line">  <span class="comment">//两个正六边形Cell中点的水平间距</span></span><br><span class="line">    position.x = x * (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br><span class="line">    position.y = <span class="number">0f</span>;</span><br><span class="line">  <span class="comment">//两个正六边形Cell中点的垂直间距</span></span><br><span class="line">    position.z = z * (HexMetrics.outerRadius * <span class="number">1.5f</span>);</span><br><span class="line">    </span><br><span class="line">  …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　将正方形地图单元的间距修改为正六边形地图单元的间距后，运行效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-4-2.png"></p>
+<p>　　通过观察正六边形元素的排列，我们还发现，上下两行的地图元素，并不像正方形元素那样上下紧邻并对齐的，而是会错开一段距离，而且这段距离会随着行数的增加而增加。第0行偏移量为0，第1行偏移量为1倍的内切圆半径，第2行偏移量为2倍的内切圆半径。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//增加了Offset，每一行偏移量为行数*内切圆半径</span></span><br><span class="line"><span class="comment">//position.x = x * (HexMetrics.innerRadius * 2f) + z * (HexMetrics.innerRadius * 2f) * 0.5f;</span></span><br><span class="line"><span class="comment">//由上一个等式提取公因式得出：</span></span><br><span class="line">position.x = (x + z * <span class="number">0.5f</span>) * (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>　　运行结果如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-4-3.png"></p>
+<p>　　通过观察运行结果可以发现，地图形状为一个菱形，而不是矩形。为了之后调试和使用，这里要将排列方式变为矩形。可以通过去掉偶数行的偏移量来达到目的。也就是每个偶数行的地图单元，都不产生偏移，而每个奇数行的地图单元向右偏移内切圆半径的距离。修改代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上一步中，生成的Cell会排列成菱形</span></span><br><span class="line"><span class="comment">//要排列成正方形，需要在偶数行去掉偏移量</span></span><br><span class="line"><span class="comment">//这里注意，Z/2只是取商，舍掉余数</span></span><br><span class="line"><span class="comment">//所以在偶数行正好抵消了偏移量，而在奇数行，z * 0.5f - z / 2 * (HexMetrics.innerRadius * 2f)正好是一个内切圆半径长度</span></span><br><span class="line">position.x = (x + z * <span class="number">0.5f</span> - z / <span class="number">2</span>) * (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>　　修改后运行结果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-4-4.png"></p>
+<p>　　现在，我们就完成了正六边形单元的排列。接下来的一章中，要修改地图单元的外形，将正方形外观修改成正六边形外观，使其在视觉效果上变为正六边形地图单元的外观。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1278,13 +1383,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">85k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:15</span>
+    <span title="站点阅读时长">1:17</span>
   </span>
 </div>
 <div class="busuanzi-count">

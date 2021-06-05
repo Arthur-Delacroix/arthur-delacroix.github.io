@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">41</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">42</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,111 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/27/HexMap/3-10%20%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%B1%BB%E5%9E%8B%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/27/HexMap/3-10%20%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%B1%BB%E5%9E%8B%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">3-10 三角形连接区域类型分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-27 03:22:17" itemprop="dateCreated datePublished" datetime="2020-10-27T03:22:17+08:00">2020-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们通过判断两个地图单元的高低差，实现了只对Slope类型的连接区域进行阶梯化。接下来，就是要将三角形连接区域进行阶梯化。<br>　　相比于矩形连接区域，三角形连接区域的阶梯化会更加复杂，因为它连接了3个地图单元。这三个地图单元可能是任意高度，每两个地图单元之间的高差类型也是任意的。所以需要在<code>HexMesh.cs</code>中另外添加一个三角形连接区域的专用方法。<br>　　首先，我们先将三角形连接区域相邻的三个地图单元进行分类，分别为Left、Right和Bittom。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-10-1.png"></p>
+<p>　　接下来，在新增加的方法中，我们先获取这三个地图单元的位置坐标和其颜色，方便之后进行阶梯化计算。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 构建三角形连接区域的方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 判断相邻3个cell高低的工作，在TriangulateConnection方法中实现了，这里只负责创建连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 注意，TriangulateConnection方法只是对入参的顺序做了调整，但是并没有告知3个cell之间相对的连接类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 所以要在这个方法中对连接类型进行判断，这样才能决三角形连接区域定用什么方式进行三角剖分</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;bottom&quot;&gt;</span>bottom cell的坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;bottomCell&quot;&gt;</span>bottom cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;left&quot;&gt;</span>left cell的坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;leftCell&quot;&gt;</span>left cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;right&quot;&gt;</span>right cell的坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rightCell&quot;&gt;</span>right cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里先使用旧的方法来构建三角形连接区域，也就是没有阶梯化的那种</span></span><br><span class="line">    <span class="comment">//经过连接类型判断后，这个方法就会被代替掉</span></span><br><span class="line">    AddTriangle(bottom, left, right);</span><br><span class="line">    AddTriangleColor(bottomCell.color, leftCell.color, rightCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们回到<code>TriangulateConnection</code>方法中，在这个方法中，我们要判断与三角形连接区域相邻的三个地图单元，哪一个是最低的。<br>　　这里要注意一点，结合上图，我们现在只是判断哪个地图单元的高度最低，而不是对这三个地图单元的高度进行排序。因为一个三角形连接区域的三个地图单元，其坐标是固定的，当确定了哪个地图单元是最低的一个时，剩下两个的顺序其实就是固定的了。所以不存在排序问题。整理后的逻辑图如下：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-10-2.png"></p>
+<p>　　根据整理后的逻辑图可以发现，判断最低的地图单元，实际上就是将图1中的3个地图单元进行顺时针或逆时针的旋转。<br>　　首先我们先检查第一个地图单元的高度，如果它小于其他两个地图单元，那么它就是最低的一个。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-10-1.png</span></span><br><span class="line">        <span class="comment">//这里要注意，只是要找出3个cell中高度最低的一个</span></span><br><span class="line">        <span class="comment">//因为三角形连接区域的3个cell，其坐标是固定的，找出最低的一个时，其他两个cell的入参顺序就是固定的了</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//注意，教程4.1是有错误的但是最后给的代码是对的，这里注释掉的语句是教程错误的语句</span></span><br><span class="line">        <span class="keyword">if</span> (cell.Elevation &lt;= neighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//并且cell1高度小于cell3</span></span><br><span class="line">            <span class="keyword">if</span> (cell.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//cell1最低</span></span><br><span class="line">                <span class="comment">//TriangulateCorner(v2, cell, v4, nextNeighbor, v5, nextNeighbor);</span></span><br><span class="line">                TriangulateCorner(v2, cell, v4, neighbor, v5, nextNeighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　如果<code>cell</code>的高度大于<code>nextNeighbor</code>的高度，说明<code>nextNeighbor</code>的高度最低。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (cell.Elevation &lt;= neighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//并且cell1高度小于cell3</span></span><br><span class="line">            <span class="keyword">if</span> (cell.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//cell1最低</span></span><br><span class="line">                <span class="comment">//TriangulateCorner(v2, cell, v4, nextNeighbor, v5, nextNeighbor);</span></span><br><span class="line">                TriangulateCorner(v2, cell, v4, neighbor, v5, nextNeighbor);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;   </span><br><span class="line">                <span class="comment">//cell3 最低</span></span><br><span class="line">                <span class="comment">//TriangulateCorner(v5, nextNeighbor, v2, cell, v4, nextNeighbor);</span></span><br><span class="line">                TriangulateCorner(v5, nextNeighbor, v2, cell, v4, neighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，如果<code>cell</code>高度大于<code>neighbor</code>，那么只需要检测<code>neighbor</code>和<code>nextNeighbor</code>之间的高度就可以了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (cell.Elevation &lt;= neighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//并且cell1高度小于cell3</span></span><br><span class="line">            <span class="keyword">if</span> (cell.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//cell1最低</span></span><br><span class="line">                <span class="comment">//TriangulateCorner(v2, cell, v4, nextNeighbor, v5, nextNeighbor);</span></span><br><span class="line">                TriangulateCorner(v2, cell, v4, neighbor, v5, nextNeighbor);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;   </span><br><span class="line">                <span class="comment">//cell3 最低</span></span><br><span class="line">                <span class="comment">//TriangulateCorner(v5, nextNeighbor, v2, cell, v4, nextNeighbor);</span></span><br><span class="line">                TriangulateCorner(v5, nextNeighbor, v2, cell, v4, neighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果cell1&gt;cell2，且cell2&lt;cell3</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (neighbor.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//cell2最低</span></span><br><span class="line">            <span class="comment">//TriangulateCorner(v4, nextNeighbor, v5, nextNeighbor, v2, cell);</span></span><br><span class="line">                TriangulateCorner(v4, neighbor, v5, nextNeighbor, v2, cell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//cell3最低</span></span><br><span class="line">            <span class="comment">//TriangulateCorner(v5, nextNeighbor, v2, cell, v4, nextNeighbor);</span></span><br><span class="line">            TriangulateCorner(v5, nextNeighbor, v2, cell, v4, neighbor);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们就找到了三角形连接区域中，高度最低的那个地图单元了。在接下来的章节中，我们会在这个基础上，使用循环来对三角形连接区域进行阶梯化，根据不同的高差类型，来构建不同的三角形连接区域外观。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/3123f3f1b2b8e4abc3a6c64357b208b570ec7874">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/26/HexMap/3-9%20%E9%98%B6%E6%A2%AF%E5%8C%96slope%E7%B1%BB%E5%9E%8B%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1530,106 +1635,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/" class="post-title-link" itemprop="url">3-4 修复地图单元坐标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-21 15:04:22" itemprop="dateCreated datePublished" datetime="2020-10-21T15:04:22+08:00">2020-10-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>893</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中我们实现了通过UI设置地图单元的高度，点击任意一个地图单元后，该地图单元的高度会根据UI的值发生改变。但是跟随地图单元的坐标文字却没有随着改变，在这一章中我们来解决这个问题。<br>　　要让地图单元的坐标发生改变，就要让每个地图单元获取到自身UI的<code>RectTransform</code>实例，以便接下来改变其高度。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//自身坐标UI的RectTransform组件实例</span></span><br><span class="line">    <span class="keyword">public</span> RectTransform uiRect;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到<code>HexGrid.cs</code>中，在<code>CreateCell</code>方法的最后，让每个地图单元获取其UI的RectTransform组件实例</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell对应UI的rectTransform组件实例</span></span><br><span class="line">    cell.uiRect = label.rectTransform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们就可以在<code>HexCell.Elevation.set</code>方法中进行对应UI高度的设置了。这里要注意，我们之前在设置地图单元做标canvas的时候，在x方向旋转了90度。所以这里应该是在z轴负方向进行高度设置，而不是y轴。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置cell对应UI的高度</span></span><br><span class="line">        Vector3 uiPosition = uiRect.localPosition;</span><br><span class="line">        uiPosition.z = elevation * (-HexMetrics.elevationStep);</span><br><span class="line">        uiRect.localPosition = uiPosition;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们在UI上设置好高度后，点击任意地图单元，其对应的地图坐标会随着被点击的地图单元高度变化而变化。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-4-1.png"></p>
-<p>　　现在地图单元的UI显示已经修复了。在下一章中，我们来修复两个相邻且高度不同的地图单元之间连接区域断开的问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ceaedbd85012c17d79abfeb1e802ff59293a5ef2">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1685,13 +1690,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">86k</span>
+    <span title="站点总字数">90k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:18</span>
+    <span title="站点阅读时长">1:22</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,113 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/15/HexMap/4-11%20%E5%B0%81%E8%A3%85%E9%A1%B6%E7%82%B9%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/15/HexMap/4-11%20%E5%B0%81%E8%A3%85%E9%A1%B6%E7%82%B9%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">4-11 封装顶点计算方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-15 06:54:44" itemprop="dateCreated datePublished" datetime="2020-11-15T06:54:44+08:00">2020-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了地图单元与矩形连接区域的的连接。在我们新增代码的时候发现，计算六边形一条边上新增顶点的这部分代码，是可以单独抽象出来，组成一个新的方法，方便在之后计算顶点时调用。<br>　　我们创建一个新的脚本<code>EdgeVertices.cs</code>，其中是一个结构体，包含了4个顺时针排列在六边形一条边上的顶点。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//4个顺时针排列在六边形一条边上的顶点</span></span><br><span class="line">    <span class="keyword">public</span> Vector3 v1, v2, v3, v4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着再为这个结构体添加一个构造函数，用来计算每个顶点的位置信息。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//通过六边形一条边上，边缘的两个顶点，计算出中间的两个点的位置</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EdgeVertices</span>(<span class="params">Vector3 corner1, Vector3 corner2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        v1 = corner1;</span><br><span class="line">        v2 = Vector3.Lerp(corner1, corner2, <span class="number">1f</span> / <span class="number">3f</span>);</span><br><span class="line">        v3 = Vector3.Lerp(corner1, corner2, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">        v4 = corner2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到<code>HexMesh.cs</code>脚本中，我们创建一个方法，通过4个顶点位置，对六边形内每个三角面片进行细分。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 对cell的六边形其中一个三角面片进行细分，细分为3个三角面片</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;center&quot;&gt;</span>cell中心点位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;edge&quot;&gt;</span>一条边上细分后的4个顶点信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>cell的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeFan</span>(<span class="params">Vector3 center, EdgeVertices edge, Color color</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddTriangle(center, edge.v1, edge.v2);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        AddTriangle(center, edge.v2, edge.v3);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        AddTriangle(center, edge.v3, edge.v4);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　再创建一个方法，用来创建两个地图单元之间，经过细分后的连接区域。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 创建2个cell之间细分后的的连接区域</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;e1&quot;&gt;</span>第一个cell一条边上的4个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>第一个cell的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;e2&quot;&gt;</span>第二个cell一条边上的4个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>第二个cell的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeStrip</span>(<span class="params">EdgeVertices e1, Color c1, EdgeVertices e2, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成以上步骤后，我们就可以简化<code>Triangulate</code>方法了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 center = cell.Position;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//通过六边形一条边上的两个端点信息，计算出细分的中间两个点的信息</span></span><br><span class="line">    EdgeVertices e = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        center + HexMetrics.GetFirstSolidCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondSolidCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在计算出各个点的位置信息后，直接构建三角面片</span></span><br><span class="line">    TriangulateEdgeFan(center, e, cell.color);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//TriangulateConnection方法增加新的参数，自身不在进行顶点的计算了</span></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.SE)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateConnection(direction, cell, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，我们要修改<code>TriangulateConnection</code>方法，使用<code>TriangulateEdgeStrip</code>来创建细分后的连接区域。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里不再使用单个顶点，而直接使用EdgeVertices进行顶点计算</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, EdgeVertices e1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction);</span><br><span class="line">    <span class="keyword">if</span> (neighbor == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Vector3 bridge = HexMetrics.GetBridge(direction);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//先计算出两个相邻cell的高度差</span></span><br><span class="line">    bridge.y = neighbor.Position.y - cell.Position.y;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//利用高度差和第一个cell的坐标，获得连接区域另外一边的4个顶点位置</span></span><br><span class="line">    EdgeVertices e2 = <span class="keyword">new</span> EdgeVertices(e1.v1 + bridge, e1.v4 + bridge);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">        TriangulateEdgeTerraces(e1.v1, e1.v4, cell, e2.v1, e2.v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">        TriangulateEdgeStrip(e1, cell.color, e2, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    HexCell nextNeighbor = cell.GetNeighbor(direction.Next());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v5 = e1.v4 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line">        v5.y = nextNeighbor.Position.y;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (cell.Elevation &lt;= neighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (cell.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">                TriangulateCorner(e1.v4, cell, e2.v4, neighbor, v5, nextNeighbor);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">                TriangulateCorner(v5, nextNeighbor, e1.v4, cell, e2.v4, neighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (neighbor.Elevation &lt;= nextNeighbor.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">            TriangulateCorner(e2.v4, neighbor, v5, nextNeighbor, e1.v4, cell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//这里使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">            TriangulateCorner(v5, nextNeighbor, e1.v4, cell, e2.v4, neighbor);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此，我们就完成了新方法的封装，这样在细分六边形三角面片、构建双色连接区域的时候，就不用在方法内部计算每个顶点的位置了。接下来的一章中，我们在这个基础上，完成阶梯状连接区域的细分。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/5d8981eed326d0ae687c424f89cc15c4607de765">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/14/HexMap/4-10%20%E8%BF%9E%E6%8E%A5%E5%85%AD%E8%BE%B9%E5%BD%A2%E8%BE%B9%E7%BC%98%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E8%BE%B9%E7%BC%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1510,107 +1617,10 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/09/HexMap/4-5%20%E5%99%AA%E5%A3%B0%E9%87%87%E6%A0%B7%E7%BC%A9%E6%94%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/09/HexMap/4-5%20%E5%99%AA%E5%A3%B0%E9%87%87%E6%A0%B7%E7%BC%A9%E6%94%BE/" class="post-title-link" itemprop="url">4-5 噪声采样缩放</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-09 14:44:46" itemprop="dateCreated datePublished" datetime="2020-11-09T14:44:46+08:00">2020-11-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们增强了扰动强度，使每个顶点的位移更大，最终地图整体的变化效果就更加明显了。但是当我们改变一个地图单元高度的时候，我们发现矩形阶梯连接区域的视觉效果变得非常奇怪。阶梯中的各个顶点向不懂的方向偏移，造成了三角面片的扭曲，视觉效果看起来很混乱。但是使用柏林噪声不应该会发生这种情况。<br>　　造成这个现象的原因是因为我们直接用世界坐标进行噪声采样，使得彩色噪点图平铺在每个地图单元上，但是每个地图单元的尺寸比彩色噪点图本身要大得多，实际上彩色噪点图是在任意位置被采样，这破坏了其连贯性。如下图所示，其中每个蓝色的方块表示一张彩色噪点图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-1.png"></p>
-<p>　　为了解决这个问题，我们要对噪声采样进行缩放，这样彩色噪点图就能覆盖更大的区域。我们在<code>HexMetrics.cs</code>中添加这个缩放并设置其为0.003，然后把采样坐标与这个数值相乘。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//采样缩放</span></span><br><span class="line">    <span class="comment">//这个参数的实际作用，就是将时间空间内坐标缩小一定倍率</span></span><br><span class="line">    <span class="comment">//实际上是变相扩大了一张噪点图的覆盖范围，使得进行采样时更加连续</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> noiseScale = <span class="number">0.003f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector4 <span class="title">SampleNoise</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//实际世界空间坐标乘以缩放系数，使得采样控制在一个比较小的范围内，这样就会比较连续</span></span><br><span class="line">        <span class="keyword">return</span> noiseSource.GetPixelBilinear(</span><br><span class="line">            position.x * noiseScale,</span><br><span class="line">            position.z * noiseScale</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，采样数据的范围就是原来的 $333 \frac 33$ 倍，最终运行后的诗句效果也变得更加平滑了。即使再次改变地图单元的高度，也不会出现那种很奇怪的阶梯状三角面片了。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-2.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-3.png"></p>
-<p>　　加入了采样缩放之后，噪声在平铺之前有个过渡过程。实际上因为单元格的内径是 $10 \sqrt 3 $，所以没有办法精确的以X轴的尺寸平铺。但是因为噪声纹理自身的连贯性，即使细节不吻合，任然能在大范围内发现重复的样式，大约是每20个地图单元之间。这只在地图没有其他编辑形状的功能时才比较明显。<br>　　至此，我们修复了采样中的连续性问题，但是在还存在一个问题，就是每个地图单元的正六边形部分，并不是平整的，这一点从对UI的坐标点遮挡就可以看出来。我们想达到的效果是，六边形边缘部分的顶点会产生扰动，但是六边形自身还保持平整。这个问题将会在下一章解决。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/9e8a07a724cd61929b5d49e621abbf79ce13c856">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/home/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/6/">6</a><a class="extend next" rel="next" href="/home/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/home/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/7/">7</a><a class="extend next" rel="next" href="/home/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1662,13 +1672,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">122k</span>
+    <span title="站点总字数">126k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:51</span>
+    <span title="站点阅读时长">1:55</span>
   </span>
 </div>
 <div class="busuanzi-count">

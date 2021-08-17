@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,106 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/" class="post-title-link" itemprop="url">3-4 修复地图单元坐标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-21 15:04:22" itemprop="dateCreated datePublished" datetime="2020-10-21T15:04:22+08:00">2020-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>893</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中我们实现了通过UI设置地图单元的高度，点击任意一个地图单元后，该地图单元的高度会根据UI的值发生改变。但是跟随地图单元的坐标文字却没有随着改变，在这一章中我们来解决这个问题。<br>　　要让地图单元的坐标发生改变，就要让每个地图单元获取到自身UI的<code>RectTransform</code>实例，以便接下来改变其高度。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//自身坐标UI的RectTransform组件实例</span></span><br><span class="line">    <span class="keyword">public</span> RectTransform uiRect;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到<code>HexGrid.cs</code>中，在<code>CreateCell</code>方法的最后，让每个地图单元获取其UI的RectTransform组件实例</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell对应UI的rectTransform组件实例</span></span><br><span class="line">    cell.uiRect = label.rectTransform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们就可以在<code>HexCell.Elevation.set</code>方法中进行对应UI高度的设置了。这里要注意，我们之前在设置地图单元做标canvas的时候，在x方向旋转了90度。所以这里应该是在z轴负方向进行高度设置，而不是y轴。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置cell对应UI的高度</span></span><br><span class="line">        Vector3 uiPosition = uiRect.localPosition;</span><br><span class="line">        uiPosition.z = elevation * (-HexMetrics.elevationStep);</span><br><span class="line">        uiRect.localPosition = uiPosition;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们在UI上设置好高度后，点击任意地图单元，其对应的地图坐标会随着被点击的地图单元高度变化而变化。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-4-1.png"></p>
+<p>　　现在地图单元的UI显示已经修复了。在下一章中，我们来修复两个相邻且高度不同的地图单元之间连接区域断开的问题。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ceaedbd85012c17d79abfeb1e802ff59293a5ef2">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1176,107 +1276,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/11/HexMap/2-6%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/11/HexMap/2-6%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">2-6 颜色混合区域</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-11 15:22:19" itemprop="dateCreated datePublished" datetime="2020-10-11T15:22:19+08:00">2020-10-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中我们重构了一部分颜色混合的代码，提升了视觉效果。但是经过观察发现，边缘处的地图单元，颜色混合还是存在一些问题的。而且我们还会发现，在多个颜色互相混合的时候。地图单元自身的颜色会因为混合而变得模糊不清。让我们很难清晰的识别出每一个地图单元。<br>　　为了解决这个问题，我们需要改变一下思路。不再依靠地图单元自身的三角面片来处理颜色渐变的问题，而是在相邻的地图单元之间创建一个颜色混合区域来专门处理这个问题。这样不仅颜色混合区域可以单独处理，代码会更加清晰，而且地图单元也可以保持自身的颜色不会受到颜色混合的影响。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-6-1.png"></p>
-<p>　　这里还要注意一点，颜色混合区域和地图单元自身颜色区域的占比不同，会产生不同的视觉效果。在这里，我们先把颜色混合区域设置为地图单元外径的25%。外径便分为了两部分，25%的颜色混合区域和75%的自身颜色区域。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line">    </span><br><span class="line"><span class="comment">//cell自身颜色区域，为75%外接圆半径</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> solidFactor = <span class="number">0.75f</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//cell的颜色混合区域，为25%外接圆半径</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> blendFactor = <span class="number">1f</span> - solidFactor;</span><br></pre></td></tr></table></figure>
-
-<p>　　比例设置完成后，我们还需要添加两个静态方法，用来获取地图单元自身颜色区域的顶点信息。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line">    </span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell自身颜色区域的direction位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetFirstSolidCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction] * solidFactor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell自身颜色区域的direction+1位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetSecondSolidCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>] * solidFactor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在我们在回到<code>HexMesh.Triangulate</code>方法中，修改构建三角面片的代码，让它变成只构建地图单元自身颜色区域的三角面片。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        <span class="comment">//center + HexMetrics.GetFirstCorner(direction),</span></span><br><span class="line">        <span class="comment">//center + HexMetrics.GetSecondCorner(direction)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//因为将颜色混合区域、cell自身颜色区域分开了，这里首先构建cell自身颜色区域的三角面片</span></span><br><span class="line">        center + HexMetrics.GetFirstSolidCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondSolidCorner(direction)</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-6-2.png"></p>
-<p>　　这样我们就完成了将颜色混合区域、地图单元自身颜色区域分开的第第一步了。接下来的一章中，我们要对颜色混合区域进行三角剖分，并创建颜色混合区域。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/6432c20dcc1aac4999c697eac3e70613764d4bf7">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1332,13 +1331,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">126k</span>
+    <span title="站点总字数">128k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:57</span>
   </span>
 </div>
 <div class="busuanzi-count">

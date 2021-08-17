@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,105 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2019/05/07/Unity3D/Unity_HDRP_Volume/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/07/Unity3D/Unity_HDRP_Volume/" class="post-title-link" itemprop="url">Unity HDRP Volume</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-07 08:35:07" itemprop="dateCreated datePublished" datetime="2019-05-07T08:35:07+08:00">2019-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity-3D/" itemprop="url" rel="index"><span itemprop="name">Unity 3D</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>519</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -406,13 +505,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">126k</span>
+    <span title="站点总字数">128k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:55</span>
+    <span title="站点阅读时长">1:57</span>
   </span>
 </div>
 <div class="busuanzi-count">

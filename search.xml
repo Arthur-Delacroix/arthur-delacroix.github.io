@@ -8,210 +8,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Github Markdown 中的公式书写</title>
-    <url>/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/</url>
-    <content><![CDATA[<h2 id="行内公式与行间公式"><a href="#行内公式与行间公式" class="headerlink" title="行内公式与行间公式"></a>行内公式与行间公式</h2><p>一般公式分为两种形式，行内公式和行间公式。</p>
-<ul>
-<li>行内公式：$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$</li>
-</ul>
-<p>代码：<br><code>$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$</code></p>
-<p>-行间公式：$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$$</p>
-<p>代码：<br><code>$$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$$</code></p>
-<hr>
-<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>大写</th>
-<th>code</th>
-<th>小写</th>
-<th>code</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>alpha</td>
-<td>$\Alpha$</td>
-<td><code>$\Alpha$</code></td>
-<td>$\alpha$</td>
-<td><code>$\alpha$</code></td>
-</tr>
-<tr>
-<td>beta</td>
-<td>$\Beta$</td>
-<td><code>$\Beta$</code></td>
-<td>$\beta$</td>
-<td><code>$\beta$</code></td>
-</tr>
-<tr>
-<td>gamma</td>
-<td>$\Gamma$</td>
-<td><code>$\Gamma$</code></td>
-<td>$\gamma$</td>
-<td><code>$\gamma$</code></td>
-</tr>
-<tr>
-<td>delta</td>
-<td>$\Delta$</td>
-<td><code>$\Delta$</code></td>
-<td>$\delta$</td>
-<td><code>$\delta$</code></td>
-</tr>
-<tr>
-<td>epsilon</td>
-<td>$\Epsilon$</td>
-<td><code>$\Epsilon$</code></td>
-<td>$\epsilon$</td>
-<td><code>$\epsilon$</code></td>
-</tr>
-<tr>
-<td>zeta</td>
-<td>$\Zeta$</td>
-<td><code>$\Zeta$</code></td>
-<td>$\zeta$</td>
-<td><code>$\zeta$</code></td>
-</tr>
-<tr>
-<td>eta</td>
-<td>$\Eta$</td>
-<td><code>$\Eta$</code></td>
-<td>$\eta$</td>
-<td><code>$\eta$</code></td>
-</tr>
-<tr>
-<td>theta</td>
-<td>$\Theta$</td>
-<td><code>$\Theta$</code></td>
-<td>$\theta$</td>
-<td><code>$\theta$</code></td>
-</tr>
-<tr>
-<td>iota</td>
-<td>$\Iota$</td>
-<td><code>$\Iota$</code></td>
-<td>$\iota$</td>
-<td><code>$\iota$</code></td>
-</tr>
-<tr>
-<td>kappa</td>
-<td>$\Kappa$</td>
-<td><code>$\Kappa$</code></td>
-<td>$\kappa$</td>
-<td><code>$\kappa$</code></td>
-</tr>
-<tr>
-<td>lambda</td>
-<td>$\Lambda$</td>
-<td><code>$\Lambda$</code></td>
-<td>$\lambda$</td>
-<td><code>$\lambda$</code></td>
-</tr>
-<tr>
-<td>mu</td>
-<td>$\Mu$</td>
-<td><code>$\Mu$</code></td>
-<td>$\mu$</td>
-<td><code>$\mu$</code></td>
-</tr>
-<tr>
-<td>nu</td>
-<td>$\Nu$</td>
-<td><code>$\Nu$</code></td>
-<td>$\nu$</td>
-<td><code>$\nu$</code></td>
-</tr>
-<tr>
-<td>xi</td>
-<td>$\Xi$</td>
-<td><code>$\Xi$</code></td>
-<td>$\xi$</td>
-<td><code>$\xi$</code></td>
-</tr>
-<tr>
-<td>omicron</td>
-<td>$\Omicron$</td>
-<td><code>$\Omicron$</code></td>
-<td>$\omicron$</td>
-<td><code>$\omicron$</code></td>
-</tr>
-<tr>
-<td>pi</td>
-<td>$\Pi$</td>
-<td><code>$\Pi$</code></td>
-<td>$\pi$</td>
-<td><code>$\pi$</code></td>
-</tr>
-<tr>
-<td>rho</td>
-<td>$\Rho$</td>
-<td><code>$\Rho$</code></td>
-<td>$\rho$</td>
-<td><code>$\rho$</code></td>
-</tr>
-<tr>
-<td>sigma</td>
-<td>$\Sigma$</td>
-<td><code>$\Sigma$</code></td>
-<td>$\sigma$</td>
-<td><code>$\sigma$</code></td>
-</tr>
-<tr>
-<td>tau</td>
-<td>$\Tau$</td>
-<td><code>$\Tau$</code></td>
-<td>$\tau$</td>
-<td><code>$\tau$</code></td>
-</tr>
-<tr>
-<td>upsilon</td>
-<td>$\Upsilon$</td>
-<td><code>$\Upsilon$</code></td>
-<td>$\upsilon$</td>
-<td><code>$\upsilon$</code></td>
-</tr>
-<tr>
-<td>phi</td>
-<td>$\Phi$</td>
-<td><code>$\Phi$</code></td>
-<td>$\phi$</td>
-<td><code>$\phi$</code></td>
-</tr>
-<tr>
-<td>chi</td>
-<td>$\Chi$</td>
-<td><code>$\Chi$</code></td>
-<td>$\chi$</td>
-<td><code>$\chi$</code></td>
-</tr>
-<tr>
-<td>psi</td>
-<td>$\Psi$</td>
-<td><code>$\Psi$</code></td>
-<td>$\psi$</td>
-<td><code>$\psi$</code></td>
-</tr>
-<tr>
-<td>omega</td>
-<td>$\Omega$</td>
-<td><code>$\Omega$</code></td>
-<td>$\omega$</td>
-<td><code>$\omega$</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用 <code>^</code> 与 <code>_</code> 表示，例如 <code>$x_i^2$</code> 表示的是：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用 <code>$10^10$</code> 表示的是 $10^10$，而 <code>$10^&#123;10&#125;$</code> 才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如 <code>x^5^6</code> 将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code> ：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code> ：$x^{5^6}$。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Test.jpg"></p>
-]]></content>
-      <categories>
-        <category>Github</category>
-      </categories>
-      <tags>
-        <tag>Github Blog</tag>
-        <tag>Mathjax</tag>
-        <tag>KaTeX</tag>
-        <tag>Next</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Github Profile 相关配置</title>
     <url>/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。</p>
@@ -456,6 +252,31 @@
       </tags>
   </entry>
   <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>0-0 关于Hex Map系列文章</title>
     <url>/2020/09/25/HexMap/0-0%20%E5%85%B3%E4%BA%8EHex%20Map%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/</url>
     <content><![CDATA[<p>　　偶然间在Unity论坛上发现了Jasper Flick大神的文章，顺藤摸瓜，发现Jasper Flick大神还有一个网站，专门写各种各样的教程和技术文章，每一篇都非常有价值。在征得大神同意后，决定挖个深坑，把六边形地图系统的文章翻译出来，同时可以精进自己的技术和英语水平。</p>
@@ -553,35 +374,6 @@
       </tags>
   </entry>
   <entry>
-    <title>1-2 构建地图单元容器</title>
-    <url>/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/</url>
-    <content><![CDATA[<p>　　在1-1中，我们用代码创建了一个正六边形地图单元的基本结构，接下来，为了构建正六边形地图系统，首先需要构建一个正六边形地图单元实例。首先创建<code>HexCell</code>组件。这里不在此脚本中填写任何代码。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来在场景中创建一个Plane，重命名为Hex Cell，挂载<code>HexCell</code>组件，并且把这个Plane创建为Prefab。如下图：</p>
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-cell-plane.png"></p>
-<p>　　然后创建一个空物体，命名为Hex Grid，用来容纳地图单元。创建<code>HexGrid</code>脚本，并声明三个变量，分别表示在该容器中，地图单元的行数、列数和地图单元预置，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每一行有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//表示每一列有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放地图单元格的预置</span></span><br><span class="line">    <span class="keyword">public</span> HexCell cellPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-grid.png"></p>
-<p>　　地图单元的容器创建完成后，将Width和Height的值都设置为6，将之前创建好的HexCell预置拖入Hex Cell框内。</p>
-<p>　　现在，需要完成创建地图单元的代码，这里使用一个嵌套的for循环来创建地图单元，Width为每一行中有多少个地图单元，Height为行数。最后，将创建好的地图单元实例，存储在一个二维数组中，便于后期的查找和修改。<code>HexGrid</code>脚本添加代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存放实例化的地图单元</span></span><br><span class="line">HexCell[] cells;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//根据长度和宽度，初始化数组大小</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[height * width];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从左下角开始，依次往右，每一行为 width 个单元后，上移一行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; height; z++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建一个地图单元</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>地图单元是 横行中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>地图单元是 粽列中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>地图单元在<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//声明一个Vector3，用来</span></span><br><span class="line">    Vector3 position;</span><br><span class="line">    position.x = x * <span class="number">10f</span>;</span><br><span class="line">    position.y = <span class="number">0f</span>;</span><br><span class="line">    position.z = z * <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在数组cells的i位置实例化地图单元</span></span><br><span class="line">    <span class="comment">//cell用来给这个被实例化的单元设置父级和位置</span></span><br><span class="line">    HexCell cell;</span><br><span class="line">    cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">    cell = cells[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置被实例化地图单元的父级和位置</span></span><br><span class="line">    cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">    cell.transform.localPosition = position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这里要注意一点，在Unity中，一个默认Panel为10x10单位。所以在<code>CreateCell</code>方法中，<code>position.x = x * 10f</code>和<code>position.z = z * 10f</code>中的10f便是Panel的边长，要每次移动Panel边长的距离，让各个地图元素相邻。生成效果如下：</p>
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/square-grid-of-planes.png"></p>
-<p>　　至此，已经成功的生成了由正方形单元组成的地图网格。但是由于每个地图单元是紧紧相邻的，在Game窗口中很难快速定位每一个地图单元的位置，如果是正六边形的地图单元，这种情况还可能更加混乱。下一步，为了方便以后的调试和更加直观的查看，我们将为每一个地图单元加上自身的坐标。</p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>1-3 创建地图单元坐标UI</title>
     <url>/2020/09/28/HexMap/1-3%20%E5%88%9B%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87UI/</url>
     <content><![CDATA[<p>　　在之前的步骤中，我们已经生成了一个6x6的矩形地图网格，为了方便之后的调试与观察，这里需要显示每个地图单元在地图网格内的坐标。</p>
@@ -621,6 +413,35 @@
 <p>　　代码完成后，运行效果如下图：</p>
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-3-6.png"></p>
 <p>　　下一章里，我们要重新排列地图单元的位置，使其符合正六边形地图单元的排列方式。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1-2 构建地图单元容器</title>
+    <url>/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/</url>
+    <content><![CDATA[<p>　　在1-1中，我们用代码创建了一个正六边形地图单元的基本结构，接下来，为了构建正六边形地图系统，首先需要构建一个正六边形地图单元实例。首先创建<code>HexCell</code>组件。这里不在此脚本中填写任何代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来在场景中创建一个Plane，重命名为Hex Cell，挂载<code>HexCell</code>组件，并且把这个Plane创建为Prefab。如下图：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-cell-plane.png"></p>
+<p>　　然后创建一个空物体，命名为Hex Grid，用来容纳地图单元。创建<code>HexGrid</code>脚本，并声明三个变量，分别表示在该容器中，地图单元的行数、列数和地图单元预置，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每一行有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//表示每一列有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放地图单元格的预置</span></span><br><span class="line">    <span class="keyword">public</span> HexCell cellPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-grid.png"></p>
+<p>　　地图单元的容器创建完成后，将Width和Height的值都设置为6，将之前创建好的HexCell预置拖入Hex Cell框内。</p>
+<p>　　现在，需要完成创建地图单元的代码，这里使用一个嵌套的for循环来创建地图单元，Width为每一行中有多少个地图单元，Height为行数。最后，将创建好的地图单元实例，存储在一个二维数组中，便于后期的查找和修改。<code>HexGrid</code>脚本添加代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存放实例化的地图单元</span></span><br><span class="line">HexCell[] cells;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//根据长度和宽度，初始化数组大小</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[height * width];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从左下角开始，依次往右，每一行为 width 个单元后，上移一行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; height; z++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建一个地图单元</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>地图单元是 横行中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>地图单元是 粽列中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>地图单元在<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//声明一个Vector3，用来</span></span><br><span class="line">    Vector3 position;</span><br><span class="line">    position.x = x * <span class="number">10f</span>;</span><br><span class="line">    position.y = <span class="number">0f</span>;</span><br><span class="line">    position.z = z * <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在数组cells的i位置实例化地图单元</span></span><br><span class="line">    <span class="comment">//cell用来给这个被实例化的单元设置父级和位置</span></span><br><span class="line">    HexCell cell;</span><br><span class="line">    cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">    cell = cells[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置被实例化地图单元的父级和位置</span></span><br><span class="line">    cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">    cell.transform.localPosition = position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这里要注意一点，在Unity中，一个默认Panel为10x10单位。所以在<code>CreateCell</code>方法中，<code>position.x = x * 10f</code>和<code>position.z = z * 10f</code>中的10f便是Panel的边长，要每次移动Panel边长的距离，让各个地图元素相邻。生成效果如下：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/square-grid-of-planes.png"></p>
+<p>　　至此，已经成功的生成了由正方形单元组成的地图网格。但是由于每个地图单元是紧紧相邻的，在Game窗口中很难快速定位每一个地图单元的位置，如果是正六边形的地图单元，这种情况还可能更加混乱。下一步，为了方便以后的调试和更加直观的查看，我们将为每一个地图单元加上自身的坐标。</p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -850,6 +671,50 @@
       </tags>
   </entry>
   <entry>
+    <title>1-9 改变选中地图单元的颜色</title>
+    <url>/2020/10/04/HexMap/1-9%20%E6%94%B9%E5%8F%98%E9%80%89%E4%B8%AD%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%A2%9C%E8%89%B2/</url>
+    <content><![CDATA[<p>　　在上一章中，我们通过坐标转换，可以知道鼠标点击在了哪一个地图单元上。接下来，我们在这个基础上改变被鼠标点击的地图单元的颜色。</p>
+<p>　　在<code>HexGrid.cs</code>中声明两个变量，分别为默认颜色和点击后变化的颜色，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//cell的默认颜色</span></span><br><span class="line"><span class="keyword">public</span> Color defaultColor = Color.white;</span><br><span class="line"><span class="comment">//cell被点击后的颜色</span></span><br><span class="line"><span class="keyword">public</span> Color touchedColor = Color.magenta;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到Unity中，选中Hex Grid物体，在Inspector面板中就能看到下图的效果，当然，我们也可以自定义初始颜色和点击后的颜色，如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-1.png"></p>
+<p>　　回到<code>HexCell.cs</code>中，在这里我们声明一个变量，用来存储每个地图单元自己的颜色。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在实例化每个cell的时候会调用该实例</span></span><br><span class="line">    <span class="comment">//针对每个cell，重新计算它的坐标值</span></span><br><span class="line">    <span class="keyword">public</span> HexCoordinates coordinates;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存储cell自身的颜色</span></span><br><span class="line">    <span class="keyword">public</span> Color color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　为每个地图单元赋初始颜色值，可以在HexGrid.CreateCell方法中实现。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//在不改变cell排列的情况下，重新计算每个cell的坐标位置</span></span><br><span class="line">    cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　当然，我们还需要将颜色的信息赋值给地图单元的Mesh组件，这样才能将颜色显示出来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存储cell每个顶点的颜色信息</span></span><br><span class="line"><span class="keyword">private</span> List&lt;Color&gt; colors;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//初始化vertices、triangles链表 用于存储顶点和面片信息</span></span><br><span class="line">    vertices = <span class="keyword">new</span> List&lt;Vector3&gt;();</span><br><span class="line">    triangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化colors链表，用于存储顶点颜色信息</span></span><br><span class="line">    colors = <span class="keyword">new</span> List&lt;Color&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    triangles.Clear();</span><br><span class="line">    colors.Clear();</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将所有的顶点位置信息，顶点位置信息的索引存储到链表中</span></span><br><span class="line">    hexMesh.vertices = vertices.ToArray();</span><br><span class="line">    hexMesh.triangles = triangles.ToArray();</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//将所有顶点的颜色信息存储在colors链表中</span></span><br><span class="line">    hexMesh.colors = colors.ToArray();</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，在进行每个三角面片构建的时候，我们将颜色的信息赋值给每一个顶点，这样在构建出地图单元的时候，就带有了我们定义的初始颜色了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//构建三角面片</span></span><br><span class="line">        AddTriangle(</span><br><span class="line">            center,</span><br><span class="line">            center + HexMetrics.corners[i],</span><br><span class="line">            center + HexMetrics.corners[i + <span class="number">1</span>]</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">        AddTriangleColor(cell.color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点赋颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>三角面片顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color color</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们回到HexGrid.TouchCell方法中。这个方法的流程可以理解为：先将Unity内普通的坐标，转换成六边形地图中的坐标，即从Unity的Vector3(8.7, 0, 13.9)坐标转换为六边形地图的(0, -1, 1)坐标。</p>
+<p>　　接着，我们还需要知道被点击的地图单元在数组<code>HexGrid.cell[]</code>中具体的位置，也就是被惦记的地图单元在数组<code>HexGrid.cell[]</code>中的下标。才可以为该地图单元赋值新的颜色。</p>
+<p>　　如果要改变其颜色，依照现有的方法，我们还需要重新构建整个六边形地图的Mesh，因为这个Mesh是整体存储在一个变量中的。但是我们真的有必要因为某个地图单元的颜色改变而重新构建整个正六边形地图的Mesh吗？答案很显然，重新构建整个Mesh是不合理的。</p>
+<p>　　但是现在还不是优化这个步骤的时候，因为随着项目的功能不断增加，代码会变得越来越复杂，Mesh的外观也会变得复杂。所以现在做的任何优化在之后的代码中都会变得没有意义。虽然重新构建整个正六边形地图的Mesh虽然很无脑，但是却十分有效，目前我们先这样为地图单元更改颜色。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算出cell位于cells[]数组中的位置</span></span><br><span class="line">    <span class="keyword">int</span> index = coordinates.X + coordinates.Z * width + coordinates.Z / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取这个cell的实例</span></span><br><span class="line">    HexCell cell = cells[index];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为这个cell赋值颜色</span></span><br><span class="line">    cell.color = touchedColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新构建整个map的mesh</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　代码完成之后，我们点击某一个地图单元，但是并没有任何的改变，被点击的地图单元也没有改变颜色。这是因为Unity中默认的着色器没有使用顶点颜色。我们需要自己创建一个自定义着色器（Assets/Create/Shader/Standard Surface Shader），并修改其中的代码。其实我们只需要对Unity新建的着色器进行2处很小的改动：1 在输入部分添加颜色信息。2 输出时让反射率与颜色值相乘。而且我们不必关心透明通道，只需要集中在rgb通道即可。代码如下： s</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.shader</span></figcaption><table><tr><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/HexCell&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">struct</span> Input</span><br><span class="line">        &#123;</span><br><span class="line">            float2 uv_MainTex;</span><br><span class="line">            <span class="comment">//添加颜色输入</span></span><br><span class="line">            float4 color:COLOR;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutputStandard o</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            …</span><br><span class="line">            <span class="comment">//o.Albedo = c.rgb;</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//输出部分，反射率与输入的颜色值相乘</span></span><br><span class="line">            o.Albedo = c.rgb * IN.color;</span><br><span class="line">            </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，新建一个材质球，使用我们修改后的shader，并将这个材质球替换掉场景中Hex Mesh物体组件上的材质球。最后效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-2.png"></p>
+<p>　　这里要注意，某些情况下，点击地图单元后，可能会产生一些奇怪的阴影效果！这是因为在某些Unity版本中Standard Surface Shader可能会有阴影问题。如果发生了阴影抖动或者带状阴影的问题，这说明Z轴发生了冲突。调整全局方向光的阴影偏斜角度应该可以解决这个问题。</p>
+<p>　　这样我们就完成了基本的交互功能了。当我们点击一个地图单元后，这个地图单元就会变成我们预先定义好的被点击的颜色。下一章中我们在这个基础上更进一步，制作一个简单的地图编辑器功能，可以为不同的地图单元赋值不同的颜色。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2-1 计算相邻的地图单元的位置</title>
     <url>/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　上一章中我们完成了改变单个地图单元颜色的功能。但是通过观察可以发现，如果相邻的两个地图单元颜色不相同，他们之间的颜色过渡会显得非常的生硬。两者的对比效果如下图：</p>
@@ -889,50 +754,6 @@
 <p>什么是扩展方法？<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
 </blockquote>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/18aca13c0edcfd279b0b54cd0fedbfaea4b91f9e">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1-9 改变选中地图单元的颜色</title>
-    <url>/2020/10/04/HexMap/1-9%20%E6%94%B9%E5%8F%98%E9%80%89%E4%B8%AD%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%A2%9C%E8%89%B2/</url>
-    <content><![CDATA[<p>　　在上一章中，我们通过坐标转换，可以知道鼠标点击在了哪一个地图单元上。接下来，我们在这个基础上改变被鼠标点击的地图单元的颜色。</p>
-<p>　　在<code>HexGrid.cs</code>中声明两个变量，分别为默认颜色和点击后变化的颜色，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//cell的默认颜色</span></span><br><span class="line"><span class="keyword">public</span> Color defaultColor = Color.white;</span><br><span class="line"><span class="comment">//cell被点击后的颜色</span></span><br><span class="line"><span class="keyword">public</span> Color touchedColor = Color.magenta;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到Unity中，选中Hex Grid物体，在Inspector面板中就能看到下图的效果，当然，我们也可以自定义初始颜色和点击后的颜色，如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-1.png"></p>
-<p>　　回到<code>HexCell.cs</code>中，在这里我们声明一个变量，用来存储每个地图单元自己的颜色。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在实例化每个cell的时候会调用该实例</span></span><br><span class="line">    <span class="comment">//针对每个cell，重新计算它的坐标值</span></span><br><span class="line">    <span class="keyword">public</span> HexCoordinates coordinates;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存储cell自身的颜色</span></span><br><span class="line">    <span class="keyword">public</span> Color color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　为每个地图单元赋初始颜色值，可以在HexGrid.CreateCell方法中实现。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//在不改变cell排列的情况下，重新计算每个cell的坐标位置</span></span><br><span class="line">    cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　当然，我们还需要将颜色的信息赋值给地图单元的Mesh组件，这样才能将颜色显示出来。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存储cell每个顶点的颜色信息</span></span><br><span class="line"><span class="keyword">private</span> List&lt;Color&gt; colors;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//初始化vertices、triangles链表 用于存储顶点和面片信息</span></span><br><span class="line">    vertices = <span class="keyword">new</span> List&lt;Vector3&gt;();</span><br><span class="line">    triangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化colors链表，用于存储顶点颜色信息</span></span><br><span class="line">    colors = <span class="keyword">new</span> List&lt;Color&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    triangles.Clear();</span><br><span class="line">    colors.Clear();</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将所有的顶点位置信息，顶点位置信息的索引存储到链表中</span></span><br><span class="line">    hexMesh.vertices = vertices.ToArray();</span><br><span class="line">    hexMesh.triangles = triangles.ToArray();</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//将所有顶点的颜色信息存储在colors链表中</span></span><br><span class="line">    hexMesh.colors = colors.ToArray();</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，在进行每个三角面片构建的时候，我们将颜色的信息赋值给每一个顶点，这样在构建出地图单元的时候，就带有了我们定义的初始颜色了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//构建三角面片</span></span><br><span class="line">        AddTriangle(</span><br><span class="line">            center,</span><br><span class="line">            center + HexMetrics.corners[i],</span><br><span class="line">            center + HexMetrics.corners[i + <span class="number">1</span>]</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">        AddTriangleColor(cell.color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点赋颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>三角面片顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color color</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们回到HexGrid.TouchCell方法中。这个方法的流程可以理解为：先将Unity内普通的坐标，转换成六边形地图中的坐标，即从Unity的Vector3(8.7, 0, 13.9)坐标转换为六边形地图的(0, -1, 1)坐标。</p>
-<p>　　接着，我们还需要知道被点击的地图单元在数组<code>HexGrid.cell[]</code>中具体的位置，也就是被惦记的地图单元在数组<code>HexGrid.cell[]</code>中的下标。才可以为该地图单元赋值新的颜色。</p>
-<p>　　如果要改变其颜色，依照现有的方法，我们还需要重新构建整个六边形地图的Mesh，因为这个Mesh是整体存储在一个变量中的。但是我们真的有必要因为某个地图单元的颜色改变而重新构建整个正六边形地图的Mesh吗？答案很显然，重新构建整个Mesh是不合理的。</p>
-<p>　　但是现在还不是优化这个步骤的时候，因为随着项目的功能不断增加，代码会变得越来越复杂，Mesh的外观也会变得复杂。所以现在做的任何优化在之后的代码中都会变得没有意义。虽然重新构建整个正六边形地图的Mesh虽然很无脑，但是却十分有效，目前我们先这样为地图单元更改颜色。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算出cell位于cells[]数组中的位置</span></span><br><span class="line">    <span class="keyword">int</span> index = coordinates.X + coordinates.Z * width + coordinates.Z / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取这个cell的实例</span></span><br><span class="line">    HexCell cell = cells[index];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为这个cell赋值颜色</span></span><br><span class="line">    cell.color = touchedColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新构建整个map的mesh</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　代码完成之后，我们点击某一个地图单元，但是并没有任何的改变，被点击的地图单元也没有改变颜色。这是因为Unity中默认的着色器没有使用顶点颜色。我们需要自己创建一个自定义着色器（Assets/Create/Shader/Standard Surface Shader），并修改其中的代码。其实我们只需要对Unity新建的着色器进行2处很小的改动：1 在输入部分添加颜色信息。2 输出时让反射率与颜色值相乘。而且我们不必关心透明通道，只需要集中在rgb通道即可。代码如下： s</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.shader</span></figcaption><table><tr><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/HexCell&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">struct</span> Input</span><br><span class="line">        &#123;</span><br><span class="line">            float2 uv_MainTex;</span><br><span class="line">            <span class="comment">//添加颜色输入</span></span><br><span class="line">            float4 color:COLOR;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutputStandard o</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            …</span><br><span class="line">            <span class="comment">//o.Albedo = c.rgb;</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//输出部分，反射率与输入的颜色值相乘</span></span><br><span class="line">            o.Albedo = c.rgb * IN.color;</span><br><span class="line">            </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，新建一个材质球，使用我们修改后的shader，并将这个材质球替换掉场景中Hex Mesh物体组件上的材质球。最后效果如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-2.png"></p>
-<p>　　这里要注意，某些情况下，点击地图单元后，可能会产生一些奇怪的阴影效果！这是因为在某些Unity版本中Standard Surface Shader可能会有阴影问题。如果发生了阴影抖动或者带状阴影的问题，这说明Z轴发生了冲突。调整全局方向光的阴影偏斜角度应该可以解决这个问题。</p>
-<p>　　这样我们就完成了基本的交互功能了。当我们点击一个地图单元后，这个地图单元就会变成我们预先定义好的被点击的颜色。下一章中我们在这个基础上更进一步，制作一个简单的地图编辑器功能，可以为不同的地图单元赋值不同的颜色。</p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1022,23 +843,32 @@
       </tags>
   </entry>
   <entry>
-    <title>2-4 混合三角面片颜色</title>
-    <url>/2020/10/09/HexMap/2-4%20%E6%B7%B7%E5%90%88%E4%B8%89%E8%A7%92%E9%9D%A2%E7%89%87%E9%A2%9C%E8%89%B2/</url>
-    <content><![CDATA[<p>　　在上一章中我们因为引入了HexDirection枚举，所以对一些方法进行了重构。接下来需要实现相邻两个地图单元的颜色混合功能。这里首先需要修改<code>HexMesh.cs</code>脚本中的<code>AddTriangleColor</code>方法。这个方法原本的参数只有一个，在构建三角面片的时候，会将这个参数的颜色信息赋值到三角面片的三个顶点信息中。为了实现颜色混合，需要再添加两个参数，让三角面片的每个顶点分别有不同的颜色值。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点分别赋予不同的颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>第一个顶点的颜色信息(中心点的颜色)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>第二个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c3&quot;&gt;</span>第三个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color c1, Color c2, Color c3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>2-2 链接相邻的力图单元</title>
+    <url>/2020/10/07/HexMap/2-2%20%E9%93%BE%E6%8E%A5%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/</url>
+    <content><![CDATA[<p>　　在上一章节中，我们通过扩展方法，可以计算出一个地图单元自身相对于其周围地图单元的位置，并完善了相关的方法。接下来，我们要将地图内的所有地图单元互相链接起来。<br>　　在<code>HexGrid.cs</code>中使用<code>CreateCell</code>方法创建地图单元的时候，建立每个地图单元之间的位置链接关系。在这里，我们是从左至右逐行查看每个地图单元时，就可以知道已经创建了哪些地图单元，这些创建好的地图单元就是我们要进行链接的地图单元。<br>　　最简单的链接关系就是E-W链接。每一行的第一个地图单元，是没有E方向的相邻地图单元的。除此之外，其他的单元格都是有E方向的相邻单元格。而且这些地图单元都是在我们遍历它们并建立链接之前，就已经被创建好了。所以这里可以很容易的建立所有地图单元的E-W方向的链接。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-1.png"></p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断cell是否为每一行第一个</span></span><br><span class="line">    <span class="comment">//如果不是第一个，则cell会有W方位相邻的cell，就可以建立E-W链接</span></span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cell.SetNeighbor(HexDirection.W, cells[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>　　接下来，我们在构建三角面片的时候就可以进行颜色的混合了。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">    AddTriangleColor(cell.color, neighbor.color, neighbor.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-2.png"></p>
+<p>　　横向的链接关系建立完毕后，我们来看地图单元之间的纵向关系。由于每一行地图单元之间是呈锯齿状交错的，所以建立两行地图单元之间的链接需要不同的处理方法。在这里我们先处理偶数行的SE方向链接。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-3.png"></p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断cell是否为每一行第一个</span></span><br><span class="line">    <span class="comment">//如果不是第一个，则cell会有W方位相邻的cell，就可以建立E-W链接</span></span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cell.SetNeighbor(HexDirection.W, cells[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里判断是否为第一行，因为行之间的链接会不太一样，尤其是第一行，需要做一次额外判断</span></span><br><span class="line">    <span class="keyword">if</span> (z &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里的&amp;为位运算符 MSDN：https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/bitwise-and-shift-operators</span></span><br><span class="line">        <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">        <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当为偶数行的时候，创建SE方向的链接</span></span><br><span class="line">            <span class="comment">//cells[1 - width]为SE方向的实例，图片参考 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-3.png</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SE, cells[<span class="number">1</span> - width]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>　　运行以上代码的时候，Unity会产生一个空引用异常。这是因为，并不是每个地图单元都有6个与之相邻的地图单元。所以，这里要进行一次判断。当一个方位上没有地图单元的时候，就用自身的颜色代替。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    <span class="comment">//?? 为 可空合并运算符，即cell.GetNeighbor(direction)的值为null时，使用 cell的值</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction) ?? cell;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-4-1.png"></p>
 <blockquote>
-<p>“??”的含义：<br>这被称为可空合并运算符，简单来说”a??b”即”a!=null?a:b”的简写。<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/nullable-value-types#conversion-from-a-nullable-value-type-to-an-underlying-type">MSDN连接</a>，“从可为空的值类型转换为基础类型”部分。<br>这里有个小诡计，因为Unity在把一个东西与组件比较时会自定义,(注:Unity中判断一个对象不为空时可以直接写成if(someThings),这在C#原本语法里是没有的)而这个运算符会绕过它并直接与null比较,不过这是销毁对象时才需要考虑的问题。</p>
+<p>什么是位运算符？<a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/bitwise-and-shift-operators">MSDN连接</a></br><br>大家都知道”&amp;&amp;”是布尔运算符里的”与”运算,”&amp;”就是”按位与”。它们的执行逻辑相同，但后者是对于每一位进行运算。<br>两个Bit都是1,与运算的结果就是1。例如：10101010 &amp; 00001111结果是00001010。<br>从计算机原理层面上来说，所有的数字都是用二进制表示的。二进制中的1、2、3、4写作1、10、11、100。如你所见，表示是否为偶数的最低有效位是第一位。<br>我们把二进制的与运算作为一个遮罩，忽略除了第一位之外的其他位数，如果结果是0，那就表示这是一个偶数。</p>
 </blockquote>
-<p>　　现在，我们虽然完成了相邻地图单元之间的颜色混合，但是视觉效果显得非常奇怪，完全不是我们想象中的样子。接下来我们需要慢慢解决这些问题。下一章中，我们将会让颜色混合更加平滑。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ddd6faa23d19d72ca918668864dabaedf2ab35b3">Github代码</a></p>
+<p>　　与SE方向的链接关系类似，这里我们可以使用相同的方法创建SW方向的链接。要注意，每一行的第一个地图单元是没有SW方向的链接的。<br>　　<br><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-4.png"></p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">    <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当为偶数行的时候，创建SE方向的链接</span></span><br><span class="line">        <span class="comment">//cells[i - width]为SE方向的实例，也就是右下方的cell</span></span><br><span class="line">        cell.SetNeighbor(HexDirection.SE, cells[i - width]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//每行的第一个cell是没有左下角(SW)方向的链接，这里要判断cell是否为第一个</span></span><br><span class="line">        <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//cells[i - width - 1]为SW方向的实例，也就是左下方的cell</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SW, cells[i - width - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　奇数行与偶数行有相同的逻辑，只不过SE-NW、SW-NE方向的链接，与偶数行是相互镜像的。</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">    <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line">        <span class="comment">//这里是奇数行建立链接的部分</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//i - width 为自身SW方向的实例</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SW, cells[i - width]);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//判断奇数行cell是否为每行最后一个，因为奇数行最后一个cell是没有SE方向的实例</span></span><br><span class="line">            <span class="keyword">if</span> (x &lt; width - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//i - width + 1 为奇数行自身SE方向的实例</span></span><br><span class="line">                cell.SetNeighbor(HexDirection.SE, cells[i - width + <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　通过以上的代码，我们创建了SE-NW、SW-NE、W-E方向的链接。通过观察可以发现，除了横向的W-E链接，我们都是先创建每个地图单元的SW和SE方向的链接，也就是将自身左下、右下的地图单元实例先进行链接，同时<code>SetNeighbor</code>方法会创建SW和SE的镜像链接，也就是NE和NW链接。所以最特殊的第一行也就和其他的地图单元自动创建了方位链接关系。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-5.png"></p>
+<p>　　通过观察和代码可以发现，在整个地图系统中，并不是每个地图单元都有全部的6个相邻地图单元，也就是说，在边缘处的地图单元，其Neighbors数组并没有填满。有些边缘处地图单元最多有5个与其相邻的地图单元，最少的则有2个。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-6.png"></p>
+<p>　　现在，我们已经将所有的地图单元建立了相互的链接关系，这是颜色混合的前置工作之一。接下来会进行一些代码的调整，并实现单元格之间颜色过渡的效果。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7179c3b1142fb19b7e922def8f85e8fbb74f1a6a">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1074,32 +904,23 @@
       </tags>
   </entry>
   <entry>
-    <title>2-2 链接相邻的力图单元</title>
-    <url>/2020/10/07/HexMap/2-2%20%E9%93%BE%E6%8E%A5%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/</url>
-    <content><![CDATA[<p>　　在上一章节中，我们通过扩展方法，可以计算出一个地图单元自身相对于其周围地图单元的位置，并完善了相关的方法。接下来，我们要将地图内的所有地图单元互相链接起来。<br>　　在<code>HexGrid.cs</code>中使用<code>CreateCell</code>方法创建地图单元的时候，建立每个地图单元之间的位置链接关系。在这里，我们是从左至右逐行查看每个地图单元时，就可以知道已经创建了哪些地图单元，这些创建好的地图单元就是我们要进行链接的地图单元。<br>　　最简单的链接关系就是E-W链接。每一行的第一个地图单元，是没有E方向的相邻地图单元的。除此之外，其他的单元格都是有E方向的相邻单元格。而且这些地图单元都是在我们遍历它们并建立链接之前，就已经被创建好了。所以这里可以很容易的建立所有地图单元的E-W方向的链接。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-1.png"></p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断cell是否为每一行第一个</span></span><br><span class="line">    <span class="comment">//如果不是第一个，则cell会有W方位相邻的cell，就可以建立E-W链接</span></span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cell.SetNeighbor(HexDirection.W, cells[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>2-4 混合三角面片颜色</title>
+    <url>/2020/10/09/HexMap/2-4%20%E6%B7%B7%E5%90%88%E4%B8%89%E8%A7%92%E9%9D%A2%E7%89%87%E9%A2%9C%E8%89%B2/</url>
+    <content><![CDATA[<p>　　在上一章中我们因为引入了HexDirection枚举，所以对一些方法进行了重构。接下来需要实现相邻两个地图单元的颜色混合功能。这里首先需要修改<code>HexMesh.cs</code>脚本中的<code>AddTriangleColor</code>方法。这个方法原本的参数只有一个，在构建三角面片的时候，会将这个参数的颜色信息赋值到三角面片的三个顶点信息中。为了实现颜色混合，需要再添加两个参数，让三角面片的每个顶点分别有不同的颜色值。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点分别赋予不同的颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>第一个顶点的颜色信息(中心点的颜色)<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>第二个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c3&quot;&gt;</span>第三个顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color c1, Color c2, Color c3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-2.png"></p>
-<p>　　横向的链接关系建立完毕后，我们来看地图单元之间的纵向关系。由于每一行地图单元之间是呈锯齿状交错的，所以建立两行地图单元之间的链接需要不同的处理方法。在这里我们先处理偶数行的SE方向链接。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-3.png"></p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断cell是否为每一行第一个</span></span><br><span class="line">    <span class="comment">//如果不是第一个，则cell会有W方位相邻的cell，就可以建立E-W链接</span></span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cell.SetNeighbor(HexDirection.W, cells[i - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里判断是否为第一行，因为行之间的链接会不太一样，尤其是第一行，需要做一次额外判断</span></span><br><span class="line">    <span class="keyword">if</span> (z &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里的&amp;为位运算符 MSDN：https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/bitwise-and-shift-operators</span></span><br><span class="line">        <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">        <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当为偶数行的时候，创建SE方向的链接</span></span><br><span class="line">            <span class="comment">//cells[1 - width]为SE方向的实例，图片参考 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-3.png</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SE, cells[<span class="number">1</span> - width]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//该变量用来存储被实例化的cellLabelPrefab预置</span></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　接下来，我们在构建三角面片的时候就可以进行颜色的混合了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">    AddTriangleColor(cell.color, neighbor.color, neighbor.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>　　运行以上代码的时候，Unity会产生一个空引用异常。这是因为，并不是每个地图单元都有6个与之相邻的地图单元。所以，这里要进行一次判断。当一个方位上没有地图单元的时候，就用自身的颜色代替。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    <span class="comment">//?? 为 可空合并运算符，即cell.GetNeighbor(direction)的值为null时，使用 cell的值</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction) ?? cell;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-4-1.png"></p>
 <blockquote>
-<p>什么是位运算符？<a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/operators/bitwise-and-shift-operators">MSDN连接</a></br><br>大家都知道”&amp;&amp;”是布尔运算符里的”与”运算,”&amp;”就是”按位与”。它们的执行逻辑相同，但后者是对于每一位进行运算。<br>两个Bit都是1,与运算的结果就是1。例如：10101010 &amp; 00001111结果是00001010。<br>从计算机原理层面上来说，所有的数字都是用二进制表示的。二进制中的1、2、3、4写作1、10、11、100。如你所见，表示是否为偶数的最低有效位是第一位。<br>我们把二进制的与运算作为一个遮罩，忽略除了第一位之外的其他位数，如果结果是0，那就表示这是一个偶数。</p>
+<p>“??”的含义：<br>这被称为可空合并运算符，简单来说”a??b”即”a!=null?a:b”的简写。<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/nullable-value-types#conversion-from-a-nullable-value-type-to-an-underlying-type">MSDN连接</a>，“从可为空的值类型转换为基础类型”部分。<br>这里有个小诡计，因为Unity在把一个东西与组件比较时会自定义,(注:Unity中判断一个对象不为空时可以直接写成if(someThings),这在C#原本语法里是没有的)而这个运算符会绕过它并直接与null比较,不过这是销毁对象时才需要考虑的问题。</p>
 </blockquote>
-<p>　　与SE方向的链接关系类似，这里我们可以使用相同的方法创建SW方向的链接。要注意，每一行的第一个地图单元是没有SW方向的链接的。<br>　　<br><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-4.png"></p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">    <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当为偶数行的时候，创建SE方向的链接</span></span><br><span class="line">        <span class="comment">//cells[i - width]为SE方向的实例，也就是右下方的cell</span></span><br><span class="line">        cell.SetNeighbor(HexDirection.SE, cells[i - width]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//每行的第一个cell是没有左下角(SW)方向的链接，这里要判断cell是否为第一个</span></span><br><span class="line">        <span class="keyword">if</span> (x &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//cells[i - width - 1]为SW方向的实例，也就是左下方的cell</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SW, cells[i - width - <span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　奇数行与偶数行有相同的逻辑，只不过SE-NW、SW-NE方向的链接，与偶数行是相互镜像的。</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里使用位运算符，判断是否为偶数行</span></span><br><span class="line">    <span class="keyword">if</span> ((z &amp; <span class="number">1</span>) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line">        <span class="comment">//这里是奇数行建立链接的部分</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//i - width 为自身SW方向的实例</span></span><br><span class="line">            cell.SetNeighbor(HexDirection.SW, cells[i - width]);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//判断奇数行cell是否为每行最后一个，因为奇数行最后一个cell是没有SE方向的实例</span></span><br><span class="line">            <span class="keyword">if</span> (x &lt; width - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//i - width + 1 为奇数行自身SE方向的实例</span></span><br><span class="line">                cell.SetNeighbor(HexDirection.SE, cells[i - width + <span class="number">1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　通过以上的代码，我们创建了SE-NW、SW-NE、W-E方向的链接。通过观察可以发现，除了横向的W-E链接，我们都是先创建每个地图单元的SW和SE方向的链接，也就是将自身左下、右下的地图单元实例先进行链接，同时<code>SetNeighbor</code>方法会创建SW和SE的镜像链接，也就是NE和NW链接。所以最特殊的第一行也就和其他的地图单元自动创建了方位链接关系。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-5.png"></p>
-<p>　　通过观察和代码可以发现，在整个地图系统中，并不是每个地图单元都有全部的6个相邻地图单元，也就是说，在边缘处的地图单元，其Neighbors数组并没有填满。有些边缘处地图单元最多有5个与其相邻的地图单元，最少的则有2个。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-6.png"></p>
-<p>　　现在，我们已经将所有的地图单元建立了相互的链接关系，这是颜色混合的前置工作之一。接下来会进行一些代码的调整，并实现单元格之间颜色过渡的效果。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7179c3b1142fb19b7e922def8f85e8fbb74f1a6a">Github代码</a></p>
+<p>　　现在，我们虽然完成了相邻地图单元之间的颜色混合，但是视觉效果显得非常奇怪，完全不是我们想象中的样子。接下来我们需要慢慢解决这些问题。下一章中，我们将会让颜色混合更加平滑。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ddd6faa23d19d72ca918668864dabaedf2ab35b3">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1217,6 +1038,54 @@
       </tags>
   </entry>
   <entry>
+    <title>2-9 创建3色颜色混合区域</title>
+    <url>/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>　　在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。<br>　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点的颜色是地图单元自身的颜色，第二个顶点的颜色是三个相邻地图三个颜色的混合值，第三个顶点的颜色是双色混合区域的颜色的平均值。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//矩形两色混合区域的中间过渡色</span></span><br><span class="line">    Color bridgeColor = (cell.color + neighbor.color) * <span class="number">0.5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, bridgeColor);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//组成cell的每个三角形区域，有1个矩形混色区域和2个三角形三色混合区域</span></span><br><span class="line">    <span class="comment">//生成其中一个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v1, center + HexMetrics.GetFirstCorner(direction), v3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为第一个三角形三色混合区域赋值颜色</span></span><br><span class="line">    <span class="comment">//自身颜色、三个相邻cell的平均色、矩形混合区域中间色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span>,</span><br><span class="line">        bridgeColor</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png"></p>
+<p>　　使用同样的方式，我们使用相同的方式来生成矩形颜色混合区域右侧侧的三角形。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v2, v4, HexMetrics.GetSecondCorner(direction));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域的颜色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        bridgeColor,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-2.png"></p>
+<p>　　现在我们就得到了比之前更好的视觉效果。而且我们还可以自定义颜色混合区域的面积大小，来改变整个地图的视觉效果。但是我们发现，在地图边缘处相邻地图单元的颜色过渡依然存在一些问题。不过我们先暂时忽略这个问题，把注意力放在优化和网格合并上。</p>
+<blockquote>
+<p>为什么有了颜色混合区域，混合后的效果依然不好看？<br>这是线性颜色混合的极限了。事实上纯色之间的颜色混合效果都不是很好，未来的章节中将会升级到地形材质并做一些更漂亮的混合。</p>
+</blockquote>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/424789c59c98b442ddb87db3c92f362cf00452af">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-1 地图单元的高度属性</title>
+    <url>/2020/10/18/HexMap/3-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%AB%98%E5%BA%A6%E5%B1%9E%E6%80%A7/</url>
+    <content><![CDATA[<p>　　在之前的章节中，我们完成了地图单元之间颜色混合的功能，并优化了显示和效率。现在的地图虽然可以显示自定义颜色，但细节还是不够丰富。在接下来的章节中，我们将为现在的地图系统添加单元格高度的功能，让整个地图系统的细节更加丰富。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-1-1.png"></p>
+<p>　　为了给地地图单元增加高度功能，就要给每个地图单元增加一个高度属性，这里我们用一个<code>int</code>类型的变量来表示每个地图单元的高度。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每个cell的高度等级，0即在水平面位置上</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，我们还要设置每一级高度，具体是多少。这个数值可以用一个常量来表示。现在我们先暂时使用Unity3D中5个标准单位来作为每一级的高度值。这样高低变化看起来会比较明显，在之后的步骤中也可以根据视觉效果来及时调整。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//地图中每个高度等级之间相差的实际距离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> elevationStep = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c725150de62a039cfe89003a5c9fe91c30e17f01">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>3-10 三角形连接区域类型分析</title>
     <url>/2020/10/27/HexMap/3-10%20%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%B1%BB%E5%9E%8B%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p>　　在上一章中，我们通过判断两个地图单元的高低差，实现了只对Slope类型的连接区域进行阶梯化。接下来，就是要将三角形连接区域进行阶梯化。<br>　　相比于矩形连接区域，三角形连接区域的阶梯化会更加复杂，因为它连接了3个地图单元。这三个地图单元可能是任意高度，每两个地图单元之间的高差类型也是任意的。所以需要在<code>HexMesh.cs</code>中另外添加一个三角形连接区域的专用方法。<br>　　首先，我们先将三角形连接区域相邻的三个地图单元进行分类，分别为Left、Right和Bittom。</p>
@@ -1237,32 +1106,6 @@
 
 <p>　　这样，我们就找到了三角形连接区域中，高度最低的那个地图单元了。在接下来的章节中，我们会在这个基础上，使用循环来对三角形连接区域进行阶梯化，根据不同的高差类型，来构建不同的三角形连接区域外观。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/3123f3f1b2b8e4abc3a6c64357b208b570ec7874">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>2-9 创建3色颜色混合区域</title>
-    <url>/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>　　在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。<br>　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点的颜色是地图单元自身的颜色，第二个顶点的颜色是三个相邻地图三个颜色的混合值，第三个顶点的颜色是双色混合区域的颜色的平均值。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//矩形两色混合区域的中间过渡色</span></span><br><span class="line">    Color bridgeColor = (cell.color + neighbor.color) * <span class="number">0.5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, bridgeColor);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//组成cell的每个三角形区域，有1个矩形混色区域和2个三角形三色混合区域</span></span><br><span class="line">    <span class="comment">//生成其中一个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v1, center + HexMetrics.GetFirstCorner(direction), v3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为第一个三角形三色混合区域赋值颜色</span></span><br><span class="line">    <span class="comment">//自身颜色、三个相邻cell的平均色、矩形混合区域中间色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span>,</span><br><span class="line">        bridgeColor</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png"></p>
-<p>　　使用同样的方式，我们使用相同的方式来生成矩形颜色混合区域右侧侧的三角形。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v2, v4, HexMetrics.GetSecondCorner(direction));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域的颜色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        bridgeColor,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-2.png"></p>
-<p>　　现在我们就得到了比之前更好的视觉效果。而且我们还可以自定义颜色混合区域的面积大小，来改变整个地图的视觉效果。但是我们发现，在地图边缘处相邻地图单元的颜色过渡依然存在一些问题。不过我们先暂时忽略这个问题，把注意力放在优化和网格合并上。</p>
-<blockquote>
-<p>为什么有了颜色混合区域，混合后的效果依然不好看？<br>这是线性颜色混合的极限了。事实上纯色之间的颜色混合效果都不是很好，未来的章节中将会升级到地形材质并做一些更漂亮的混合。</p>
-</blockquote>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/424789c59c98b442ddb87db3c92f362cf00452af">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1307,28 +1150,6 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-5.png"></p>
 <p>　　这样，我们就完成了<code>SSF</code>类型连接区域的构建。不过<code>SSF</code>类型还存在一些变体情况，我们在下一个章节进行完善。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/566fa2e2e4e1d0894b0df0cec93fdc0742b43be6">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>3-1 地图单元的高度属性</title>
-    <url>/2020/10/18/HexMap/3-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%AB%98%E5%BA%A6%E5%B1%9E%E6%80%A7/</url>
-    <content><![CDATA[<p>　　在之前的章节中，我们完成了地图单元之间颜色混合的功能，并优化了显示和效率。现在的地图虽然可以显示自定义颜色，但细节还是不够丰富。在接下来的章节中，我们将为现在的地图系统添加单元格高度的功能，让整个地图系统的细节更加丰富。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-1-1.png"></p>
-<p>　　为了给地地图单元增加高度功能，就要给每个地图单元增加一个高度属性，这里我们用一个<code>int</code>类型的变量来表示每个地图单元的高度。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每个cell的高度等级，0即在水平面位置上</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，我们还要设置每一级高度，具体是多少。这个数值可以用一个常量来表示。现在我们先暂时使用Unity3D中5个标准单位来作为每一级的高度值。这样高低变化看起来会比较明显，在之后的步骤中也可以根据视觉效果来及时调整。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//地图中每个高度等级之间相差的实际距离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> elevationStep = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c725150de62a039cfe89003a5c9fe91c30e17f01">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1456,6 +1277,52 @@
       </tags>
   </entry>
   <entry>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
+<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+</blockquote>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
+<ul>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+</ul>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<hr>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>3-16 Slope-Cliff类型镜像组合</title>
     <url>/2020/11/02/HexMap/3-16%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E9%95%9C%E5%83%8F%E7%BB%84%E5%90%88/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了Slope-Cliff类型三角形连接区域的构建，在这一章中，我们将完成Slope-Cliff类型的镜像组合中，三角形连接区域的构建。如下图所示：</p>
@@ -1500,6 +1367,26 @@
 <p>　最后还有一种情况，就是三个相邻的地图单元，彼此之间的高度差都大于1，那么他们的三角形连接区域其实就是默认的三角形。</p>
 <p>　至此我们已经将所有类型的三角形连接区域构建方法完成了，但是在<code>TriangulateCorner</code>方法中，冗余的判断代码还是比较多的。下一章中，我们将对<code>TriangulateCorner</code>方法中，判断连接类型的代码进行一定的整理和优化，为之后的其他功能做准备。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7c15ce9931954cb3aae0e073ae2f001ef5d55016">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-18 整理代码逻辑</title>
+    <url>/2020/11/04/HexMap/3-18%20%E6%95%B4%E7%90%86%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91/</url>
+    <content><![CDATA[<p>　　在之前的章节中，我们完成了各类高低差不同的地图单元之间，其三角形连接区域的构建，有些是阶梯化的，有些则是一半阶梯一半三角形的。所有的情况如下图所示</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-18-2.png"><br>　　<br>　　判断地图单元格之间的连接关系，并决定使用哪种方式构建三角形连接区域的语句都在<code>TriangulateCorner</code>方法中。这里我们来整理一下这部分代码，用<code>if else</code>语句来代替现在的<code>return</code>。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftCell.Elevation &lt; rightCell.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        AddTriangle(bottom, left, right);</span><br><span class="line">        AddTriangleColor(bottomCell.color, leftCell.color, rightCell.color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-18-1.png"></p>
+<p>　　至此，我们就完成了所有地图单元之间连接类型的判断，以及构建其相邻的三角形连接区域的功能了。相比之前没有任何段落感的地形，现在的地形层次更加丰富，立体感更强。在接下来的章节中，我们要继续丰富地图的细节，使用一张随机的噪点图，对地图上的单元素进行一定的形变。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/97602cbf7949a6cf945984853ed783b2fcf70060">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1621,28 +1508,6 @@
       </tags>
   </entry>
   <entry>
-    <title>3-9 阶梯化Slope类型连接区域</title>
-    <url>/2020/10/26/HexMap/3-9%20%E9%98%B6%E6%A2%AF%E5%8C%96slope%E7%B1%BB%E5%9E%8B%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>　　在上一章中，我们为不同高度的连接区域划分了类型，并创建了一个方法来判断两个相邻地图单元之间的连接区域是哪种类型。这一章中，我们来实现只阶梯化Slope类型的连接区域，其他的连接区域依然是由两个三角面片构成的矩形。<br>　　首先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法中进行了阶梯化连接区域的操作，我们在阶梯化之前加入一个判断，当连接类型为Slope的时候才执行阶梯化操作。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，我们需要启用之前的代码，也就是判断如果连接类型不为Slope，那么连接区域就是矩形的。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当连接类型不为Slope的时候，连接区域是矩形的</span></span><br><span class="line">        AddQuad(v1, v2, v3, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-9-1.png"></p>
-<p>　　这样，我们就完成了相邻地图单元连接区域的分类，并且会按照不同的分类，自动进行判断这个连接区域是否要进行阶梯化处理。在节省面数的同时，也让整个地图的层侧干更加的明显了。<br>　　不过当我们在Unity中运行时发现，如果连接类型为Slope的时候，矩形连接区域是正常的，但是三角形连接区域却没有完全贴合阶梯的边缘，导致有“破面”的情况发生。造成这个问题的原因是，我们只对矩形连接区域进行了阶梯化，而忽略了三角形连接区域。在接下来的章节中，我们将修复这个问题。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/995883a232455af345dbdc123f22698966bcd077">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>3-6 阶梯状的连接区域</title>
     <url>/2020/10/23/HexMap/3-6%20%E9%98%B6%E6%A2%AF%E7%8A%B6%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在之前的章节中我们修复了地图单元对应UI高度和连接区域断裂的问题。同时我们也发现一个问题，在两个相邻且有高差的地图单元之间，连接区域只是被简单的拉伸了。如果高差很大的话，这个现象就更加明显。在接下来的章节中，我们来丰富连接区域的细节。<br>　　增加连接区域的具体方式，我们可以参考《无尽传奇》这个游戏。将一个倾斜的连接区域插入两段阶梯，如下图所示。这样一个完整的斜面就被分为了三个小斜面。每个斜面之间用平面相连接。这就需要我们把这个阶梯斜面分为五个部分来看。</p>
@@ -1742,6 +1607,232 @@
       </tags>
   </entry>
   <entry>
+    <title>3-9 阶梯化Slope类型连接区域</title>
+    <url>/2020/10/26/HexMap/3-9%20%E9%98%B6%E6%A2%AF%E5%8C%96slope%E7%B1%BB%E5%9E%8B%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>　　在上一章中，我们为不同高度的连接区域划分了类型，并创建了一个方法来判断两个相邻地图单元之间的连接区域是哪种类型。这一章中，我们来实现只阶梯化Slope类型的连接区域，其他的连接区域依然是由两个三角面片构成的矩形。<br>　　首先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法中进行了阶梯化连接区域的操作，我们在阶梯化之前加入一个判断，当连接类型为Slope的时候才执行阶梯化操作。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们需要启用之前的代码，也就是判断如果连接类型不为Slope，那么连接区域就是矩形的。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当连接类型不为Slope的时候，连接区域是矩形的</span></span><br><span class="line">        AddQuad(v1, v2, v3, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-9-1.png"></p>
+<p>　　这样，我们就完成了相邻地图单元连接区域的分类，并且会按照不同的分类，自动进行判断这个连接区域是否要进行阶梯化处理。在节省面数的同时，也让整个地图的层侧干更加的明显了。<br>　　不过当我们在Unity中运行时发现，如果连接类型为Slope的时候，矩形连接区域是正常的，但是三角形连接区域却没有完全贴合阶梯的边缘，导致有“破面”的情况发生。造成这个问题的原因是，我们只对矩形连接区域进行了阶梯化，而忽略了三角形连接区域。在接下来的章节中，我们将修复这个问题。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/995883a232455af345dbdc123f22698966bcd077">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github Markdown 中的公式书写</title>
+    <url>/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/</url>
+    <content><![CDATA[<h2 id="行内公式与行间公式"><a href="#行内公式与行间公式" class="headerlink" title="行内公式与行间公式"></a>行内公式与行间公式</h2><p>一般公式分为两种形式，行内公式和行间公式。</p>
+<ul>
+<li>行内公式：$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$</li>
+</ul>
+<p>代码：<br><code>$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$</code></p>
+<p>-行间公式：$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$$</p>
+<p>代码：<br><code>$$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$$</code></p>
+<hr>
+<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>大写</th>
+<th>code</th>
+<th>小写</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alpha</td>
+<td>$\Alpha$</td>
+<td><code>$\Alpha$</code></td>
+<td>$\alpha$</td>
+<td><code>$\alpha$</code></td>
+</tr>
+<tr>
+<td>beta</td>
+<td>$\Beta$</td>
+<td><code>$\Beta$</code></td>
+<td>$\beta$</td>
+<td><code>$\beta$</code></td>
+</tr>
+<tr>
+<td>gamma</td>
+<td>$\Gamma$</td>
+<td><code>$\Gamma$</code></td>
+<td>$\gamma$</td>
+<td><code>$\gamma$</code></td>
+</tr>
+<tr>
+<td>delta</td>
+<td>$\Delta$</td>
+<td><code>$\Delta$</code></td>
+<td>$\delta$</td>
+<td><code>$\delta$</code></td>
+</tr>
+<tr>
+<td>epsilon</td>
+<td>$\Epsilon$</td>
+<td><code>$\Epsilon$</code></td>
+<td>$\epsilon$</td>
+<td><code>$\epsilon$</code></td>
+</tr>
+<tr>
+<td>zeta</td>
+<td>$\Zeta$</td>
+<td><code>$\Zeta$</code></td>
+<td>$\zeta$</td>
+<td><code>$\zeta$</code></td>
+</tr>
+<tr>
+<td>eta</td>
+<td>$\Eta$</td>
+<td><code>$\Eta$</code></td>
+<td>$\eta$</td>
+<td><code>$\eta$</code></td>
+</tr>
+<tr>
+<td>theta</td>
+<td>$\Theta$</td>
+<td><code>$\Theta$</code></td>
+<td>$\theta$</td>
+<td><code>$\theta$</code></td>
+</tr>
+<tr>
+<td>iota</td>
+<td>$\Iota$</td>
+<td><code>$\Iota$</code></td>
+<td>$\iota$</td>
+<td><code>$\iota$</code></td>
+</tr>
+<tr>
+<td>kappa</td>
+<td>$\Kappa$</td>
+<td><code>$\Kappa$</code></td>
+<td>$\kappa$</td>
+<td><code>$\kappa$</code></td>
+</tr>
+<tr>
+<td>lambda</td>
+<td>$\Lambda$</td>
+<td><code>$\Lambda$</code></td>
+<td>$\lambda$</td>
+<td><code>$\lambda$</code></td>
+</tr>
+<tr>
+<td>mu</td>
+<td>$\Mu$</td>
+<td><code>$\Mu$</code></td>
+<td>$\mu$</td>
+<td><code>$\mu$</code></td>
+</tr>
+<tr>
+<td>nu</td>
+<td>$\Nu$</td>
+<td><code>$\Nu$</code></td>
+<td>$\nu$</td>
+<td><code>$\nu$</code></td>
+</tr>
+<tr>
+<td>xi</td>
+<td>$\Xi$</td>
+<td><code>$\Xi$</code></td>
+<td>$\xi$</td>
+<td><code>$\xi$</code></td>
+</tr>
+<tr>
+<td>omicron</td>
+<td>$\Omicron$</td>
+<td><code>$\Omicron$</code></td>
+<td>$\omicron$</td>
+<td><code>$\omicron$</code></td>
+</tr>
+<tr>
+<td>pi</td>
+<td>$\Pi$</td>
+<td><code>$\Pi$</code></td>
+<td>$\pi$</td>
+<td><code>$\pi$</code></td>
+</tr>
+<tr>
+<td>rho</td>
+<td>$\Rho$</td>
+<td><code>$\Rho$</code></td>
+<td>$\rho$</td>
+<td><code>$\rho$</code></td>
+</tr>
+<tr>
+<td>sigma</td>
+<td>$\Sigma$</td>
+<td><code>$\Sigma$</code></td>
+<td>$\sigma$</td>
+<td><code>$\sigma$</code></td>
+</tr>
+<tr>
+<td>tau</td>
+<td>$\Tau$</td>
+<td><code>$\Tau$</code></td>
+<td>$\tau$</td>
+<td><code>$\tau$</code></td>
+</tr>
+<tr>
+<td>upsilon</td>
+<td>$\Upsilon$</td>
+<td><code>$\Upsilon$</code></td>
+<td>$\upsilon$</td>
+<td><code>$\upsilon$</code></td>
+</tr>
+<tr>
+<td>phi</td>
+<td>$\Phi$</td>
+<td><code>$\Phi$</code></td>
+<td>$\phi$</td>
+<td><code>$\phi$</code></td>
+</tr>
+<tr>
+<td>chi</td>
+<td>$\Chi$</td>
+<td><code>$\Chi$</code></td>
+<td>$\chi$</td>
+<td><code>$\chi$</code></td>
+</tr>
+<tr>
+<td>psi</td>
+<td>$\Psi$</td>
+<td><code>$\Psi$</code></td>
+<td>$\psi$</td>
+<td><code>$\psi$</code></td>
+</tr>
+<tr>
+<td>omega</td>
+<td>$\Omega$</td>
+<td><code>$\Omega$</code></td>
+<td>$\omega$</td>
+<td><code>$\omega$</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用 <code>^</code> 与 <code>_</code> 表示，例如 <code>$x_i^2$</code> 表示的是：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用 <code>$10^10$</code> 表示的是 $10^10$，而 <code>$10^&#123;10&#125;$</code> 才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如 <code>x^5^6</code> 将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code> ：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code> ：$x^{5^6}$。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Test.jpg"></p>
+]]></content>
+      <categories>
+        <category>Github</category>
+      </categories>
+      <tags>
+        <tag>Github Blog</tag>
+        <tag>Mathjax</tag>
+        <tag>KaTeX</tag>
+        <tag>Next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Unity3D WebGL 相关踩坑记录 1</title>
     <url>/2020/09/15/Hexo/Part1/</url>
     <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
@@ -1814,77 +1905,6 @@
       <tags>
         <tag>Hexo</tag>
         <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
-<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
-<hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
       </tags>
   </entry>
 </search>

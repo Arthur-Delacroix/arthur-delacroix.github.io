@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">51</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,114 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/06/HexMap/4-2%20%E7%BA%B9%E7%90%86%E9%87%87%E6%A0%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/06/HexMap/4-2%20%E7%BA%B9%E7%90%86%E9%87%87%E6%A0%B7/" class="post-title-link" itemprop="url">4-2 纹理采样</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-06 13:19:42" itemprop="dateCreated datePublished" datetime="2020-11-06T13:19:42+08:00">2020-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们导入了一张RGB噪点图，并完成了噪点图的相关导入设置，在本章中，我们将创建一些基础的方法，来获取噪点图的实例。<br>　　首先我们要在<code>HexMetrics.cs</code>中添加一个静态方法，用来读取彩色噪点图中的各类信息，并进行相关操作。因为创建的方法是静态方法，所以其引用的噪点图变量也必须是静态的。这样，我们就可以在程序的任意位置调用这个方法了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//彩色噪点图的实例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Texture2D noiseSource;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　由于<code>HexMetrics.cs</code>并未继承MonoBehaviour，所以它不是一个组件，其中的变量也不能在Inspector面板中显示。我们也不能像普通变量那样，直接使用拖拽实例放入变量在Inspector面板的位置上进行赋初始值。那我们就简单地把HexGrid当一个中转，因为HexGrid是第一个运行的,所以在它的Awake方法开始的位置传递值就行了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//彩色噪点图的实例，直接将图片拖拽至Inspector面板对应位置赋初始值</span></span><br><span class="line">    <span class="keyword">public</span> Texture2D noiseSource;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//为HexMetrics的静态变量赋值</span></span><br><span class="line">        <span class="comment">//由于此脚本最先被调用，所以在这里赋初始值</span></span><br><span class="line">        HexMetrics.noiseSource = noiseSource;</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在Play模式下，如果我们想要引用另一个彩色噪点图，那么在<code>Awake</code>的赋值语句就不起作用了。要解决这个问题还需要在<code>OnEnable</code>方法中重新赋值彩色噪点图的实例。</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//Unity在Play模式中，Awake只会在脚本被实例化时调用一次，如果之后噪点图改变了，没办法重新为静态变量赋值</span></span><br><span class="line">        <span class="comment">//所以这里再次进行赋值，之后只要disable后在enable，静态变量就会被重新赋值</span></span><br><span class="line">        HexMetrics.noiseSource = noiseSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-2-1.png"></p>
+<p>　　现在<code>HexMetrics.cs</code>就能访问彩色纹理贴图了,我们添加一个方便的噪声采样方法，这个方法用来读取彩色噪点图，并返回一个包含四种噪声模式的4D向量。代码如下</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 对彩色噪点图进行采样</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>采样点位置坐标，世界坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>RGBA四个值组成的4D向量<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector4 <span class="title">SampleNoise</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，我们完成来<code>SampleNoise</code>方法。通过双线性过滤的方式对彩色纹理图进行采样得到样本数据，由于是使用世界坐标系下的X和Z轴坐标作为UV坐标，所以噪声源是3D的，这里我们忽略掉Y轴坐标。采样后我们得到一个可以转换成4D向量的颜色，这个转换是隐式的，这意味着我们可以直接返回颜色，而不用显式的转换成Vector4。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//由于入参是世界位置的vector3，而图片UV是二维的，这里忽略掉垂直方向的Y</span></span><br><span class="line">    <span class="comment">//GetPixelBilinear获取的是指定点的RGBA值，转换为Vector4是隐式的。</span></span><br><span class="line">    <span class="keyword">return</span> noiseSource.GetPixelBilinear(position.x, position.z);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此。我们通过世界坐标内的一个点，就能获取到彩色噪点图中对应位置的RGBA值，这样我们就完成了采样的工作。在接下来的章节中，我们将利用采样得到的数据，对地图上的顶点进行偏移，也就是扰动。就会让地图产生更多的变化。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8F%8C%E7%BA%BF%E6%80%A7%E8%BF%87%E6%BB%A4/8137007">双线性过滤</a><br>Jasper Flick大神有专门介绍UV的教程：<a target="_blank" rel="noopener" href="https://catlikecoding.com/unity/tutorials/rendering/part-2/">Rendering 2 Shader Fundamentals</a>，里面详细介绍了UV坐标和纹理的相关知识。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/cdce76293d0d19e3a7895eb9ef82c07bffeecdf2">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/05/HexMap/4-1%20%E5%AF%BC%E5%85%A5%E5%99%AA%E7%82%B9%E5%9B%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1525,124 +1633,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/31/HexMap/3-14%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA%20%E5%BA%95%E9%83%A8%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/31/HexMap/3-14%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA%20%E5%BA%95%E9%83%A8%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">3-14 Slope-Cliff类型三角形连接区域构建 底部区域</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-31 09:47:22" itemprop="dateCreated datePublished" datetime="2020-10-31T09:47:22+08:00">2020-10-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们创建了Slope-Cliff三角形连接区域的方法。在这里要注意，Slope-Cliff类型与<code>SSF</code>类型不同，因为我们不知道的left和right地图单元之间，高度差是等于1还是大于1的，但是我们能确定的一点是left与bottom地图单元之间的高度差为1。根据下图我们发现，不论right的高度如何变化，三角形连接区域的一条边始终是需要进行阶梯化的。所以我们就将Slope-Cliff的三角形连接区域分为两部分进行构建。这里先从一定会阶梯化的底部开始。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-13-1.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-13-2.png"></p>
-<p>　　对这部分进行构建，也有两种情况。第一种如下图所示，三角形的其中一条边与阶梯部分相连，被分成若干段。这条边上分段的顶点与三角形的另一个顶点相连，这样就完成了三角剖分。但是这样的构建方法会让三角形连接区域中，视觉效果比较差，例如三角形连接区域中，分段相同，但是一条边上断电稀疏，但是越靠近三角形的一个角的时候越密集。而且在之后进行上半段构建的时候，这个情况会被放大。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-1.png"></p>
-<p>　　那么解决这个问题的方法，就是在三角形的一条边上取一个点，所有阶梯化的端点，够与这个点相连接，这样既将三角形连接区域分为了两部分，又不会出现顶点向一处汇聚，显得太过拥挤。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-2.png"></p>
-<p>　　既然找出了一个比较合理的解决方案，那么我们就需要知道三角形上的这个点的具体位置怎么得出。这里是使用了bottom和right两个地图单元的高度差进行插值得到的。也就是最低的地图单元和最高的地图单元之间的高度差，在进行插值，计算出三角形上这个点及其对应的颜色。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里将Slope-Cliff类型的三角形连接区域拆分成两部分进行构建</span></span><br><span class="line">    <span class="comment">//示意图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-2.png</span></span><br><span class="line">    <span class="comment">//即三角形一个边进行阶梯化，阶梯化后的端点，都与另一条边上的一点相连</span></span><br><span class="line">    <span class="comment">//边上一点，是通过bottom与right高度差，在进行插值得到的</span></span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (rightCell.Elevation - beginCell.Elevation);</span><br><span class="line">    Vector3 boundary = Vector3.Lerp(begin, right, b);</span><br><span class="line">    Color boundaryColor = Color.Lerp(beginCell.color, rightCell.color, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　计算出了三角形连接区域边上一点，那么我们来构建一个三角形，观察一下这个点是否正确。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//测试通过插值找到的三角形上一点是否正确</span></span><br><span class="line">    AddTriangle(begin, left, boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-3.png"></p>
-<p>　　我们确定了三角形连接区域边上一点没有问题，那么接下来就要构建这个区域了。与之前构建<code>SSF</code>三角形连接区域类似，首先构建起始的一个三角面片。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//与构建其他阶梯状区域类似，首先构建第一个三角面片</span></span><br><span class="line">    Vector3 v2 = HexMetrics.TerraceLerp(begin, left, <span class="number">1</span>);</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    AddTriangle(begin, v2, boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, c2, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-4.png"></p>
-<p>　　然后直接将剩余的区域直接构建为一个三角面片。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建剩余区域</span></span><br><span class="line">    AddTriangle(v2, left, boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-5.png"></p>
-<p>　　接着我们循环构建中间部分的三角面片，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        v2 = HexMetrics.TerraceLerp(begin, left, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);</span><br><span class="line">        AddTriangle(v1, v2, boundary);</span><br><span class="line">        AddTriangleColor(c1, c2, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建剩余区域</span></span><br><span class="line">    AddTriangle(v2, left, boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-6.png"></p>
-<p>　　这样，我们在三角形连接区域的一条边上，通过插值计算出了一个点，利用这个点将三角形连接区域拆分成了两个部分。并完成了三角形连接区域底部的构建工作。在下一章中，我们将完成顶部的构建。</p>
-<blockquote>
-<p>为什么底部不能像<code>SSF</code>那样使用阶梯的方式构建，而使用三角形进行构建？<br>如果我们对这部分区域进行类似<code>SSF</code>那种阶梯状方式构建，而不是三角面片构建。这就需要分析计算得出的插值点。因为插值点是跟bottom与right的高度差有关，而两者的高度差并不固定，所以这可能导致每个阶梯的四边形，并不在一个平坦的平面上，也就是说一个四边形左右两侧的斜率不同，这样不仅看起来四边形会被拉伸，而且市局效果会很乱。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/2916e9bca3f22daf1336f8c44a9387b8346f069d">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1698,13 +1688,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">109k</span>
+    <span title="站点总字数">111k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:39</span>
+    <span title="站点阅读时长">1:41</span>
   </span>
 </div>
 <div class="busuanzi-count">

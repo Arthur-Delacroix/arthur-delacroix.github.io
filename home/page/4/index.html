@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,107 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/13/HexMap/2-8%20%E5%88%9B%E5%BB%BA%E5%8F%8C%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/13/HexMap/2-8%20%E5%88%9B%E5%BB%BA%E5%8F%8C%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">2-8 创建双色颜色混合区域</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-13 07:29:26" itemprop="dateCreated datePublished" datetime="2020-10-13T07:29:26+08:00">2020-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们将地图单元自身颜色区域和颜色混合区域分开了。但是通过观察运行效果发现，当相邻的多个切颜色互不相同的地图单元进行颜色混合时，会产生类似“溢色”的错误效果。为了解决这个问题，我们现在要吧也是呢混合区域继续进行细分。将它分为双色混合区域和三色混合区域。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png"></p>
+<p>　　如上图所示，新的V1、V2、V3、V4顶点所构成的区域，就是双色混合区域。这个区域只负责混合2个相邻地图单元的颜色。首先计算出V3、V4中点的位置，然后用该位置乘以颜色混合区域所占比例的数值，就的出来了V1到V3或V2到V4的距离。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取矩形混合区域中，内边缘顶点到外边缘顶点的距离</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetBridge</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//参考图片 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png</span></span><br><span class="line">    <span class="comment">//(corners[(int)direction] + corners[(int)direction + 1]) * 0.5f 是得出cell相邻两个顶点所连线的中点的位置</span></span><br><span class="line">    <span class="comment">//其实也就是内切圆和cell相切的一个切点，也就是线段V3V4的中点，其实也是角∠(V1 center v2)的角平分线</span></span><br><span class="line">    <span class="comment">//具体可以看图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png 来理解</span></span><br><span class="line">    <span class="comment">//得出V3 V4中点位置后，再乘以颜色混合区域所占比例，即25%，得出V1到V3的距离</span></span><br><span class="line">    <span class="keyword">return</span> (corners[(<span class="keyword">int</span>)direction] + corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>]) * <span class="number">0.5f</span> * blendFactor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着再回到<code>HexMesh</code>中，先修改为颜色混合区域顶点赋值的方法，因为只需要混合两个地图单元的颜色，所以参数修改为2个。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为四边形颜色混合区域的每个顶点赋值颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 因为该区域只负责混合2个cell的颜色，所以4个顶点只需要2个颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>cell祖神颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>混合后的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuadColor</span>(<span class="params">Color c1, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后回到<code>private void Triangulate(HexDirection direction, HexCell cell)</code>方法中，修改构建颜色混合区域的代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//颜色混合区域变为了矩形，V3和V4的位置，其实是通过V1和V2顶点分别加上矩形区域的高来计算得出的</span></span><br><span class="line">    <span class="comment">//具体可以查看HexMetrics.GetBridge方法的说明</span></span><br><span class="line">    Vector3 bridge = HexMetrics.GetBridge(direction);</span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, (cell.color + neighbor.color) * <span class="number">0.5f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-2.png"></p>
+<p>　　现在我们就完成了两个相邻地图单元之间的颜色混合功能。接下来的一章中，我们将实现3个彼此相邻地图单元的颜色混合区域，也就是要混合三种颜色的区域。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c9c8c9400b6d399c5c9010c1b99f74b51afa0137">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1234,127 +1335,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">1-8 获取鼠标点击位置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-03 17:50:07" itemprop="dateCreated datePublished" datetime="2020-10-03T17:50:07+08:00">2020-10-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在之前的章节中，我们完成了一个正六边形地图系统的基本框架。但是目前这个地图系统是无法与玩家产生任何交互的。在一般策略游戏中，地图系统最基本的交互方式，就是响应玩家的鼠标点击事件。即玩家鼠标左键单击一个地图单元，这个地图单元便会改变颜色，或者播放一段预置的动画，来响应玩家的操作。我们可以通过鼠标向场景中发射一条射线的方式，来检测鼠标是否点击在了某个地图单元上。</p>
-<p>　　目前，我们先把交互代码放在<code>HexGrid.cs</code>脚本里，随着项目在之后的章节中不断完善，将会把与玩家交互的代码移动到其他的脚本中。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//之后鼠标点击交互相关代码会移动到其他脚本中</span></span><br><span class="line">    <span class="comment">//检测鼠标左键是否点击</span></span><br><span class="line">    <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        HandleInput();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 鼠标左键单击会调用此方法，以鼠标为发射点，经过主摄像机练成射线</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 检测射线穿过Collider的位置</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//射线起点为鼠标位置，经过主摄像机</span></span><br><span class="line">    Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//检测射线是否碰撞到了collider</span></span><br><span class="line">    RaycastHit hit;</span><br><span class="line">    <span class="keyword">if</span> (Physics.Raycast(inputRay, <span class="keyword">out</span> hit))</span><br><span class="line">    &#123;</span><br><span class="line">        TouchCell(hit.point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 将射线的触碰点转换到自身的坐标系中</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>触碰到的collider的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + position);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们完成了鼠标左键单击后发射一条射线的功能，这条射线如果穿过了一个带有Collider组件的模型，那么将会返回一个Vector3的位置信息。但是，现在的地图单元是没有Collider组件的，我们在HexMesh.cs脚本中为它添加MeshCollider组件。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为了检测射线碰撞Collider</span></span><br><span class="line"><span class="keyword">private</span> MeshCollider meshCollider;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化MeshFilter组件的，实例化hexMesh，并给其命名</span></span><br><span class="line">    GetComponent&lt;MeshFilter&gt;().mesh = hexMesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">    hexMesh.name = <span class="string">&quot;Hex Mesh&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为HexMesh物体添加MeshCollider组件</span></span><br><span class="line">    meshCollider = gameObject.AddComponent&lt;MeshCollider&gt;();</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　为Hex Mesh这个物体添加了<code>MeshCollider</code>组件后，我们需要将创建的Mesh数据赋值给<code>MeshCollider</code>组件，这样它就可以根据Mesh信息成成碰撞网格了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    meshCollider.sharedMesh = hexMesh;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，射线穿过Hex Mesh这个物体时，通过<code>MeshCollider</code>组件就可以返回射线的碰撞信息了。</p>
-<p>　　可能会有小伙伴问，为什么不使用更简单高效的<code>Box Collider</code>？这是因为<code>Box Collider</code>不能很准确的吻合正六边形地图单元的轮廓，尤其是在3个地图单元相邻的情况下，<code>Box Collider</code>可能会重叠到一起，最终导致我们无法判断鼠标到底点击在了哪个地图单元上。而且随着项目的不断深入，我们的地形单元并不会一直保持在同意水平面上。所以使用<code>MeshCollider</code>会更加方便计算和判断。</p>
-<p>　　以上代码完成后，我们在Unity的Scene窗口中点击任意一个地图单元，Console窗口中就会输出鼠标点击的坐标信息了。但是这个信息并没有体现出我们具体点击的是哪一个地图单元，所以需要将鼠标的点击的坐标信息，转换成六边形的坐标信息。这个步骤需要在HexCoordinates.cs中进行。</p>
-<p>　　我们需要在首先要在HexGrid.TouchCell方法内，添加对HexCoordinates.cs中发发的调用，这个方法命名为FromPosition，专门用来将射线触碰MeshCollider的坐标，转换成正六边形地图的坐标。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + coordinates.ToString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们来思考FromPosition这个方法要处理的事情。要将原有的射线触碰Collider信息转换成正六边形地图信息，可以将X、Y、Z几个轴向分开处理。这里首先处理X轴坐标，只需要将转换前的坐标除以地图单元的宽度即可，而且当Z值为0的时候，X和Y是护卫相反数的。在这里我们先假设Z值为0，所以很容易就能得出X和Y的值。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexCoordinates <span class="title">FromPosition</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//当Z为0的时候，X和Y互为相反数</span></span><br><span class="line">    <span class="comment">//X的值可以通过 实际X的值除以2倍内切圆半径来得到</span></span><br><span class="line">    <span class="keyword">float</span> x = position.x / (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br><span class="line">    <span class="keyword">float</span> y = -x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，Z不为0的时候，我们需要对X和Y进行偏移，才能得出正确的结果。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> offset = position.z / (HexMetrics.outerRadius * <span class="number">3f</span>);</span><br><span class="line">x -= offset;</span><br><span class="line">y -= offset;</span><br></pre></td></tr></table></figure>
-
-<p>　　当计算出X和Y的值后，我们可以利用X+Y+Z=0这个特性，求出Z的坐标。然后将这些坐标进行四舍五入，就可以得到转换后的正六边形地图坐标了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
-
-<p>　　以上这些步骤虽然看起来没什么问题，但是仔细想一下就会发现，这样计算的最终坐标，很可能相加并不为0.让我们来加一段验证这个想法的代码：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="comment">//验证X+Y+Z是否为0</span></span><br><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    Debug.LogWarning(<span class="string">&quot;rounding error!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
-
-<p>　　我们再次运行程序的时候发现，这个报错信息确实会弹出。而且是发生在鼠标点击的位置接近正六边形边界的时候。所以应该是在四舍五的过程中出现了问题，因为离地图单元的中心越远，四舍五入时舍去的值就越多，所以我们做一个合理的假设：舍去值更大的坐标是错误的。</p>
-<p>　　知道了产生错误的原因，解决起来就比较简单了。解决方法就是废弃具有最大舍去增量的坐标值，然后用其它的两个坐标去重新构建它。这里我们只需要去重建X和Z，不需要关注Y，因为Y本来就是由X和Z求得的。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">float</span> dX = Mathf.Abs(x - iX);</span><br><span class="line">    <span class="keyword">float</span> dY = Mathf.Abs(y - iY);</span><br><span class="line">    <span class="keyword">float</span> dZ = Mathf.Abs(-x - y - iZ);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断哪个舍去的值最多</span></span><br><span class="line">    <span class="comment">//利用X+Y+Z=0的特性，使用两个舍去较小的值得，求出社区较大的那个</span></span><br><span class="line">    <span class="keyword">if</span> (dX &gt; dY &amp;&amp; dX &gt; dZ)</span><br><span class="line">    &#123;</span><br><span class="line">        iX = -iY - iZ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (dZ &gt; dY)</span><br><span class="line">    &#123;</span><br><span class="line">        iZ = -iX - iY;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　通过判断，我们重新计算四舍五入中，舍去的值最多的那个坐标。这样我们就得到了最终正确结果。</p>
-<p>　　在下一章中，我们利用本章判断鼠标点击在哪个地图单元上的功能，给被点击的地图单元改变颜色，让地图系统拥有最基本的交互。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1410,13 +1390,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">113k</span>
+    <span title="站点总字数">114k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:43</span>
+    <span title="站点阅读时长">1:44</span>
   </span>
 </div>
 <div class="busuanzi-count">

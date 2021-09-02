@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,103 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/09/HexMap/4-5%20%E5%99%AA%E5%A3%B0%E9%87%87%E6%A0%B7%E7%BC%A9%E6%94%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/09/HexMap/4-5%20%E5%99%AA%E5%A3%B0%E9%87%87%E6%A0%B7%E7%BC%A9%E6%94%BE/" class="post-title-link" itemprop="url">4-5 噪声采样缩放</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-09 14:44:46" itemprop="dateCreated datePublished" datetime="2020-11-09T14:44:46+08:00">2020-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们增强了扰动强度，使每个顶点的位移更大，最终地图整体的变化效果就更加明显了。但是当我们改变一个地图单元高度的时候，我们发现矩形阶梯连接区域的视觉效果变得非常奇怪。阶梯中的各个顶点向不懂的方向偏移，造成了三角面片的扭曲，视觉效果看起来很混乱。但是使用柏林噪声不应该会发生这种情况。<br>　　造成这个现象的原因是因为我们直接用世界坐标进行噪声采样，使得彩色噪点图平铺在每个地图单元上，但是每个地图单元的尺寸比彩色噪点图本身要大得多，实际上彩色噪点图是在任意位置被采样，这破坏了其连贯性。如下图所示，其中每个蓝色的方块表示一张彩色噪点图。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-1.png"></p>
+<p>　　为了解决这个问题，我们要对噪声采样进行缩放，这样彩色噪点图就能覆盖更大的区域。我们在<code>HexMetrics.cs</code>中添加这个缩放并设置其为0.003，然后把采样坐标与这个数值相乘。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//采样缩放</span></span><br><span class="line">    <span class="comment">//这个参数的实际作用，就是将时间空间内坐标缩小一定倍率</span></span><br><span class="line">    <span class="comment">//实际上是变相扩大了一张噪点图的覆盖范围，使得进行采样时更加连续</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> noiseScale = <span class="number">0.003f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector4 <span class="title">SampleNoise</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//实际世界空间坐标乘以缩放系数，使得采样控制在一个比较小的范围内，这样就会比较连续</span></span><br><span class="line">        <span class="keyword">return</span> noiseSource.GetPixelBilinear(</span><br><span class="line">            position.x * noiseScale,</span><br><span class="line">            position.z * noiseScale</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，采样数据的范围就是原来的 $333 \frac 33$ 倍，最终运行后的诗句效果也变得更加平滑了。即使再次改变地图单元的高度，也不会出现那种很奇怪的阶梯状三角面片了。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-2.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-5-3.png"></p>
+<p>　　加入了采样缩放之后，噪声在平铺之前有个过渡过程。实际上因为单元格的内径是 $10 \sqrt 3 $，所以没有办法精确的以X轴的尺寸平铺。但是因为噪声纹理自身的连贯性，即使细节不吻合，任然能在大范围内发现重复的样式，大约是每20个地图单元之间。这只在地图没有其他编辑形状的功能时才比较明显。<br>　　至此，我们修复了采样中的连续性问题，但是在还存在一个问题，就是每个地图单元的正六边形部分，并不是平整的，这一点从对UI的坐标点遮挡就可以看出来。我们想达到的效果是，六边形边缘部分的顶点会产生扰动，但是六边形自身还保持平整。这个问题将会在下一章解决。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/9e8a07a724cd61929b5d49e621abbf79ce13c856">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/08/HexMap/4-4%20%E6%89%B0%E5%8A%A8%E5%BC%BA%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1537,110 +1634,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/03/HexMap/3-17%20%E5%8F%8CCliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/03/HexMap/3-17%20%E5%8F%8CCliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">3-17 双Cliff类型三角形连接区域构建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-03 14:03:42" itemprop="dateCreated datePublished" datetime="2020-11-03T14:03:42+08:00">2020-11-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们完成了<code>SSF</code>和<code>Slope-Cliff</code>两种连接类型及其变体的三角形连接区域的构建。现在我们来完成最后一种情况，也就是最低的bottom地图单元与left和right地图单元的高度差都大于1，并且left和right地图单元的高度差为1，这种组合类型。我们将这种组合命名为<code>Cliff-Cliff-Slope</code>类型，简写为<code>CCS</code>。而且由于lefr和right两个地图单元之间高度差为1，如果right地图单元比较高，就简写为<code>CCSR</code>类型，如果left地图单元比较高，就简写为<code>CCSL</code>类型。<code>CCSR</code>类型和<code>CCSL</code>类型分别如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-1.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-2.png"></p>
-<p>　　我们对这两种组合的抽象表示如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-3.png"></p>
-<p>　　其实细心挂差可以发现，不论是<code>CCSL</code>或者<code>CCSR</code>，它们与Slope-Cliff类型及其镜像是上下翻转的。这里我们只需要继续调用<code>TriangulateCornerCliffTerraces</code>和<code>TriangulateCornerTerracesCliff</code>方法进行三角面片的构建就可以了。我们需要做的只是判断连接类型，并且确认输入参数顺序正确即可。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//bottom最低，与left和right高差都大于1，并且left和right高差为1，称为 CCS类型</span></span><br><span class="line">    <span class="comment">//如果left比right高1，那么就是CCSL，反之right比left高1，那就是CCSR</span></span><br><span class="line">    <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//CCSR</span></span><br><span class="line">        <span class="keyword">if</span> (leftCell.Elevation &lt; rightCell.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//CCSL</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们虽然完成了<code>CCSL</code>和<code>CCSR</code>两种类型的三角形连接区域的构建，但是通过观察运行效果我们发现会产生一些奇怪的三角面片，这是因为我们之前计算插值的时候，都是从上到下进行的，现在上下翻转之后，计算的结果为负数，所以就构建出了奇怪的三角面片。解决这个问题也很简单，就是在计算插值之前，先判断结果是否为负数，如果是负数，那就乘以`-1``变为正数即可。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (rightCell.Elevation - beginCell.Elevation);</span><br><span class="line">    <span class="keyword">if</span> (b &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        b = -b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (leftCell.Elevation - beginCell.Elevation);</span><br><span class="line">    <span class="keyword">if</span> (b &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        b = -b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们就完成了最后一个组合类型的三角形连接区域的构建，<code>CCSR</code>类型和<code>CCSL</code>类型完成后分别如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-4.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-5.png"></p>
-<p>　最后还有一种情况，就是三个相邻的地图单元，彼此之间的高度差都大于1，那么他们的三角形连接区域其实就是默认的三角形。</p>
-<p>　至此我们已经将所有类型的三角形连接区域构建方法完成了，但是在<code>TriangulateCorner</code>方法中，冗余的判断代码还是比较多的。下一章中，我们将对<code>TriangulateCorner</code>方法中，判断连接类型的代码进行一定的整理和优化，为之后的其他功能做准备。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7c15ce9931954cb3aae0e073ae2f001ef5d55016">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1696,13 +1689,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">114k</span>
+    <span title="站点总字数">115k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:44</span>
+    <span title="站点阅读时长">1:45</span>
   </span>
 </div>
 <div class="busuanzi-count">

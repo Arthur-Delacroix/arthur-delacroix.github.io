@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">58</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">59</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,105 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/13/HexMap/4-9%20%E7%BB%86%E5%88%86%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BE%B9%E7%BC%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/13/HexMap/4-9%20%E7%BB%86%E5%88%86%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BE%B9%E7%BC%98/" class="post-title-link" itemprop="url">4-9 细分地图单元边缘</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-13 11:48:47" itemprop="dateCreated datePublished" datetime="2020-11-13T11:48:47+08:00">2020-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们修复了连接区域和地图单元高度不同的问题。但是依然存在Cliff连接类型种三角形连接区域和矩形连接区域有破面的问题。让我们将这个问题暂缓，先进一步丰富地图的整体细节，破面的问题会在这个过程中得到修复。<br>　　让我们来观察一下地图内所有顶点经过扰动后的样子，如下如所示。经过扰动的顶点虽然产生了随机性，但是每个地图单元整体看来仍然是一个六边形，虽然这样并不影响什么，但是这样显得地图的细节不够丰富，我们应该增加细节，让地图看起来更加饱满。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-9-1.png"></p>
+<p>　　要添加更多的细节，那就先从地图单元的正六边形部分开始着手。如果我们能将正六边形细分更多的面出来，经过额敖东后，就应该有更多的变化。所以我们在六边形的每个边中点上，再添加一个顶点，将之前的三角面片分为两个。这就需要修改<code>HexMesh.Triangulate</code>方法，在构建三角面片的时候添加两个三角形，而不是一个。代码如下：</p>
+<figure class="highlight plain"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">private void Triangulate(HexDirection direction, HexCell cell)</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v2 &#x3D; center + HexMetrics.GetSecondSolidCorner(direction);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;为了增加地图的整体细节，这里在cell六边形每个边的中点上，店家一个顶点</span><br><span class="line">    &#x2F;&#x2F;让原来的6个面片变为12个。</span><br><span class="line">    Vector3 e1 &#x3D; Vector3.Lerp(v1, v2, 0.5f);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;这里添加的顶点也变为了一个边的中点</span><br><span class="line">    &#x2F;&#x2F;这3个顶点是原来六边形一个三角面片的一半</span><br><span class="line">    AddTriangle(center, v1, e1);</span><br><span class="line">        </span><br><span class="line">    AddTriangleColor(cell.color);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;这里构建原来六边形一个三角面片的另一半</span><br><span class="line">    AddTriangle(center, e1, v2);</span><br><span class="line">    AddTriangleColor(cell.color);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-9-2.png"></p>
+<p>　　顶点加倍之后，果然细节变得更加丰富了，那么我们直接在之前六边形的一条边上增加两个顶点，也就是将一个三角面片切为三个部分，这样细节会更加丰富。代码如下：</p>
+<figure class="highlight plain"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">private void Triangulate(HexDirection direction, HexCell cell)</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v2 &#x3D; center + HexMetrics.GetSecondSolidCorner(direction);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;这里将正六边形的每个边均分为3份，面数是原来的3倍</span><br><span class="line">    Vector3 e1 &#x3D; Vector3.Lerp(v1, v2, 1f &#x2F; 3f);</span><br><span class="line">    Vector3 e2 &#x3D; Vector3.Lerp(v1, v2, 2f &#x2F; 3f);</span><br><span class="line"></span><br><span class="line">    AddTriangle(center, v1, e1);</span><br><span class="line">    AddTriangleColor(cell.color);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;添加新增顶点的的位置信息和颜色信息</span><br><span class="line">    AddTriangle(center, e1, e2);</span><br><span class="line">    AddTriangleColor(cell.color);</span><br><span class="line">    AddTriangle(center, e2, v2);</span><br><span class="line">    AddTriangleColor(cell.color);</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-9-3.png"></p>
+<p>　　经过细分后，六边形地图变得细节更加丰富了，不过同时也产生了很多交错面与破面。在接下来的章节中，我们将六边形每条边上细分后产生的顶点与其相邻的连接区域进行连接。消除交错面和破面。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/9ddaa477b3fc2fa4c35849fa9e15dae05ac3905e">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/12/HexMap/4-8%20%E4%BF%AE%E5%A4%8D%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1504,112 +1603,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/07/HexMap/4-3%20%E9%A1%B6%E7%82%B9%E6%89%B0%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/07/HexMap/4-3%20%E9%A1%B6%E7%82%B9%E6%89%B0%E5%8A%A8/" class="post-title-link" itemprop="url">4-3 顶点扰动</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-07 23:07:19" itemprop="dateCreated datePublished" datetime="2020-11-07T23:07:19+08:00">2020-11-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们使用世界坐标中的一个点，在彩色噪点图上进行采样，得到了一个4D向量。在这一章中，我们使用这个4D向量，对地图内的各个顶点进行扰动，让地图看起来有更多的变化。我们回到<code>HexMesh.cs</code>中，在这里我们添加一个方法<code>Perturb </code>来负责这个工作。这个方法使用一个世界坐标内的点，进行扰动后，返回扰动后的坐标。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通过世界内的一个点(vector3)，经过彩色噪点图扰动后，返回扰动后的Vect3</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>世界坐标内的点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>经过噪点图扰动后的点坐标<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//利用世界空间内一点，在彩色噪点图上进行采样，得到彩色噪点图内一点的RGBA信息</span></span><br><span class="line">        Vector4 sample = HexMetrics.SampleNoise(position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　通过世界坐标采样完成后，我们先使用原始坐标加采样坐标的方式获得新的扰动后坐标，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//使用原始坐标加上噪点图的采样坐标，得到扰动后坐标</span></span><br><span class="line">    position.x += sample.x;</span><br><span class="line">    position.y += sample.y;</span><br><span class="line">    position.z += sample.z;</span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　那么要如何快速的让地图中所有顶点都产生扰动？只需要在<code>AddTriangle</code>和<code>AddQuad</code>里添加顶点到列表中时修改每个顶点就行了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangle</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里的坐标变为扰动后的坐标</span></span><br><span class="line">    vertices.Add(Perturb(v1));</span><br><span class="line">    vertices.Add(Perturb(v2));</span><br><span class="line">    vertices.Add(Perturb(v3));</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuad</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里的坐标变为扰动后的坐标</span></span><br><span class="line">    vertices.Add(Perturb(v1));</span><br><span class="line">    vertices.Add(Perturb(v2));</span><br><span class="line">    vertices.Add(Perturb(v3));</span><br><span class="line">    vertices.Add(Perturb(v4));</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-3-1.png"></p>
-<blockquote>
-<p>为什么顶点扰动后四边形依然是平坦的？<br>很可能并不是。这些四边形由两个不再对齐的三角形构成，因为这些三角形共享两个顶点，这些顶点的法线会平滑变化。这意味着你看不到两个三角形之间的明显过渡，如果扭曲的不是太明显，视觉效果上仍然会感觉这个四边形是平的。</p>
-</blockquote>
-<p>　　经过扰动后看起来好像没多大变化，除了单元格的坐标数字不见了之外。这是因为我们把顶点加上了噪声采样的坐标，这些坐标的计算结果总是正值，所以所有三角形都在标签上方并覆盖了它们。所以我们需要把采样的范围控制在-1至1之间。代码如下</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将采样后的扰动结果控制在1到-1之间</span></span><br><span class="line">    position.x += sample.x * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line">    position.y += sample.y * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line">    position.z += sample.z * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-3-2.png"></p>
-<p>　　现在我们就完成了通过一张彩色噪点图进行采样，并对地图中每个顶点进行伪随机的扰动。但是现在的扰动范围只是在-到-1之间，效果并不是很明显，在接下来的一章中，我们将加入新的参数，来控制扰动的强度。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/f7eb136ab9cea033d018e75cb24fb23d2a5b4ed1">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1665,13 +1658,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">119k</span>
+    <span title="站点总字数">120k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:48</span>
+    <span title="站点阅读时长">1:49</span>
   </span>
 </div>
 <div class="busuanzi-count">

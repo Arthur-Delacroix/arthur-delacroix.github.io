@@ -456,152 +456,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity3D WebGL 相关踩坑记录 1</title>
-    <url>/2020/09/15/Hexo/Part1/</url>
-    <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
-<ul>
-<li>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。</li>
-<li>自定义加载 Logo 和背景色等样式，未找到修改位置。</li>
-<li>触摸等交互方式要适配移动端。目前使用了lean。</li>
-<li>UI等界面元素适配移动端。</li>
-<li>将 WebGL 内容嵌入 Hexo Next 博客中。</li>
-</ul>
-<p>非重要修改点为：</p>
-<ul>
-<li>默认全屏，或者有窗口尺寸选项，这个可能要通过JS来实现。</li>
-<li>加载时的自定义 Logo ，目前测试可以使用 PNG 和 Base64 编码的图片，理论上应该可以使用 SVG 格式的图片，有待测试。 </li>
-<li>加载时候的界面背景色未找到修改的位置。</li>
-</ul>
-<h5 id="Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告"><a href="#Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告" class="headerlink" title="Unity3D WebGL 在移动端上不再弹出移动端浏览器警告"></a>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">compatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">/*UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup(&quot;Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : [&quot;Edge&quot;, &quot;Firefox&quot;, &quot;Chrome&quot;, &quot;Safari&quot;].indexOf(UnityLoader.SystemInfo.browser) == -1 ? e.popup(&quot;Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : t() : e.popup(&quot;Your browser does not support WebGL&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: r</span></span><br><span class="line"><span class="comment">	&#125;])*/</span></span><br><span class="line">&#125;,</span><br><span class="line">buildCompatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;undefined&quot;</span> == <span class="keyword">typeof</span> e.graphicsAPI) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; e.graphicsAPI.length; t++) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = e.graphicsAPI[t];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 2.0&quot;</span> == r &amp;&amp; <span class="number">2</span> == UnityLoader.SystemInfo.hasWebGL) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 1.0&quot;</span> == r &amp;&amp; UnityLoader.SystemInfo.hasWebGL &gt;= <span class="number">1</span>) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            e.print(<span class="string">&quot;Warning: Unsupported graphics API &quot;</span> + r)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ! <span class="number">1</span></span><br><span class="line">       &#125;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">//n() ? !UnityLoader.SystemInfo.hasThreads &amp;&amp; e.multithreading ? r(&quot;Your browser does not support multithreading.&quot;) : t() : r(&quot;Your browser does not support any of the required graphics API for this content.&quot;)</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-
-<p>当使用Unity3D 2019.4发布了WebGL项目后，会在Build目录下生成一个UnityLoader.js文件，这个文件感觉主要是加载Unity3D WebGL的内容，而且是一个压缩版的。</p>
-<ol>
-<li>使用网上的JS格式美化工具，将整个JS代码进行格式美化，使代码可读。  </li>
-<li>要修改的代码集中在2628到2654行之间，不同的代码格式美化工具，可能行数会有不同。</li>
-<li>找到 <code>compatibilityCheck: function(e, t, r)</code> 和 <code>buildCompatibilityCheck: function(e, t, r)</code> 这两个方法，将其方法体注释掉，添加 <code>t();</code> </li>
-</ol>
-<p>注意，这样虽然屏蔽了所有浏览器的警告提示，可以在手机浏览器，包括微信内，都可以打开 Unity3D WebGL 的内容。但是在某些浏览器内因为内核的问题，导致内容不会加载，也没有相关提示，只显示一个灰色的色块。目前已知有问题的浏览器是Mac端的Safari。</p>
-<h5 id="Unity3D-WebGL-代码嵌入-Hexo-Next-页面中"><a href="#Unity3D-WebGL-代码嵌入-Hexo-Next-页面中" class="headerlink" title="Unity3D WebGL 代码嵌入 Hexo Next 页面中"></a>Unity3D WebGL 代码嵌入 Hexo Next 页面中</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;Build/UnityLoader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">UnityLoader.instantiate(<span class="string">&quot;unityContainer&quot;</span>, <span class="string">&quot;Build/WebGL_Build.json&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;unityContainer&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 800px; height: 450px;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
-<li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
-<li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity3D WebGL 相关踩坑记录 2</title>
-    <url>/2020/09/17/Hexo/Part2/</url>
-    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
-<ul>
-<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
-</li>
-<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
-</li>
-<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
-</li>
-<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
-</li>
-<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>遗留问题</p>
-<ul>
-<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
-<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
-<ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
-</ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
-<hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>0-0 关于Hex Map系列文章</title>
     <url>/2020/09/25/HexMap/0-0%20%E5%85%B3%E4%BA%8EHex%20Map%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/</url>
     <content><![CDATA[<p>　　偶然间在Unity论坛上发现了Jasper Flick大神的文章，顺藤摸瓜，发现Jasper Flick大神还有一个网站，专门写各种各样的教程和技术文章，每一篇都非常有价值。在征得大神同意后，决定挖个深坑，把六边形地图系统的文章翻译出来，同时可以精进自己的技术和英语水平。</p>
@@ -1040,26 +894,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2-10 颜色混合区域优化</title>
-    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
-<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
-<blockquote>
-<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-1 计算相邻的地图单元的位置</title>
     <url>/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　上一章中我们完成了改变单个地图单元颜色的功能。但是通过观察可以发现，如果相邻的两个地图单元颜色不相同，他们之间的颜色过渡会显得非常的生硬。两者的对比效果如下图：</p>
@@ -1099,6 +933,26 @@
 <p>什么是扩展方法？<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
 </blockquote>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/18aca13c0edcfd279b0b54cd0fedbfaea4b91f9e">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-10 颜色混合区域优化</title>
+    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
+<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
+<blockquote>
+<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1168,30 +1022,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2-3 重构部分现有方法</title>
-    <url>/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>　　在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。<br>　　首先回到<code>HexMetrics.cs</code>脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的<code>Vector3[] corners</code>枚举设置为私有了。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetFirstCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction+1位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetSecondtCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来回到<code>HexMesh.cs</code>脚本中，在<code>private void Triangulate(HexCell cell)</code>方法中，我们可以替换掉之前使用<code>corners</code>枚举获取顶点的代码。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//private void Triangulate(HexCell cell)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取单个cell的中点位置</span></span><br><span class="line">    Vector3 center = cell.transform.localPosition;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.GetFirstCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为有了HexDirection，这里不再直接使用corners枚举来获取cell的顶点位置信息，而使用HexDirection方位来获取</span></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="comment">//for (int i = 0; i &lt; 6; i++)</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    //构建三角面片</span></span><br><span class="line">    <span class="comment">//    AddTriangle(</span></span><br><span class="line">    <span class="comment">//        center,</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i],</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i + 1]</span></span><br><span class="line">    <span class="comment">//    );</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，我们新建一个<code>Triangulate(HexCell cell)</code>方法，使用HexDirection方位来循环添加单个地图单元的6个点点位置信息。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 使用HexDirection方位，为单个cell循环添加其6个顶点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 此方法之后会进行优化合并</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (HexDirection d = HexDirection.NE; d &lt;= HexDirection.NW; d++)</span><br><span class="line">    &#123;</span><br><span class="line">        Triangulate(d, cell);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，前置的一些准备工作就完成了，我们将之前直接使用<code>corners</code>枚举的代码，替换为了使用HexDirection方位的代码，避免了一些复杂的计算，也保证了<code>corners</code>的安全性。<br>　　接下来的章节中，我们将开始实现两个地图单元之间颜色混合的功能了。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b7679f24ac0bec07b992cb7429ad9c785061c601">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-2 链接相邻的力图单元</title>
     <url>/2020/10/07/HexMap/2-2%20%E9%93%BE%E6%8E%A5%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/</url>
     <content><![CDATA[<p>　　在上一章节中，我们通过扩展方法，可以计算出一个地图单元自身相对于其周围地图单元的位置，并完善了相关的方法。接下来，我们要将地图内的所有地图单元互相链接起来。<br>　　在<code>HexGrid.cs</code>中使用<code>CreateCell</code>方法创建地图单元的时候，建立每个地图单元之间的位置链接关系。在这里，我们是从左至右逐行查看每个地图单元时，就可以知道已经创建了哪些地图单元，这些创建好的地图单元就是我们要进行链接的地图单元。<br>　　最简单的链接关系就是E-W链接。每一行的第一个地图单元，是没有E方向的相邻地图单元的。除此之外，其他的单元格都是有E方向的相邻单元格。而且这些地图单元都是在我们遍历它们并建立链接之前，就已经被创建好了。所以这里可以很容易的建立所有地图单元的E-W方向的链接。</p>
@@ -1218,6 +1048,30 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-2-6.png"></p>
 <p>　　现在，我们已经将所有的地图单元建立了相互的链接关系，这是颜色混合的前置工作之一。接下来会进行一些代码的调整，并实现单元格之间颜色过渡的效果。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7179c3b1142fb19b7e922def8f85e8fbb74f1a6a">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-3 重构部分现有方法</title>
+    <url>/2020/10/08/HexMap/2-3%20%E9%87%8D%E6%9E%84%E9%83%A8%E5%88%86%E7%8E%B0%E6%9C%89%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>　　在上一章中，我们创建了地图单元之间的互相链接关系。现在，我们需要利用已经创建好的链接关系，重构一些我们之前需要复杂计算的方法。<br>　　首先回到<code>HexMetrics.cs</code>脚本中，添加两个新的静态方法，用来获取地图单元的顶点位置信息。这样我们就可以将原本的<code>Vector3[] corners</code>枚举设置为私有了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetFirstCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取cell的direction+1位置的顶点</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetSecondtCorner</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来回到<code>HexMesh.cs</code>脚本中，在<code>private void Triangulate(HexCell cell)</code>方法中，我们可以替换掉之前使用<code>corners</code>枚举获取顶点的代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//private void Triangulate(HexCell cell)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取单个cell的中点位置</span></span><br><span class="line">    Vector3 center = cell.transform.localPosition;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.GetFirstCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为有了HexDirection，这里不再直接使用corners枚举来获取cell的顶点位置信息，而使用HexDirection方位来获取</span></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="comment">//for (int i = 0; i &lt; 6; i++)</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    //构建三角面片</span></span><br><span class="line">    <span class="comment">//    AddTriangle(</span></span><br><span class="line">    <span class="comment">//        center,</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i],</span></span><br><span class="line">    <span class="comment">//        center + HexMetrics.corners[i + 1]</span></span><br><span class="line">    <span class="comment">//    );</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，我们新建一个<code>Triangulate(HexCell cell)</code>方法，使用HexDirection方位来循环添加单个地图单元的6个点点位置信息。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 使用HexDirection方位，为单个cell循环添加其6个顶点信息</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 此方法之后会进行优化合并</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (HexDirection d = HexDirection.NE; d &lt;= HexDirection.NW; d++)</span><br><span class="line">    &#123;</span><br><span class="line">        Triangulate(d, cell);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，前置的一些准备工作就完成了，我们将之前直接使用<code>corners</code>枚举的代码，替换为了使用HexDirection方位的代码，避免了一些复杂的计算，也保证了<code>corners</code>的安全性。<br>　　接下来的章节中，我们将开始实现两个地图单元之间颜色混合的功能了。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b7679f24ac0bec07b992cb7429ad9c785061c601">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1285,33 +1139,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2-8 创建双色颜色混合区域</title>
-    <url>/2020/10/13/HexMap/2-8%20%E5%88%9B%E5%BB%BA%E5%8F%8C%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>　　在上一章中，我们将地图单元自身颜色区域和颜色混合区域分开了。但是通过观察运行效果发现，当相邻的多个切颜色互不相同的地图单元进行颜色混合时，会产生类似“溢色”的错误效果。为了解决这个问题，我们现在要吧也是呢混合区域继续进行细分。将它分为双色混合区域和三色混合区域。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png"></p>
-<p>　　如上图所示，新的V1、V2、V3、V4顶点所构成的区域，就是双色混合区域。这个区域只负责混合2个相邻地图单元的颜色。首先计算出V3、V4中点的位置，然后用该位置乘以颜色混合区域所占比例的数值，就的出来了V1到V3或V2到V4的距离。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取矩形混合区域中，内边缘顶点到外边缘顶点的距离</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetBridge</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//参考图片 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png</span></span><br><span class="line">    <span class="comment">//(corners[(int)direction] + corners[(int)direction + 1]) * 0.5f 是得出cell相邻两个顶点所连线的中点的位置</span></span><br><span class="line">    <span class="comment">//其实也就是内切圆和cell相切的一个切点，也就是线段V3V4的中点，其实也是角∠(V1 center v2)的角平分线</span></span><br><span class="line">    <span class="comment">//具体可以看图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png 来理解</span></span><br><span class="line">    <span class="comment">//得出V3 V4中点位置后，再乘以颜色混合区域所占比例，即25%，得出V1到V3的距离</span></span><br><span class="line">    <span class="keyword">return</span> (corners[(<span class="keyword">int</span>)direction] + corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>]) * <span class="number">0.5f</span> * blendFactor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着再回到<code>HexMesh</code>中，先修改为颜色混合区域顶点赋值的方法，因为只需要混合两个地图单元的颜色，所以参数修改为2个。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为四边形颜色混合区域的每个顶点赋值颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 因为该区域只负责混合2个cell的颜色，所以4个顶点只需要2个颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>cell祖神颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>混合后的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuadColor</span>(<span class="params">Color c1, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后回到<code>private void Triangulate(HexDirection direction, HexCell cell)</code>方法中，修改构建颜色混合区域的代码。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//颜色混合区域变为了矩形，V3和V4的位置，其实是通过V1和V2顶点分别加上矩形区域的高来计算得出的</span></span><br><span class="line">    <span class="comment">//具体可以查看HexMetrics.GetBridge方法的说明</span></span><br><span class="line">    Vector3 bridge = HexMetrics.GetBridge(direction);</span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, (cell.color + neighbor.color) * <span class="number">0.5f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-2.png"></p>
-<p>　　现在我们就完成了两个相邻地图单元之间的颜色混合功能。接下来的一章中，我们将实现3个彼此相邻地图单元的颜色混合区域，也就是要混合三种颜色的区域。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c9c8c9400b6d399c5c9010c1b99f74b51afa0137">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-6 颜色混合区域</title>
     <url>/2020/10/11/HexMap/2-6%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在上一章中我们重构了一部分颜色混合的代码，提升了视觉效果。但是经过观察发现，边缘处的地图单元，颜色混合还是存在一些问题的。而且我们还会发现，在多个颜色互相混合的时候。地图单元自身的颜色会因为混合而变得模糊不清。让我们很难清晰的识别出每一个地图单元。<br>　　为了解决这个问题，我们需要改变一下思路。不再依靠地图单元自身的三角面片来处理颜色渐变的问题，而是在相邻的地图单元之间创建一个颜色混合区域来专门处理这个问题。这样不仅颜色混合区域可以单独处理，代码会更加清晰，而且地图单元也可以保持自身的颜色不会受到颜色混合的影响。</p>
@@ -1339,28 +1166,6 @@
       </tags>
   </entry>
   <entry>
-    <title>3-1 地图单元的高度属性</title>
-    <url>/2020/10/18/HexMap/3-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%AB%98%E5%BA%A6%E5%B1%9E%E6%80%A7/</url>
-    <content><![CDATA[<p>　　在之前的章节中，我们完成了地图单元之间颜色混合的功能，并优化了显示和效率。现在的地图虽然可以显示自定义颜色，但细节还是不够丰富。在接下来的章节中，我们将为现在的地图系统添加单元格高度的功能，让整个地图系统的细节更加丰富。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-1-1.png"></p>
-<p>　　为了给地地图单元增加高度功能，就要给每个地图单元增加一个高度属性，这里我们用一个<code>int</code>类型的变量来表示每个地图单元的高度。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每个cell的高度等级，0即在水平面位置上</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，我们还要设置每一级高度，具体是多少。这个数值可以用一个常量来表示。现在我们先暂时使用Unity3D中5个标准单位来作为每一级的高度值。这样高低变化看起来会比较明显，在之后的步骤中也可以根据视觉效果来及时调整。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//地图中每个高度等级之间相差的实际距离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> elevationStep = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c725150de62a039cfe89003a5c9fe91c30e17f01">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-7 创建颜色混合区域</title>
     <url>/2020/10/12/HexMap/2-7%20%E5%88%9B%E5%BB%BA%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在上一章我们完成了地图单元自身颜色区域的构建，但是并没有在颜色上进行修正。这一章中我们要创建颜色混合区域，并让颜色混合区域和地图单元区域都显示正确的颜色。</p>
@@ -1374,6 +1179,33 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-7-2.png"></p>
 <p>　　创建了颜色混合区域之后，在视觉效果上有了比较大的提升，现在地图单元既能保持自己的颜色不会被干扰，同时还有专门的颜色混合区域来进行与相邻地图单元的颜色混合。但是我们仔细观察运行结果，还是会发现一些问题，例如当三个相邻切互相颜色不同的地图单元互相进行颜色混合的时候，颜色混合区域会互相干扰，产生一种类似于“溢色”的感觉。在接下来的章节中，我们会进一步拆分颜色混合区域，来解决这个问题。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/4d7f36150f602f29ac941e39efa42fb2dc5482df">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-8 创建双色颜色混合区域</title>
+    <url>/2020/10/13/HexMap/2-8%20%E5%88%9B%E5%BB%BA%E5%8F%8C%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>　　在上一章中，我们将地图单元自身颜色区域和颜色混合区域分开了。但是通过观察运行效果发现，当相邻的多个切颜色互不相同的地图单元进行颜色混合时，会产生类似“溢色”的错误效果。为了解决这个问题，我们现在要吧也是呢混合区域继续进行细分。将它分为双色混合区域和三色混合区域。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png"></p>
+<p>　　如上图所示，新的V1、V2、V3、V4顶点所构成的区域，就是双色混合区域。这个区域只负责混合2个相邻地图单元的颜色。首先计算出V3、V4中点的位置，然后用该位置乘以颜色混合区域所占比例的数值，就的出来了V1到V3或V2到V4的距离。</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取矩形混合区域中，内边缘顶点到外边缘顶点的距离</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>顶点方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector3 <span class="title">GetBridge</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//参考图片 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-1.png</span></span><br><span class="line">    <span class="comment">//(corners[(int)direction] + corners[(int)direction + 1]) * 0.5f 是得出cell相邻两个顶点所连线的中点的位置</span></span><br><span class="line">    <span class="comment">//其实也就是内切圆和cell相切的一个切点，也就是线段V3V4的中点，其实也是角∠(V1 center v2)的角平分线</span></span><br><span class="line">    <span class="comment">//具体可以看图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png 来理解</span></span><br><span class="line">    <span class="comment">//得出V3 V4中点位置后，再乘以颜色混合区域所占比例，即25%，得出V1到V3的距离</span></span><br><span class="line">    <span class="keyword">return</span> (corners[(<span class="keyword">int</span>)direction] + corners[(<span class="keyword">int</span>)direction + <span class="number">1</span>]) * <span class="number">0.5f</span> * blendFactor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着再回到<code>HexMesh</code>中，先修改为颜色混合区域顶点赋值的方法，因为只需要混合两个地图单元的颜色，所以参数修改为2个。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为四边形颜色混合区域的每个顶点赋值颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 因为该区域只负责混合2个cell的颜色，所以4个顶点只需要2个颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c1&quot;&gt;</span>cell祖神颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;c2&quot;&gt;</span>混合后的颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuadColor</span>(<span class="params">Color c1, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c1);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">    colors.Add(c2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后回到<code>private void Triangulate(HexDirection direction, HexCell cell)</code>方法中，修改构建颜色混合区域的代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//颜色混合区域变为了矩形，V3和V4的位置，其实是通过V1和V2顶点分别加上矩形区域的高来计算得出的</span></span><br><span class="line">    <span class="comment">//具体可以查看HexMetrics.GetBridge方法的说明</span></span><br><span class="line">    Vector3 bridge = HexMetrics.GetBridge(direction);</span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, (cell.color + neighbor.color) * <span class="number">0.5f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-8-2.png"></p>
+<p>　　现在我们就完成了两个相邻地图单元之间的颜色混合功能。接下来的一章中，我们将实现3个彼此相邻地图单元的颜色混合区域，也就是要混合三种颜色的区域。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c9c8c9400b6d399c5c9010c1b99f74b51afa0137">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1475,6 +1307,28 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-5.png"></p>
 <p>　　这样，我们就完成了<code>SSF</code>类型连接区域的构建。不过<code>SSF</code>类型还存在一些变体情况，我们在下一个章节进行完善。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/566fa2e2e4e1d0894b0df0cec93fdc0742b43be6">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-1 地图单元的高度属性</title>
+    <url>/2020/10/18/HexMap/3-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%AB%98%E5%BA%A6%E5%B1%9E%E6%80%A7/</url>
+    <content><![CDATA[<p>　　在之前的章节中，我们完成了地图单元之间颜色混合的功能，并优化了显示和效率。现在的地图虽然可以显示自定义颜色，但细节还是不够丰富。在接下来的章节中，我们将为现在的地图系统添加单元格高度的功能，让整个地图系统的细节更加丰富。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-1-1.png"></p>
+<p>　　为了给地地图单元增加高度功能，就要给每个地图单元增加一个高度属性，这里我们用一个<code>int</code>类型的变量来表示每个地图单元的高度。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每个cell的高度等级，0即在水平面位置上</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，我们还要设置每一级高度，具体是多少。这个数值可以用一个常量来表示。现在我们先暂时使用Unity3D中5个标准单位来作为每一级的高度值。这样高低变化看起来会比较明显，在之后的步骤中也可以根据视觉效果来及时调整。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//地图中每个高度等级之间相差的实际距离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> elevationStep = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/c725150de62a039cfe89003a5c9fe91c30e17f01">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1602,31 +1456,6 @@
       </tags>
   </entry>
   <entry>
-    <title>3-16 Slope-Cliff类型镜像组合</title>
-    <url>/2020/11/02/HexMap/3-16%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E9%95%9C%E5%83%8F%E7%BB%84%E5%90%88/</url>
-    <content><![CDATA[<p>　　在上一章中，我们完成了Slope-Cliff类型三角形连接区域的构建，在这一章中，我们将完成Slope-Cliff类型的镜像组合中，三角形连接区域的构建。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-1.png"></p>
-<p>　　这部分所使用到的代码，我们可以参考构建Slope-Cliff类型三角形连接区域所用到的代码。只不过构建三角形时，顺序有所不同。我们创建一个新的<code>TriangulateCornerCliffTerraces</code>方法，其内部代码与<code>TriangulateCornerTerracesCliff</code>相似，只是调整了参数顺序。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 针对Slope-Cliff连接 镜像 类型 创建三角形连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;begin&quot;&gt;</span>初始cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>初始cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;left&quot;&gt;</span>左侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;leftCell&quot;&gt;</span>左侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;right&quot;&gt;</span>右侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rightCell&quot;&gt;</span>右侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerCliffTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (leftCell.Elevation - beginCell.Elevation);</span><br><span class="line">    Vector3 boundary = Vector3.Lerp(begin, left, b);</span><br><span class="line">    Color boundaryColor = Color.Lerp(beginCell.color, leftCell.color, b);</span><br><span class="line"></span><br><span class="line">    TriangulateBoundaryTriangle(right, rightCell, begin, beginCell, boundary, boundaryColor);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateBoundaryTriangle(left, leftCell, right, rightCell, boundary, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        AddTriangle(left, right, boundary);</span><br><span class="line">        AddTriangleColor(leftCell.color, rightCell.color, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　完成镜像的方法后，我们只需要在``方法中判断并调用即可，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Slope-Cliff连接 镜像 类型</span></span><br><span class="line">        <span class="comment">//bottom最低，right比bottom高1，left比right高1及以上</span></span><br><span class="line">        TriangulateCornerCliffTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-2.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-3.png"></p>
-<p>　　这样，我们就完成了Slope-Cliff类型及其镜像的三角形连接区域构建。在接下来的章节中，我们将完成最后一种连接类型，即最低的地图单元，和其他两个地图单元的高度差都大于1的情况。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/62a9cf7f8037a44cf4d339298275c31d7c2170da">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>3-17 双Cliff类型三角形连接区域构建</title>
     <url>/2020/11/03/HexMap/3-17%20%E5%8F%8CCliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了<code>SSF</code>和<code>Slope-Cliff</code>两种连接类型及其变体的三角形连接区域的构建。现在我们来完成最后一种情况，也就是最低的bottom地图单元与left和right地图单元的高度差都大于1，并且left和right地图单元的高度差为1，这种组合类型。我们将这种组合命名为<code>Cliff-Cliff-Slope</code>类型，简写为<code>CCS</code>。而且由于lefr和right两个地图单元之间高度差为1，如果right地图单元比较高，就简写为<code>CCSR</code>类型，如果left地图单元比较高，就简写为<code>CCSL</code>类型。<code>CCSR</code>类型和<code>CCSL</code>类型分别如下图所示：</p>
@@ -1666,6 +1495,31 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-18-1.png"></p>
 <p>　　至此，我们就完成了所有地图单元之间连接类型的判断，以及构建其相邻的三角形连接区域的功能了。相比之前没有任何段落感的地形，现在的地形层次更加丰富，立体感更强。在接下来的章节中，我们要继续丰富地图的细节，使用一张随机的噪点图，对地图上的单元素进行一定的形变。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/97602cbf7949a6cf945984853ed783b2fcf70060">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-16 Slope-Cliff类型镜像组合</title>
+    <url>/2020/11/02/HexMap/3-16%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E9%95%9C%E5%83%8F%E7%BB%84%E5%90%88/</url>
+    <content><![CDATA[<p>　　在上一章中，我们完成了Slope-Cliff类型三角形连接区域的构建，在这一章中，我们将完成Slope-Cliff类型的镜像组合中，三角形连接区域的构建。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-1.png"></p>
+<p>　　这部分所使用到的代码，我们可以参考构建Slope-Cliff类型三角形连接区域所用到的代码。只不过构建三角形时，顺序有所不同。我们创建一个新的<code>TriangulateCornerCliffTerraces</code>方法，其内部代码与<code>TriangulateCornerTerracesCliff</code>相似，只是调整了参数顺序。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 针对Slope-Cliff连接 镜像 类型 创建三角形连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;begin&quot;&gt;</span>初始cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>初始cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;left&quot;&gt;</span>左侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;leftCell&quot;&gt;</span>左侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;right&quot;&gt;</span>右侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rightCell&quot;&gt;</span>右侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerCliffTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (leftCell.Elevation - beginCell.Elevation);</span><br><span class="line">    Vector3 boundary = Vector3.Lerp(begin, left, b);</span><br><span class="line">    Color boundaryColor = Color.Lerp(beginCell.color, leftCell.color, b);</span><br><span class="line"></span><br><span class="line">    TriangulateBoundaryTriangle(right, rightCell, begin, beginCell, boundary, boundaryColor);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateBoundaryTriangle(left, leftCell, right, rightCell, boundary, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        AddTriangle(left, right, boundary);</span><br><span class="line">        AddTriangleColor(leftCell.color, rightCell.color, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成镜像的方法后，我们只需要在``方法中判断并调用即可，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Slope-Cliff连接 镜像 类型</span></span><br><span class="line">        <span class="comment">//bottom最低，right比bottom高1，left比right高1及以上</span></span><br><span class="line">        TriangulateCornerCliffTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-2.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-16-3.png"></p>
+<p>　　这样，我们就完成了Slope-Cliff类型及其镜像的三角形连接区域构建。在接下来的章节中，我们将完成最后一种连接类型，即最低的地图单元，和其他两个地图单元的高度差都大于1的情况。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/62a9cf7f8037a44cf4d339298275c31d7c2170da">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1765,6 +1619,28 @@
       </tags>
   </entry>
   <entry>
+    <title>3-5 修复相邻地图单元连接区域</title>
+    <url>/2020/10/22/HexMap/3-5%20%E4%BF%AE%E5%A4%8D%E7%9B%B8%E9%82%BB%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>　　在上一章中，我们修复了地图单元与其对应UI高度不同的问题。在这一章中，我们来修复两个相邻且高度不同的地图单元，它们之间的连接处断裂的问题。<br>　　先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法里我们计算了连接区域的每个顶点。与改变UI高度的思路相似，这里只需要将计算后的两个顶点加上高度即可。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里为连接相邻cell的v3 v4顶点加上其所在cell的高度</span></span><br><span class="line">    v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在我们已经修复了矩形颜色混合区域断裂的问题了。三角形颜色混合区域的思路相同，但是略微复杂一些。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//声明一个新的vector3变量来存储高度改变后的顶点位置</span></span><br><span class="line">        <span class="comment">//v5的本质其实就是v2 + HexMetrics.GetBridge(direction.Next()加上高度值</span></span><br><span class="line">        Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line">        v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">        AddTriangle(v2, v4, v5);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-5-1.png"></p>
+<p>　　这样，我们就完成了所有连接区域的修复了。现在通过UI设置高度之后，点击任意的地图单元，其对应的坐标、周围的连接区域都完全正常了。但是连接区域部分只是简单的进行了拉伸，当两个相邻的地图单元高度差很大的时候，会显得比较突兀，而且整个地图的细节不够。在接下来的章节中，我们来丰富连接区域的细节，让连接区域更加有层次感。</p>
+<p>[Github代码](</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>3-6 阶梯状的连接区域</title>
     <url>/2020/10/23/HexMap/3-6%20%E9%98%B6%E6%A2%AF%E7%8A%B6%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在之前的章节中我们修复了地图单元对应UI高度和连接区域断裂的问题。同时我们也发现一个问题，在两个相邻且有高差的地图单元之间，连接区域只是被简单的拉伸了。如果高差很大的话，这个现象就更加明显。在接下来的章节中，我们来丰富连接区域的细节。<br>　　增加连接区域的具体方式，我们可以参考《无尽传奇》这个游戏。将一个倾斜的连接区域插入两段阶梯，如下图所示。这样一个完整的斜面就被分为了三个小斜面。每个斜面之间用平面相连接。这就需要我们把这个阶梯斜面分为五个部分来看。</p>
@@ -1788,28 +1664,6 @@
 <figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过插值计算出集体装连接区域，每个顶点的颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 计算颜色值不需要考虑垂直方向坐标变化的问题，只需要根据水平插值便可以得出计算结果</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;a&quot;&gt;</span>起始顶点的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;b&quot;&gt;</span>结束顶点的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;step&quot;&gt;</span>第几个步长<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">TerraceLerp</span>(<span class="params">Color a, Color b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//单个步长的比例 与 步长的个数，计算出现在顶点所在的比例</span></span><br><span class="line">    <span class="keyword">float</span> h = step * horizontalTerraceStepSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过Color.Lerp方法，计算出现在顶点的颜色值</span></span><br><span class="line">    <span class="keyword">return</span> Color.Lerp(a, b, h);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>　　这样，我们就完成了计算阶梯连接区域中，每个步长顶点的位置、颜色的功能了。在下面的章节中，我们将调用这些方法来实现矩形连接区域的三角构建。</p>
-<p>[Github代码](</p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>3-5 修复相邻地图单元连接区域</title>
-    <url>/2020/10/22/HexMap/3-5%20%E4%BF%AE%E5%A4%8D%E7%9B%B8%E9%82%BB%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>　　在上一章中，我们修复了地图单元与其对应UI高度不同的问题。在这一章中，我们来修复两个相邻且高度不同的地图单元，它们之间的连接处断裂的问题。<br>　　先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法里我们计算了连接区域的每个顶点。与改变UI高度的思路相似，这里只需要将计算后的两个顶点加上高度即可。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里为连接相邻cell的v3 v4顶点加上其所在cell的高度</span></span><br><span class="line">    v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在我们已经修复了矩形颜色混合区域断裂的问题了。三角形颜色混合区域的思路相同，但是略微复杂一些。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//声明一个新的vector3变量来存储高度改变后的顶点位置</span></span><br><span class="line">        <span class="comment">//v5的本质其实就是v2 + HexMetrics.GetBridge(direction.Next()加上高度值</span></span><br><span class="line">        Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line">        v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">        AddTriangle(v2, v4, v5);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-5-1.png"></p>
-<p>　　这样，我们就完成了所有连接区域的修复了。现在通过UI设置高度之后，点击任意的地图单元，其对应的坐标、周围的连接区域都完全正常了。但是连接区域部分只是简单的进行了拉伸，当两个相邻的地图单元高度差很大的时候，会显得比较突兀，而且整个地图的细节不够。在接下来的章节中，我们来丰富连接区域的细节，让连接区域更加有层次感。</p>
 <p>[Github代码](</p>
 ]]></content>
       <categories>
@@ -1908,6 +1762,81 @@
       </tags>
   </entry>
   <entry>
+    <title>Unity3D WebGL 相关踩坑记录 2</title>
+    <url>/2020/09/17/Hexo/Part2/</url>
+    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
+<ul>
+<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
+</li>
+<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
+</li>
+<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
+</li>
+<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
+</li>
+<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遗留问题</p>
+<ul>
+<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Unity WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity3D WebGL 相关踩坑记录 1</title>
+    <url>/2020/09/15/Hexo/Part1/</url>
+    <content><![CDATA[<p>Unity3D发布手机版可用的项目，基于2019.4版本，问题主要集中在以下几点：</p>
+<ul>
+<li>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告。</li>
+<li>自定义加载 Logo 和背景色等样式，未找到修改位置。</li>
+<li>触摸等交互方式要适配移动端。目前使用了lean。</li>
+<li>UI等界面元素适配移动端。</li>
+<li>将 WebGL 内容嵌入 Hexo Next 博客中。</li>
+</ul>
+<p>非重要修改点为：</p>
+<ul>
+<li>默认全屏，或者有窗口尺寸选项，这个可能要通过JS来实现。</li>
+<li>加载时的自定义 Logo ，目前测试可以使用 PNG 和 Base64 编码的图片，理论上应该可以使用 SVG 格式的图片，有待测试。 </li>
+<li>加载时候的界面背景色未找到修改的位置。</li>
+</ul>
+<h5 id="Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告"><a href="#Unity3D-WebGL-在移动端上不再弹出移动端浏览器警告" class="headerlink" title="Unity3D WebGL 在移动端上不再弹出移动端浏览器警告"></a>Unity3D WebGL 在移动端上不再弹出移动端浏览器警告</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">compatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">/*UnityLoader.SystemInfo.hasWebGL ? UnityLoader.SystemInfo.mobile ? e.popup(&quot;Please note that Unity WebGL is not currently supported on mobiles. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : [&quot;Edge&quot;, &quot;Firefox&quot;, &quot;Chrome&quot;, &quot;Safari&quot;].indexOf(UnityLoader.SystemInfo.browser) == -1 ? e.popup(&quot;Please note that your browser is not currently supported for this Unity WebGL content. Press OK if you wish to continue anyway.&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: t</span></span><br><span class="line"><span class="comment">	&#125;]) : t() : e.popup(&quot;Your browser does not support WebGL&quot;, [&#123;</span></span><br><span class="line"><span class="comment">		text: &quot;OK&quot;,</span></span><br><span class="line"><span class="comment">		callback: r</span></span><br><span class="line"><span class="comment">	&#125;])*/</span></span><br><span class="line">&#125;,</span><br><span class="line">buildCompatibilityCheck: <span class="function"><span class="keyword">function</span>(<span class="params">e, t, r</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;undefined&quot;</span> == <span class="keyword">typeof</span> e.graphicsAPI) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> t = <span class="number">0</span>; t &lt; e.graphicsAPI.length; t++) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = e.graphicsAPI[t];</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 2.0&quot;</span> == r &amp;&amp; <span class="number">2</span> == UnityLoader.SystemInfo.hasWebGL) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;WebGL 1.0&quot;</span> == r &amp;&amp; UnityLoader.SystemInfo.hasWebGL &gt;= <span class="number">1</span>) <span class="keyword">return</span> ! <span class="number">0</span>;</span><br><span class="line">            e.print(<span class="string">&quot;Warning: Unsupported graphics API &quot;</span> + r)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ! <span class="number">1</span></span><br><span class="line">       &#125;</span><br><span class="line">       t();</span><br><span class="line">    <span class="comment">//n() ? !UnityLoader.SystemInfo.hasThreads &amp;&amp; e.multithreading ? r(&quot;Your browser does not support multithreading.&quot;) : t() : r(&quot;Your browser does not support any of the required graphics API for this content.&quot;)</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>当使用Unity3D 2019.4发布了WebGL项目后，会在Build目录下生成一个UnityLoader.js文件，这个文件感觉主要是加载Unity3D WebGL的内容，而且是一个压缩版的。</p>
+<ol>
+<li>使用网上的JS格式美化工具，将整个JS代码进行格式美化，使代码可读。  </li>
+<li>要修改的代码集中在2628到2654行之间，不同的代码格式美化工具，可能行数会有不同。</li>
+<li>找到 <code>compatibilityCheck: function(e, t, r)</code> 和 <code>buildCompatibilityCheck: function(e, t, r)</code> 这两个方法，将其方法体注释掉，添加 <code>t();</code> </li>
+</ol>
+<p>注意，这样虽然屏蔽了所有浏览器的警告提示，可以在手机浏览器，包括微信内，都可以打开 Unity3D WebGL 的内容。但是在某些浏览器内因为内核的问题，导致内容不会加载，也没有相关提示，只显示一个灰色的色块。目前已知有问题的浏览器是Mac端的Safari。</p>
+<h5 id="Unity3D-WebGL-代码嵌入-Hexo-Next-页面中"><a href="#Unity3D-WebGL-代码嵌入-Hexo-Next-页面中" class="headerlink" title="Unity3D WebGL 代码嵌入 Hexo Next 页面中"></a>Unity3D WebGL 代码嵌入 Hexo Next 页面中</h5><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;Build/UnityLoader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">UnityLoader.instantiate(<span class="string">&quot;unityContainer&quot;</span>, <span class="string">&quot;Build/WebGL_Build.json&quot;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;unityContainer&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 800px; height: 450px;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
+<li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
+<li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Unity WebGL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>4-1 导入噪点图</title>
     <url>/2020/11/05/HexMap/4-1%20%E5%AF%BC%E5%85%A5%E5%99%AA%E7%82%B9%E5%9B%BE/</url>
     <content><![CDATA[<p>　　到目前为止，我们可以通过程序化生成一个正六边形有高低差的地图，并且在不同的高低差之间有更多的细节。但是现在的地图仍然是一个很规则精确的蜂窝状网格。在接下来的章节中，我们会使用一张噪点图，为现在的地图增加一些不规则感，让地图看起来更加自然。<br>　　要添加一些不规则的感，就需要一些随机性，但又不是真正的全随机。所以我们需要的是在编辑地图时未选中的位置保持不变，不然每改动一点地图就全变了。所以需要是一种可重现的伪随机，即噪声。<br>　　柏林噪声(Perlin noise)就是一个很好的选择，它在每个点的位置都可以重现。当多种不同频率的柏林噪声叠加时，能产生大范围来看变化很大，小范围内又接近一致的噪声纹理，生成相对平滑的形变，靠近的点更倾向于黏在一起而不是向相反的方向扭曲。</p>
@@ -1976,31 +1905,6 @@
       </tags>
   </entry>
   <entry>
-    <title>4-12 阶梯连接区域的细分</title>
-    <url>/2020/11/16/HexMap/4-12%20%E9%98%B6%E6%A2%AF%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%9A%84%E7%BB%86%E5%88%86/</url>
-    <content><![CDATA[<p>　　在上一章中，我们创建了对计算细分顶点与构建三角面片的方法进行了抽象，将这些步骤分别封装在了不同的结构体和方法中。在这一章中我们将使用这些方法，来进行阶梯连接区域的细分。<br>　　要进行阶梯连接与其的细分，就需要把新的顶点信息传递到<code>TriangulateEdgeTerraces</code>方法中，在判断两个相邻地图单元连接方式为Slope时，进行阶梯状连接区域的构建。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, EdgeVertices e1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里也使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">        TriangulateEdgeTerraces(e1.v1, e1.v4, cell, e2.v1, e2.v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，要修改<code>TriangulateEdgeTerraces</code>方法的参数列表，新的参数是与阶梯连接区域相邻的两个边，而不是一组顶点。然后假设<code>EdgeVertices</code>里有插值计算函数,这就可以让我们简化TriangulateEdgeTerraces方法而不是使其变得更复杂。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 构建阶梯状连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 这里不再使用单一的顶点，而是直接使用cell与阶梯区域相连接的边，通过计算得出边上的顶点位置以及每个顶点的颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;begin&quot;&gt;</span>第一个cell与相邻阶梯化区域的边上顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>第一个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;end&quot;&gt;</span>第二个cell与相邻阶梯化区域的边上顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endCell&quot;&gt;</span>第二个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params">EdgeVertices begin, HexCell beginCell, EdgeVertices end, HexCell endCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过插值计算出相邻cell边的每个坐标点</span></span><br><span class="line">    EdgeVertices e2 = EdgeVertices.TerraceLerp(begin, end, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">//通过插值计算出相邻cell边每个坐标点的颜色</span></span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构建阶梯的第一段</span></span><br><span class="line">    TriangulateEdgeStrip(begin, beginCell.color, e2, c2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//循环生成中间部分</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        EdgeVertices e1 = e2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        e2 = EdgeVertices.TerraceLerp(begin, end, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, i);</span><br><span class="line">        TriangulateEdgeStrip(e1, c1, e2, c2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构建阶梯的最后一段</span></span><br><span class="line">    TriangulateEdgeStrip(e2, c2, end, endCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，回到<code>EdgeVertices.cs</code>中，创建<code>TerraceLerp</code>方法，这个方法是使用插值计算阶梯连接区域中，每一段的顶点位置。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通过两个cell的边，计算出阶梯连接区域，每一段上顶点的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;a&quot;&gt;</span>阶梯连接区域起始边<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;b&quot;&gt;</span>姐弟连接区域结束边<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;step&quot;&gt;</span>插值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>插值为step时，当前段落上每个顶点的位置信息<span class="doctag">&lt;/returns&gt;</span>    </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> EdgeVertices <span class="title">TerraceLerp</span>(<span class="params">EdgeVertices a, EdgeVertices b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        EdgeVertices result;</span><br><span class="line">        result.v1 = HexMetrics.TerraceLerp(a.v1, b.v1, step);</span><br><span class="line">        result.v2 = HexMetrics.TerraceLerp(a.v2, b.v2, step);</span><br><span class="line">        result.v3 = HexMetrics.TerraceLerp(a.v3, b.v3, step);</span><br><span class="line">        result.v4 = HexMetrics.TerraceLerp(a.v4, b.v4, step);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-12-1.png"></p>
-<p>　　至此，我们就完成了经过细分之后阶梯连接区域的构建。在下一章中，我们将修复之前暂缓的斜面与阶梯连接区域破面的问题。</p>
-<p>[Github代码](</p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>4-11 封装顶点计算方法</title>
     <url>/2020/11/15/HexMap/4-11%20%E5%B0%81%E8%A3%85%E9%A1%B6%E7%82%B9%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了地图单元与矩形连接区域的的连接。在我们新增代码的时候发现，计算六边形一条边上新增顶点的这部分代码，是可以单独抽象出来，组成一个新的方法，方便在之后计算顶点时调用。<br>　　我们创建一个新的脚本<code>EdgeVertices.cs</code>，其中是一个结构体，包含了4个顺时针排列在六边形一条边上的顶点。代码如下：</p>
@@ -2034,6 +1938,31 @@
       </tags>
   </entry>
   <entry>
+    <title>4-12 阶梯连接区域的细分</title>
+    <url>/2020/11/16/HexMap/4-12%20%E9%98%B6%E6%A2%AF%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%9A%84%E7%BB%86%E5%88%86/</url>
+    <content><![CDATA[<p>　　在上一章中，我们创建了对计算细分顶点与构建三角面片的方法进行了抽象，将这些步骤分别封装在了不同的结构体和方法中。在这一章中我们将使用这些方法，来进行阶梯连接区域的细分。<br>　　要进行阶梯连接与其的细分，就需要把新的顶点信息传递到<code>TriangulateEdgeTerraces</code>方法中，在判断两个相邻地图单元连接方式为Slope时，进行阶梯状连接区域的构建。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, EdgeVertices e1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里也使用EdgeVertices计算的顶点来构建矩形</span></span><br><span class="line">        TriangulateEdgeTerraces(e1.v1, e1.v4, cell, e2.v1, e2.v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，要修改<code>TriangulateEdgeTerraces</code>方法的参数列表，新的参数是与阶梯连接区域相邻的两个边，而不是一组顶点。然后假设<code>EdgeVertices</code>里有插值计算函数,这就可以让我们简化TriangulateEdgeTerraces方法而不是使其变得更复杂。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 构建阶梯状连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 这里不再使用单一的顶点，而是直接使用cell与阶梯区域相连接的边，通过计算得出边上的顶点位置以及每个顶点的颜色</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;begin&quot;&gt;</span>第一个cell与相邻阶梯化区域的边上顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>第一个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;end&quot;&gt;</span>第二个cell与相邻阶梯化区域的边上顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endCell&quot;&gt;</span>第二个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params">EdgeVertices begin, HexCell beginCell, EdgeVertices end, HexCell endCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过插值计算出相邻cell边的每个坐标点</span></span><br><span class="line">    EdgeVertices e2 = EdgeVertices.TerraceLerp(begin, end, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">//通过插值计算出相邻cell边每个坐标点的颜色</span></span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构建阶梯的第一段</span></span><br><span class="line">    TriangulateEdgeStrip(begin, beginCell.color, e2, c2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//循环生成中间部分</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        EdgeVertices e1 = e2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        e2 = EdgeVertices.TerraceLerp(begin, end, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, i);</span><br><span class="line">        TriangulateEdgeStrip(e1, c1, e2, c2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构建阶梯的最后一段</span></span><br><span class="line">    TriangulateEdgeStrip(e2, c2, end, endCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，回到<code>EdgeVertices.cs</code>中，创建<code>TerraceLerp</code>方法，这个方法是使用插值计算阶梯连接区域中，每一段的顶点位置。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通过两个cell的边，计算出阶梯连接区域，每一段上顶点的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;a&quot;&gt;</span>阶梯连接区域起始边<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;b&quot;&gt;</span>姐弟连接区域结束边<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;step&quot;&gt;</span>插值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>插值为step时，当前段落上每个顶点的位置信息<span class="doctag">&lt;/returns&gt;</span>    </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> EdgeVertices <span class="title">TerraceLerp</span>(<span class="params">EdgeVertices a, EdgeVertices b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        EdgeVertices result;</span><br><span class="line">        result.v1 = HexMetrics.TerraceLerp(a.v1, b.v1, step);</span><br><span class="line">        result.v2 = HexMetrics.TerraceLerp(a.v2, b.v2, step);</span><br><span class="line">        result.v3 = HexMetrics.TerraceLerp(a.v3, b.v3, step);</span><br><span class="line">        result.v4 = HexMetrics.TerraceLerp(a.v4, b.v4, step);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-12-1.png"></p>
+<p>　　至此，我们就完成了经过细分之后阶梯连接区域的构建。在下一章中，我们将修复之前暂缓的斜面与阶梯连接区域破面的问题。</p>
+<p>[Github代码](</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>4-13 修复CSS和SCS连接类型的破面</title>
     <url>/2020/11/17/HexMap/4-13%20%E4%BF%AE%E5%A4%8DCSS%E5%92%8CSCS%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%A0%B4%E9%9D%A2/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了细分后阶梯连接区域的构建。当我们改变地图单元高度的时候，会发现Cliff与Slope类型之间的三角形连接区域，依然会有破面的问题这也是我们之前一直搁置的一个问题。在这一章中，我们先解决<code>cliff-slope-slope (CSS)</code>和<code>slope-cliff-slope (SCS)</code>两种连接类型种产生破面的问题。</p>
@@ -2056,6 +1985,30 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-13-3.png"></p>
 <p>　　这样我们就修复了<code>cliff-slope-slope(CSS)</code>和<code>slope-cliff-slope(SCS)</code>两种连接类型种产生破面的问题。在接下来的章节中，我们来解决<code>cliff-cliff-slope</code>连接类型种破面的问题。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/8fb867fd3416665ced7e81d8c86517ddc3e82591">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4-14 修复CCS连接类型的破面</title>
+    <url>/2020/11/18/HexMap/4-14%20%E4%BF%AE%E5%A4%8DCCS%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%A0%B4%E9%9D%A2/</url>
+    <content><![CDATA[<p>　　在上一章中，我们修复了<code>cliff-slope-slope(CSS)</code>和<code>slope-cliff-slope(SCS)</code>两种连接类型种产生破面的问题。这样的问题。破面的问题同样也存在于<code>cliff-cliff-slope</code>连接类型中。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-14-1.png"></p>
+<p>　　修复这个破面问题与上一章修复<code>CSS</code>和<code>SCS</code>连接类型破面的问题思路相同。在<code>TriangulateCornerTerracessCliff</code>方法的最后一个<code>else</code>中，不再让分界点进行扰动即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里不再扰动分界点</span></span><br><span class="line">        AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);</span><br><span class="line">        AddTriangleColor(leftCell.color, rightCell.color, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　同理，再起镜像位置的<code>TriangulateCornerCliffTerraces</code>方法中也不再对分界点进行扰动。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerCliffTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里不再扰动分界点</span></span><br><span class="line">        AddTriangleUnperturbed(Perturb(left), Perturb(right), boundary);</span><br><span class="line">        AddTriangleColor(leftCell.color, rightCell.color, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-14-2.png"></p>
+<p>　　这样我们就修复了所有斜面和阶梯三角形连接区域之间的破面。在下一章中，我们将会对地图整体进行参数调整，使地图看起来更加自然，为接下来的功能做准备。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b8135e8da15aea701d9e4dbdc157124c9f05ab68">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -2101,30 +2054,6 @@
       </tags>
   </entry>
   <entry>
-    <title>4-4 扰动强度</title>
-    <url>/2020/11/08/HexMap/4-4%20%E6%89%B0%E5%8A%A8%E5%BC%BA%E5%BA%A6/</url>
-    <content><![CDATA[<p>　　在上一章中，我们同归在彩色噪点图中进行采样，完成了对地图上所有顶点的扰动，但是最终的视觉效果恨不明显。按照之前的代码来看，一个顶点在每个维度上最大位移距离只有1，所以每个顶点扰动的最大位移只有 $\sqrt3 \approx 1.73$ 的单位长度，而且极限位移情况产生的概率还非常低。相较于每个地图单元10的外径来说，这个扰动太小了。<br>　　解决这个问题的方式也很简单，就是在<code>HexMetrics.cs</code>中加如一个扰动强度值。让我们先把扰动强度是指为5，这样理论上一个顶点的最大位移距离就有 $\sqrt5 \approx 8.66$ 单位长度。最终扰动结果就会明显很多了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//扰动强度</span></span><br><span class="line">    <span class="comment">//这个值是一个坐标点在每个轴向上的偏移强度</span></span><br><span class="line">    <span class="comment">//最大偏移量就是 √￣(3*5^2) ≈ 8.66</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> cellPerturbStrength = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到<code>HexMesh.Perturb</code>方法中，通过相乘的方式应用采样数据。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//增加了每个点的扰动强度</span></span><br><span class="line">    position.x += (sample.x * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line">    position.y += (sample.y * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line">    position.z += (sample.z * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　再次运行后我们看到，增加了扰动强度之后，每个顶点的偏移就变得非常明显了。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-4-1.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-4-2.png"></p>
-<p>　　但是当我们升高某个地图单元的时候，产生了一些奇怪的视觉效果，阶梯状的矩形连接变得非常扭曲，某些相邻的地图单元之间，连接部分甚至会有破面的情况发生。在接下来的章节中，我们来解决这个问题。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/e53dcbabf3c9f0a6599b338e9b56480985d09e80">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>4-3 顶点扰动</title>
     <url>/2020/11/07/HexMap/4-3%20%E9%A1%B6%E7%82%B9%E6%89%B0%E5%8A%A8/</url>
     <content><![CDATA[<p>　　在上一章中，我们使用世界坐标中的一个点，在彩色噪点图上进行采样，得到了一个4D向量。在这一章中，我们使用这个4D向量，对地图内的各个顶点进行扰动，让地图看起来有更多的变化。我们回到<code>HexMesh.cs</code>中，在这里我们添加一个方法<code>Perturb </code>来负责这个工作。这个方法使用一个世界坐标内的点，进行扰动后，返回扰动后的坐标。代码如下：</p>
@@ -2146,6 +2075,30 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-3-2.png"></p>
 <p>　　现在我们就完成了通过一张彩色噪点图进行采样，并对地图中每个顶点进行伪随机的扰动。但是现在的扰动范围只是在-到-1之间，效果并不是很明显，在接下来的一章中，我们将加入新的参数，来控制扰动的强度。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/f7eb136ab9cea033d018e75cb24fb23d2a5b4ed1">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>4-4 扰动强度</title>
+    <url>/2020/11/08/HexMap/4-4%20%E6%89%B0%E5%8A%A8%E5%BC%BA%E5%BA%A6/</url>
+    <content><![CDATA[<p>　　在上一章中，我们同归在彩色噪点图中进行采样，完成了对地图上所有顶点的扰动，但是最终的视觉效果恨不明显。按照之前的代码来看，一个顶点在每个维度上最大位移距离只有1，所以每个顶点扰动的最大位移只有 $\sqrt3 \approx 1.73$ 的单位长度，而且极限位移情况产生的概率还非常低。相较于每个地图单元10的外径来说，这个扰动太小了。<br>　　解决这个问题的方式也很简单，就是在<code>HexMetrics.cs</code>中加如一个扰动强度值。让我们先把扰动强度是指为5，这样理论上一个顶点的最大位移距离就有 $\sqrt5 \approx 8.66$ 单位长度。最终扰动结果就会明显很多了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//扰动强度</span></span><br><span class="line">    <span class="comment">//这个值是一个坐标点在每个轴向上的偏移强度</span></span><br><span class="line">    <span class="comment">//最大偏移量就是 √￣(3*5^2) ≈ 8.66</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> cellPerturbStrength = <span class="number">5f</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到<code>HexMesh.Perturb</code>方法中，通过相乘的方式应用采样数据。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//增加了每个点的扰动强度</span></span><br><span class="line">    position.x += (sample.x * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line">    position.y += (sample.y * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line">    position.z += (sample.z * <span class="number">2f</span> - <span class="number">1f</span>) * HexMetrics.cellPerturbStrength;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　再次运行后我们看到，增加了扰动强度之后，每个顶点的偏移就变得非常明显了。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-4-1.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-4-2.png"></p>
+<p>　　但是当我们升高某个地图单元的时候，产生了一些奇怪的视觉效果，阶梯状的矩形连接变得非常扭曲，某些相邻的地图单元之间，连接部分甚至会有破面的情况发生。在接下来的章节中，我们来解决这个问题。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/e53dcbabf3c9f0a6599b338e9b56480985d09e80">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -2272,6 +2225,77 @@
         <tag>Unity3D</tag>
         <tag>Game develop</tag>
         <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
+<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
+</blockquote>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
+<ul>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+</ul>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<hr>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
       </tags>
   </entry>
 </search>

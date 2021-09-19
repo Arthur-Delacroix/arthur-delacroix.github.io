@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">65</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,106 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/14/HexMap/2-9%20%E5%88%9B%E5%BB%BA3%E8%89%B2%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">2-9 创建3色颜色混合区域</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-14 15:10:55" itemprop="dateCreated datePublished" datetime="2020-10-14T15:10:55+08:00">2020-10-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中我们创建了两种颜色的混合区域，而且在运行中的视觉效果也是符合预期的。在这一章中，我们来创建三种颜色的混合区域。这里的三色混合区域，就是上一章中所空出来的三角形区域。这个三角形区域目前是由6个三角面片组成的。也就是上一章中，除了矩形颜色混合区域，其两侧未进行构建的部分。<br>　　在这里我们先构建矩形颜色混合区域左侧的三角形。其顶点位置已经都计算出来了，现在主要是分析顶点颜色的问题。第一个顶点的颜色是地图单元自身的颜色，第二个顶点的颜色是三个相邻地图三个颜色的混合值，第三个顶点的颜色是双色混合区域的颜色的平均值。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//矩形两色混合区域的中间过渡色</span></span><br><span class="line">    Color bridgeColor = (cell.color + neighbor.color) * <span class="number">0.5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//新的矩形颜色混合区域顶点颜色赋值</span></span><br><span class="line">    AddQuadColor(cell.color, bridgeColor);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//组成cell的每个三角形区域，有1个矩形混色区域和2个三角形三色混合区域</span></span><br><span class="line">    <span class="comment">//生成其中一个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v1, center + HexMetrics.GetFirstCorner(direction), v3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为第一个三角形三色混合区域赋值颜色</span></span><br><span class="line">    <span class="comment">//自身颜色、三个相邻cell的平均色、矩形混合区域中间色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span>,</span><br><span class="line">        bridgeColor</span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-1.png"></p>
+<p>　　使用同样的方式，我们使用相同的方式来生成矩形颜色混合区域右侧侧的三角形。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域</span></span><br><span class="line">    AddTriangle(v2, v4, HexMetrics.GetSecondCorner(direction));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二个三角形三色混合区域的颜色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        bridgeColor,</span><br><span class="line">        (cell.color + prevNeighbor.color + neighbor.color) / <span class="number">3f</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-9-2.png"></p>
+<p>　　现在我们就得到了比之前更好的视觉效果。而且我们还可以自定义颜色混合区域的面积大小，来改变整个地图的视觉效果。但是我们发现，在地图边缘处相邻地图单元的颜色过渡依然存在一些问题。不过我们先暂时忽略这个问题，把注意力放在优化和网格合并上。</p>
+<blockquote>
+<p>为什么有了颜色混合区域，混合后的效果依然不好看？<br>这是线性颜色混合的极限了。事实上纯色之间的颜色混合效果都不是很好，未来的章节中将会升级到地形材质并做一些更漂亮的混合。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/424789c59c98b442ddb87db3c92f362cf00452af">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1217,124 +1317,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/04/HexMap/1-9%20%E6%94%B9%E5%8F%98%E9%80%89%E4%B8%AD%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%A2%9C%E8%89%B2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/04/HexMap/1-9%20%E6%94%B9%E5%8F%98%E9%80%89%E4%B8%AD%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%A2%9C%E8%89%B2/" class="post-title-link" itemprop="url">1-9 改变选中地图单元的颜色</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-04 09:51:40" itemprop="dateCreated datePublished" datetime="2020-10-04T09:51:40+08:00">2020-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们通过坐标转换，可以知道鼠标点击在了哪一个地图单元上。接下来，我们在这个基础上改变被鼠标点击的地图单元的颜色。</p>
-<p>　　在<code>HexGrid.cs</code>中声明两个变量，分别为默认颜色和点击后变化的颜色，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cell的默认颜色</span></span><br><span class="line"><span class="keyword">public</span> Color defaultColor = Color.white;</span><br><span class="line"><span class="comment">//cell被点击后的颜色</span></span><br><span class="line"><span class="keyword">public</span> Color touchedColor = Color.magenta;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到Unity中，选中Hex Grid物体，在Inspector面板中就能看到下图的效果，当然，我们也可以自定义初始颜色和点击后的颜色，如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-1.png"></p>
-<p>　　回到<code>HexCell.cs</code>中，在这里我们声明一个变量，用来存储每个地图单元自己的颜色。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在实例化每个cell的时候会调用该实例</span></span><br><span class="line">    <span class="comment">//针对每个cell，重新计算它的坐标值</span></span><br><span class="line">    <span class="keyword">public</span> HexCoordinates coordinates;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存储cell自身的颜色</span></span><br><span class="line">    <span class="keyword">public</span> Color color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　为每个地图单元赋初始颜色值，可以在HexGrid.CreateCell方法中实现。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//在不改变cell排列的情况下，重新计算每个cell的坐标位置</span></span><br><span class="line">    cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为每个cell赋颜色初始值</span></span><br><span class="line">    cell.color = defaultColor;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　当然，我们还需要将颜色的信息赋值给地图单元的Mesh组件，这样才能将颜色显示出来。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//存储cell每个顶点的颜色信息</span></span><br><span class="line"><span class="keyword">private</span> List&lt;Color&gt; colors;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//初始化vertices、triangles链表 用于存储顶点和面片信息</span></span><br><span class="line">    vertices = <span class="keyword">new</span> List&lt;Vector3&gt;();</span><br><span class="line">    triangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//初始化colors链表，用于存储顶点颜色信息</span></span><br><span class="line">    colors = <span class="keyword">new</span> List&lt;Color&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    triangles.Clear();</span><br><span class="line">    colors.Clear();</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将所有的顶点位置信息，顶点位置信息的索引存储到链表中</span></span><br><span class="line">    hexMesh.vertices = vertices.ToArray();</span><br><span class="line">    hexMesh.triangles = triangles.ToArray();</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//将所有顶点的颜色信息存储在colors链表中</span></span><br><span class="line">    hexMesh.colors = colors.ToArray();</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，在进行每个三角面片构建的时候，我们将颜色的信息赋值给每一个顶点，这样在构建出地图单元的时候，就带有了我们定义的初始颜色了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    <span class="comment">//根据中点位置计算出其余的顶点位置信息，并按照顺序构建三角面片</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//构建三角面片</span></span><br><span class="line">        AddTriangle(</span><br><span class="line">            center,</span><br><span class="line">            center + HexMetrics.corners[i],</span><br><span class="line">            center + HexMetrics.corners[i + <span class="number">1</span>]</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">        AddTriangleColor(cell.color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 为每个三角面片的3个顶点赋颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>三角面片顶点的颜色信息<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleColor</span>(<span class="params">Color color</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">    colors.Add(color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们回到HexGrid.TouchCell方法中。这个方法的流程可以理解为：先将Unity内普通的坐标，转换成六边形地图中的坐标，即从Unity的Vector3(8.7, 0, 13.9)坐标转换为六边形地图的(0, -1, 1)坐标。</p>
-<p>　　接着，我们还需要知道被点击的地图单元在数组<code>HexGrid.cell[]</code>中具体的位置，也就是被惦记的地图单元在数组<code>HexGrid.cell[]</code>中的下标。才可以为该地图单元赋值新的颜色。</p>
-<p>　　如果要改变其颜色，依照现有的方法，我们还需要重新构建整个六边形地图的Mesh，因为这个Mesh是整体存储在一个变量中的。但是我们真的有必要因为某个地图单元的颜色改变而重新构建整个正六边形地图的Mesh吗？答案很显然，重新构建整个Mesh是不合理的。</p>
-<p>　　但是现在还不是优化这个步骤的时候，因为随着项目的功能不断增加，代码会变得越来越复杂，Mesh的外观也会变得复杂。所以现在做的任何优化在之后的代码中都会变得没有意义。虽然重新构建整个正六边形地图的Mesh虽然很无脑，但是却十分有效，目前我们先这样为地图单元更改颜色。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算出cell位于cells[]数组中的位置</span></span><br><span class="line">    <span class="keyword">int</span> index = coordinates.X + coordinates.Z * width + coordinates.Z / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取这个cell的实例</span></span><br><span class="line">    HexCell cell = cells[index];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为这个cell赋值颜色</span></span><br><span class="line">    cell.color = touchedColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新构建整个map的mesh</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　代码完成之后，我们点击某一个地图单元，但是并没有任何的改变，被点击的地图单元也没有改变颜色。这是因为Unity中默认的着色器没有使用顶点颜色。我们需要自己创建一个自定义着色器（Assets/Create/Shader/Standard Surface Shader），并修改其中的代码。其实我们只需要对Unity新建的着色器进行2处很小的改动：1 在输入部分添加颜色信息。2 输出时让反射率与颜色值相乘。而且我们不必关心透明通道，只需要集中在rgb通道即可。代码如下： s</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.shader</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">&quot;Custom/HexCell&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">struct</span> Input</span><br><span class="line">        &#123;</span><br><span class="line">            float2 uv_MainTex;</span><br><span class="line">            <span class="comment">//添加颜色输入</span></span><br><span class="line">            float4 color:COLOR;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">surf</span> (<span class="params">Input IN, inout SurfaceOutputStandard o</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            …</span><br><span class="line">            <span class="comment">//o.Albedo = c.rgb;</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//输出部分，反射率与输入的颜色值相乘</span></span><br><span class="line">            o.Albedo = c.rgb * IN.color;</span><br><span class="line">            </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，新建一个材质球，使用我们修改后的shader，并将这个材质球替换掉场景中Hex Mesh物体组件上的材质球。最后效果如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-9-2.png"></p>
-<p>　　这里要注意，某些情况下，点击地图单元后，可能会产生一些奇怪的阴影效果！这是因为在某些Unity版本中Standard Surface Shader可能会有阴影问题。如果发生了阴影抖动或者带状阴影的问题，这说明Z轴发生了冲突。调整全局方向光的阴影偏斜角度应该可以解决这个问题。</p>
-<p>　　这样我们就完成了基本的交互功能了。当我们点击一个地图单元后，这个地图单元就会变成我们预先定义好的被点击的颜色。下一章中我们在这个基础上更进一步，制作一个简单的地图编辑器功能，可以为不同的地图单元赋值不同的颜色。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1390,13 +1372,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">133k</span>
+    <span title="站点总字数">134k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:01</span>
+    <span title="站点阅读时长">2:02</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -1459,50 +1441,6 @@
   
 
   
-      <script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              const target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    const script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
-    script.defer = true;
-    document.head.appendChild(script);
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.typesetClear();
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 

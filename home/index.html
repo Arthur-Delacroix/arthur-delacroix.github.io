@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">69</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,108 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/23/HexMap/5-4%20%E6%B8%85%E7%90%86%E4%BB%A3%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/23/HexMap/5-4%20%E6%B8%85%E7%90%86%E4%BB%A3%E7%A0%81/" class="post-title-link" itemprop="url">5-4 清理代码</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-23 13:15:48" itemprop="dateCreated datePublished" datetime="2020-11-23T13:15:48+08:00">2020-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们通过计算一个地图单元在数组中的下标，将其分配到对应的地图块中。不过现在项目中依然存在很多我们不需要的代码，在这一章中，我们将清理这些代码。<br>　　首先在<code>HexGrid</code>中清除掉<code>gridCanvas</code>和<code>hexMesh</code>这两个对象，还有与其相关的代码。如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private Canvas gridCanvas;</span></span><br><span class="line">    <span class="comment">//private HexMesh hexMesh;</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//hexMesh = GetComponentInChildren&lt;HexMesh&gt;();</span></span><br><span class="line">        <span class="comment">//gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</span></span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//private void Start()</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//public void Refresh()</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//hexMesh.Triangulate(cells);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为我们删除了<code>Refresh</code>方法，所以在<code>HexMapEditor</code>中不能再调用它了。</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cell.color = activeColor;</span><br><span class="line">    cell.Elevation = activeElevation;</span><br><span class="line">    <span class="comment">//hexGrid.Refresh();</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到Unity中，因为我们删除了掉<code>gridCanvas</code>和<code>hexMesh</code>，所以在场景中我们不再需要<code>Hex Grid Canvas</code>和<code>Hex Mesh</code>这两个对象，删除后入下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-1.png"></p>
+<p>　　清理完成后，运行游戏。我们发现Game窗口中地图生成并没有发生变化，但是Hierarchy窗口中的层级关系已经发生了变化。<code>HexGrid</code>生成地图块，再由每个地图块的实例生成地图单元和其相对应的UI。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-2.png"></p>
+<p>　　经过观察我们还发现一个问题，地图单元的坐标显示UI还存在一些问题：我们一开始设置的标签宽度是5，这足够显示两个字符。在较小的地图上刚好用完，但现在我们可以获取到“-10”这样有三个字符的坐标，这样一来字符无法相匹配并有断层。把UI的宽度增加到10或更多来解决这个问题。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-3.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-4.png"></p>
+<p>　　现在我们终于可以创建一个比之前章节中尺寸更大的底图了！虽然生成地图需要花费比原来尺寸较小地图更长的时间，不过生化池呢个完成后，我们就拥有了一个尺寸跟大的地图。因为删除掉一些代码的原因，我们的地图编辑器功能不再起作用了，下一章中我们将解决这个问题。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b5782f3190a4c9858f978735597d267cc5b5d6aa">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/22/HexMap/5-3%20%E5%B0%86%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%88%86%E9%85%8D%E5%88%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%9D%97%E4%B8%AD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1538,113 +1640,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/17/HexMap/4-13%20%E4%BF%AE%E5%A4%8DCSS%E5%92%8CSCS%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%A0%B4%E9%9D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/17/HexMap/4-13%20%E4%BF%AE%E5%A4%8DCSS%E5%92%8CSCS%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%A0%B4%E9%9D%A2/" class="post-title-link" itemprop="url">4-13 修复CSS和SCS连接类型的破面</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-17 16:52:40" itemprop="dateCreated datePublished" datetime="2020-11-17T16:52:40+08:00">2020-11-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们完成了细分后阶梯连接区域的构建。当我们改变地图单元高度的时候，会发现Cliff与Slope类型之间的三角形连接区域，依然会有破面的问题这也是我们之前一直搁置的一个问题。在这一章中，我们先解决<code>cliff-slope-slope (CSS)</code>和<code>slope-cliff-slope (SCS)</code>两种连接类型种产生破面的问题。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-13-1.png"></p>
-<p>　　产生破面的问题是因为分界点（阶梯连接收束到陡峭面边缘的顶点）的计算受到了干扰。这意味着它不是精确的处于陡峭面的边缘线上，所以就产生了一个裂缝。解决方案是不要对分界点应用噪声扰动，就是说我们需要能选择一个点是否应用扰动。最简单的办法是在<code>HexMesh.cs</code>中添加一个完全不对顶点进行扰动的<code>AddTriangle</code>方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加单个三角面片的顶点位置信息和索引，顶点不扰动！</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v1&quot;&gt;</span>顺时针 第一个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v2&quot;&gt;</span>顺时针 第二个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v3&quot;&gt;</span>顺时针 第三个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangleUnperturbed</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line">        vertices.Add(v1);</span><br><span class="line">        vertices.Add(v2);</span><br><span class="line">        vertices.Add(v3);</span><br><span class="line">        triangles.Add(vertexIndex);</span><br><span class="line">        triangles.Add(vertexIndex + <span class="number">1</span>);</span><br><span class="line">        triangles.Add(vertexIndex + <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　修改<code>TriangulateBoundaryTriangle</code>方法中的语句，在使用边界点构建三角面片时，边界点不在进行扰动。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateBoundaryTriangle</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 boundary, Color boundaryColor</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 v2 = HexMetrics.TerraceLerp(begin, left, <span class="number">1</span>);</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里收束到边界点的时候，边界点不再进行扰动</span></span><br><span class="line">    AddTriangleUnperturbed(Perturb(begin), Perturb(v2), boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, c2, boundaryColor);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        v2 = HexMetrics.TerraceLerp(begin, left, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);</span><br><span class="line">        <span class="comment">//AddTriangle(v1, v2, boundary);</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//这里收束到边界点的时候，边界点不再进行扰动</span></span><br><span class="line">        AddTriangleUnperturbed(Perturb(v1), Perturb(v2), boundary);</span><br><span class="line">        AddTriangleColor(c1, c2, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里收束到边界点的时候，边界点不再进行扰动</span></span><br><span class="line">    AddTriangleUnperturbed(Perturb(v2), Perturb(left), boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　仔细观察<code>TriangulateBoundaryTriangle</code>方法可以发现，我们并没没有用<code>v2</code>去计算其他点的位置。所以在这里我们可以直接先对v2进行扰动，这样就简化了之后调用v2的代码了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateBoundaryTriangle</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 boundary, Color boundaryColor</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//由于在此方法中，并没有用v2继续计算其他顶点，所以在这里先对v2进行扰动，之后代码中直接使用</span></span><br><span class="line">    Vector3 v2 = Perturb(HexMetrics.TerraceLerp(begin, left, <span class="number">1</span>));</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里收束到边界点的时候，边界点不再进行扰动</span></span><br><span class="line">    AddTriangleUnperturbed(Perturb(begin), Perturb(v2), boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, c2, boundaryColor);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        v2 = HexMetrics.TerraceLerp(begin, left, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);</span><br><span class="line">        <span class="comment">//AddTriangle(v1, v2, boundary);</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//使用扰动后的v2点</span></span><br><span class="line">        AddTriangleUnperturbed(Perturb(begin), v2, boundary);</span><br><span class="line">        AddTriangleColor(c1, c2, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用扰动后的v2点</span></span><br><span class="line">    AddTriangleUnperturbed(v2, Perturb(left), boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-13-2.png"></p>
-<p>　　现在看起来好多了，但还是会有一些问题。在<code>TriangulateCornerTerracesCliff</code>方法里，分界点的位置是通过左右的坐标点插值计算得到的，但这两个点没有应用扰动。要让边界点能精确吻合陡峭斜坡边缘，需要插值去计算两个扰动过的坐标点来求得边界点。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//这里使用扰动后的坐标点计算分界点</span></span><br><span class="line">        Vector3 boundary = Vector3.Lerp(Perturb(begin), Perturb(right), b);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在<code>TriangulateCornerCliffTerraces</code>方法中也是同理，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerCliffTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell, </span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//这里使用扰动后的坐标点计算分界点</span></span><br><span class="line">        Vector3 boundary = Vector3.Lerp(Perturb(begin), Perturb(right), b);</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-13-3.png"></p>
-<p>　　这样我们就修复了<code>cliff-slope-slope(CSS)</code>和<code>slope-cliff-slope(SCS)</code>两种连接类型种产生破面的问题。在接下来的章节中，我们来解决<code>cliff-cliff-slope</code>连接类型种破面的问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/8fb867fd3416665ced7e81d8c86517ddc3e82591">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1700,13 +1695,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">140k</span>
+    <span title="站点总字数">142k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:08</span>
+    <span title="站点阅读时长">2:09</span>
   </span>
 </div>
 <div class="busuanzi-count">

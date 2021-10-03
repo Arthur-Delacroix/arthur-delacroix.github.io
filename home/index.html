@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">71</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">72</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,101 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/26/HexMap/5-7%20%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6%20%E8%B0%83%E6%95%B4%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/26/HexMap/5-7%20%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6%20%E8%B0%83%E6%95%B4%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">5-7 摄像机控制 调整层级结构</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-26 23:52:07" itemprop="dateCreated datePublished" datetime="2020-11-26T23:52:07+08:00">2020-11-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>755</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们对<code>HexMesh.cs</code>脚本中的代码进行了优化。现在我们能创建尺寸更大的地图了，但是摄像机依然只显示了几个地图单元的范围，这导致在游戏运行时我们没办法编辑摄像机事业之外的地图单元。为了能看清整各地图的全貌，那就需要摄像机有移动、旋转和焦距变化的功能，在接下来的章节中，我们步来实现。<br>　　现在我们需要对摄像机的层级结构做出一些调整，新建一个空对象命名为<code>Hex Map Camera</code>，重置它的<code>transform</code>组件。为其新建一个子对象并命名为<code>Swivel</code>，然后在<code>Swivel</code>下创建一个子对象<code>Stick</code>。把主相机设置为<code>Stick</code>的子物体,然后重置其<code>transform</code>组件。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-7-1.png"></p>
+<p>　　Swivel的控制摄像机看向的角度,把它的<code>Rotation</code>默认设置为<code>(45, 0, 0)</code>。Stick则是用来控制摄像机的远近,设置<code>Position</code>默认坐标为<code>(0, 0, -45)</code>。<br>　　接下来我们需要一个脚本来控制这个组合装置，在根节点添加这个脚本并添加Swivel和Stick的引用。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//控制camera视角旋转</span></span><br><span class="line">    <span class="keyword">private</span> Transform swivel;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//控制camera视角远近</span></span><br><span class="line">    <span class="keyword">private</span> Transform stick;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//获取对应的实例</span></span><br><span class="line">        swivel = transform.GetChild(<span class="number">0</span>);</span><br><span class="line">        stick = swivel.GetChild(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-7-2.png"></p>
+<p>　　这样我们就完成了摄像机层级的设置和创建脚本的准备工作了。在下一章中我们将添加调整摄像机视距的功能。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/50dff1ce86ed256373979fcdb2b32681ec5f41db">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/25/HexMap/5-6%20%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96%20%E5%85%B1%E4%BA%AB%E5%88%97%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1556,113 +1651,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/20/HexMap/5-1%20%E5%9C%B0%E5%9B%BE%E7%BD%91%E6%A0%BC%E5%9D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/HexMap/5-1%20%E5%9C%B0%E5%9B%BE%E7%BD%91%E6%A0%BC%E5%9D%97/" class="post-title-link" itemprop="url">5-1 地图网格块</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-20 05:20:57" itemprop="dateCreated datePublished" datetime="2020-11-20T05:20:57+08:00">2020-11-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在之前的章节中，我们使用一张彩色噪点图，并采样噪点图中的像素点，对地图中的每个顶点进行位置扰动，让地图整体看起来有一些随机性，视觉效果也更加自然。在接下来的章节中，我们将创建更大的地图区域，并为地图编辑器添加新的功能。<br>　　在Unity3D中单个mesh的顶点容量是65000个，所以我们不能把单个地图尺寸设置的过大。如果想要一张尺寸更大的地图，解决方案是将多个mesh进行拼接，也就是使用若干小块拼接成一个尺寸更大的地图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-1-1.png"></p>
-<p>　　这里我们先定义一个地图块的尺寸为$5*5$，也就是说一个地图块由25个地图单元组成。这个尺寸在<code>HexMetrics.cs</code>中进行定义。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> HexMetrics</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//应为Unity mesh最多只能有65000个顶点，想要尺寸更大的地图，就只能将多个chunk拼接起来</span></span><br><span class="line">    <span class="comment">//这里定义一个chunk的长宽各有几个cell</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> chunkSizeX = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> chunkSizeZ = <span class="number">5</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>地图块的尺寸设置成多大比较合适？<br>视情况而定，较大的地图块意味着地图块数量少，但是每个地图块的mesh中会有比较多的顶点，这会使draw calls较少。但是较小的地图块会在视锥体裁剪剔除时效率较高，绘制的三角形较少。实际方法就是先设置一个预估的大小，根据不同的需求再进行微调。</p>
-</blockquote>
-<p>　　接下来我们定义整个地图中长宽各有多少个地图块。这里定义地图的尺寸为$4<em>3$，也就是整个地图由12个地图块拼接组成。根据之前代码地图的尺寸定义，整个地图是由$12</em>25$，也就是300个地图单元组成。这个尺寸对于我们目前测试与查看效果是比较合适的。定义地图块尺寸在<code>HexGrid.cs</code>中的代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//定义整个地图长宽各有多少个chunk</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> chunkCountX = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> chunkCountZ = <span class="number">3</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-1-2.png"></p>
-<p>　　在<code>HexGrid.cs</code>中，我们使用<code>width</code>和<code>height</code>这两个变量来初始化存储地图单元数组的大小。这里仍然要使用这两个变量，但要将它们变成私有类型。然后重命名为<code>cellCountX</code>和<code>cellCountZ</code>。使用IDE的快捷功能可以一次重命名所有出现这些变量的位置。这样在处理地图块或者单元格的个数时就会很清楚。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> HexGrid</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//这里使用新的变量来初始化cells的尺寸</span></span><br><span class="line">    <span class="comment">//这两个变量的值可以通过地图中有几个chunk和每个chunk的尺寸计算出来</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cellCountX;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cellCountZ;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　重命名完成后，<code>cellCountX</code>和<code>cellCountZ</code>的值就可以通过在<code>Awake</code>方法中地图块尺寸和地图尺寸相乘计算得出。同时，我们再将数组初始化的代码提取出来，封装成一个方法，这样让整个<code>Awake</code>方法就看起来更加整洁。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算出整个地图横向和纵向cell的个数，也就是二维数组的长和宽</span></span><br><span class="line">    cellCountX = chunkCountX * HexMetrics.chunkSizeX;</span><br><span class="line">    cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;</span><br><span class="line"></span><br><span class="line">    CreateCells();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 初始化存储cell实例的数组</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCells</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过计算出来的长和宽，对数组进行初始化</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[cellCountZ * cellCountX];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; cellCountZ; z++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; cellCountX; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们就初步完成了地图网格块的设置，规定了一个大地图由多少个地图块构成，每个地图块有多少个地图单元构成，同时还对之前存储所有地图单元的数组，其初始化方式作出了调整。在下一章节中，我们将修改场景中的一些结构及组件，创建地图块Prefab，为之后在场景中生成地图块做准备。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/21f655175246ba12b8de067e67a25669736018b2">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1718,13 +1706,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:13</span>
+    <span title="站点阅读时长">2:14</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">71</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">72</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,124 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/31/HexMap/3-14%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA%20%E5%BA%95%E9%83%A8%E5%8C%BA%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/31/HexMap/3-14%20Slope-Cliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA%20%E5%BA%95%E9%83%A8%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">3-14 Slope-Cliff类型三角形连接区域构建 底部区域</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-31 09:47:22" itemprop="dateCreated datePublished" datetime="2020-10-31T09:47:22+08:00">2020-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们创建了Slope-Cliff三角形连接区域的方法。在这里要注意，Slope-Cliff类型与<code>SSF</code>类型不同，因为我们不知道的left和right地图单元之间，高度差是等于1还是大于1的，但是我们能确定的一点是left与bottom地图单元之间的高度差为1。根据下图我们发现，不论right的高度如何变化，三角形连接区域的一条边始终是需要进行阶梯化的。所以我们就将Slope-Cliff的三角形连接区域分为两部分进行构建。这里先从一定会阶梯化的底部开始。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-13-1.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-13-2.png"></p>
+<p>　　对这部分进行构建，也有两种情况。第一种如下图所示，三角形的其中一条边与阶梯部分相连，被分成若干段。这条边上分段的顶点与三角形的另一个顶点相连，这样就完成了三角剖分。但是这样的构建方法会让三角形连接区域中，视觉效果比较差，例如三角形连接区域中，分段相同，但是一条边上断电稀疏，但是越靠近三角形的一个角的时候越密集。而且在之后进行上半段构建的时候，这个情况会被放大。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-1.png"></p>
+<p>　　那么解决这个问题的方法，就是在三角形的一条边上取一个点，所有阶梯化的端点，够与这个点相连接，这样既将三角形连接区域分为了两部分，又不会出现顶点向一处汇聚，显得太过拥挤。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-2.png"></p>
+<p>　　既然找出了一个比较合理的解决方案，那么我们就需要知道三角形上的这个点的具体位置怎么得出。这里是使用了bottom和right两个地图单元的高度差进行插值得到的。也就是最低的地图单元和最高的地图单元之间的高度差，在进行插值，计算出三角形上这个点及其对应的颜色。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里将Slope-Cliff类型的三角形连接区域拆分成两部分进行构建</span></span><br><span class="line">    <span class="comment">//示意图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-2.png</span></span><br><span class="line">    <span class="comment">//即三角形一个边进行阶梯化，阶梯化后的端点，都与另一条边上的一点相连</span></span><br><span class="line">    <span class="comment">//边上一点，是通过bottom与right高度差，在进行插值得到的</span></span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (rightCell.Elevation - beginCell.Elevation);</span><br><span class="line">    Vector3 boundary = Vector3.Lerp(begin, right, b);</span><br><span class="line">    Color boundaryColor = Color.Lerp(beginCell.color, rightCell.color, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　计算出了三角形连接区域边上一点，那么我们来构建一个三角形，观察一下这个点是否正确。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//测试通过插值找到的三角形上一点是否正确</span></span><br><span class="line">    AddTriangle(begin, left, boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-3.png"></p>
+<p>　　我们确定了三角形连接区域边上一点没有问题，那么接下来就要构建这个区域了。与之前构建<code>SSF</code>三角形连接区域类似，首先构建起始的一个三角面片。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//与构建其他阶梯状区域类似，首先构建第一个三角面片</span></span><br><span class="line">    Vector3 v2 = HexMetrics.TerraceLerp(begin, left, <span class="number">1</span>);</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    AddTriangle(begin, v2, boundary);</span><br><span class="line">    AddTriangleColor(beginCell.color, c2, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-4.png"></p>
+<p>　　然后直接将剩余的区域直接构建为一个三角面片。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建剩余区域</span></span><br><span class="line">    AddTriangle(v2, left, boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-5.png"></p>
+<p>　　接着我们循环构建中间部分的三角面片，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v2;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        v2 = HexMetrics.TerraceLerp(begin, left, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);</span><br><span class="line">        AddTriangle(v1, v2, boundary);</span><br><span class="line">        AddTriangleColor(c1, c2, boundaryColor);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建剩余区域</span></span><br><span class="line">    AddTriangle(v2, left, boundary);</span><br><span class="line">    AddTriangleColor(c2, leftCell.color, boundaryColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-14-6.png"></p>
+<p>　　这样，我们在三角形连接区域的一条边上，通过插值计算出了一个点，利用这个点将三角形连接区域拆分成了两个部分。并完成了三角形连接区域底部的构建工作。在下一章中，我们将完成顶部的构建。</p>
+<blockquote>
+<p>为什么底部不能像<code>SSF</code>那样使用阶梯的方式构建，而使用三角形进行构建？<br>如果我们对这部分区域进行类似<code>SSF</code>那种阶梯状方式构建，而不是三角面片构建。这就需要分析计算得出的插值点。因为插值点是跟bottom与right的高度差有关，而两者的高度差并不固定，所以这可能导致每个阶梯的四边形，并不在一个平坦的平面上，也就是说一个四边形左右两侧的斜率不同，这样不仅看起来四边形会被拉伸，而且市局效果会很乱。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/2916e9bca3f22daf1336f8c44a9387b8346f069d">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1204,106 +1322,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/21/HexMap/3-4%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%9D%90%E6%A0%87/" class="post-title-link" itemprop="url">3-4 修复地图单元坐标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-21 15:04:22" itemprop="dateCreated datePublished" datetime="2020-10-21T15:04:22+08:00">2020-10-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>893</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中我们实现了通过UI设置地图单元的高度，点击任意一个地图单元后，该地图单元的高度会根据UI的值发生改变。但是跟随地图单元的坐标文字却没有随着改变，在这一章中我们来解决这个问题。<br>　　要让地图单元的坐标发生改变，就要让每个地图单元获取到自身UI的<code>RectTransform</code>实例，以便接下来改变其高度。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//自身坐标UI的RectTransform组件实例</span></span><br><span class="line">    <span class="keyword">public</span> RectTransform uiRect;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到<code>HexGrid.cs</code>中，在<code>CreateCell</code>方法的最后，让每个地图单元获取其UI的RectTransform组件实例</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell对应UI的rectTransform组件实例</span></span><br><span class="line">    cell.uiRect = label.rectTransform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们就可以在<code>HexCell.Elevation.set</code>方法中进行对应UI高度的设置了。这里要注意，我们之前在设置地图单元做标canvas的时候，在x方向旋转了90度。所以这里应该是在z轴负方向进行高度设置，而不是y轴。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置cell对应UI的高度</span></span><br><span class="line">        Vector3 uiPosition = uiRect.localPosition;</span><br><span class="line">        uiPosition.z = elevation * (-HexMetrics.elevationStep);</span><br><span class="line">        uiRect.localPosition = uiPosition;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们在UI上设置好高度后，点击任意地图单元，其对应的地图坐标会随着被点击的地图单元高度变化而变化。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-4-1.png"></p>
-<p>　　现在地图单元的UI显示已经修复了。在下一章中，我们来修复两个相邻且高度不同的地图单元之间连接区域断开的问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ceaedbd85012c17d79abfeb1e802ff59293a5ef2">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1359,13 +1377,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">148k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:13</span>
+    <span title="站点阅读时长">2:14</span>
   </span>
 </div>
 <div class="busuanzi-count">

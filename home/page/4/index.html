@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">75</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">75</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,110 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/03/HexMap/3-17%20%E5%8F%8CCliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/03/HexMap/3-17%20%E5%8F%8CCliff%E7%B1%BB%E5%9E%8B%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">3-17 双Cliff类型三角形连接区域构建</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-03 14:03:42" itemprop="dateCreated datePublished" datetime="2020-11-03T14:03:42+08:00">2020-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了<code>SSF</code>和<code>Slope-Cliff</code>两种连接类型及其变体的三角形连接区域的构建。现在我们来完成最后一种情况，也就是最低的bottom地图单元与left和right地图单元的高度差都大于1，并且left和right地图单元的高度差为1，这种组合类型。我们将这种组合命名为<code>Cliff-Cliff-Slope</code>类型，简写为<code>CCS</code>。而且由于lefr和right两个地图单元之间高度差为1，如果right地图单元比较高，就简写为<code>CCSR</code>类型，如果left地图单元比较高，就简写为<code>CCSL</code>类型。<code>CCSR</code>类型和<code>CCSL</code>类型分别如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-1.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-2.png"></p>
+<p>　　我们对这两种组合的抽象表示如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-3.png"></p>
+<p>　　其实细心挂差可以发现，不论是<code>CCSL</code>或者<code>CCSR</code>，它们与Slope-Cliff类型及其镜像是上下翻转的。这里我们只需要继续调用<code>TriangulateCornerCliffTerraces</code>和<code>TriangulateCornerTerracesCliff</code>方法进行三角面片的构建就可以了。我们需要做的只是判断连接类型，并且确认输入参数顺序正确即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//bottom最低，与left和right高差都大于1，并且left和right高差为1，称为 CCS类型</span></span><br><span class="line">    <span class="comment">//如果left比right高1，那么就是CCSL，反之right比left高1，那就是CCSR</span></span><br><span class="line">    <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//CCSR</span></span><br><span class="line">        <span class="keyword">if</span> (leftCell.Elevation &lt; rightCell.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//CCSL</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们虽然完成了<code>CCSL</code>和<code>CCSR</code>两种类型的三角形连接区域的构建，但是通过观察运行效果我们发现会产生一些奇怪的三角面片，这是因为我们之前计算插值的时候，都是从上到下进行的，现在上下翻转之后，计算的结果为负数，所以就构建出了奇怪的三角面片。解决这个问题也很简单，就是在计算插值之前，先判断结果是否为负数，如果是负数，那就乘以`-1``变为正数即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (rightCell.Elevation - beginCell.Elevation);</span><br><span class="line">    <span class="keyword">if</span> (b &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        b = -b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerracesCliff</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> b = <span class="number">1f</span> / (leftCell.Elevation - beginCell.Elevation);</span><br><span class="line">    <span class="keyword">if</span> (b &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        b = -b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们就完成了最后一个组合类型的三角形连接区域的构建，<code>CCSR</code>类型和<code>CCSL</code>类型完成后分别如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-4.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-17-5.png"></p>
+<p>　最后还有一种情况，就是三个相邻的地图单元，彼此之间的高度差都大于1，那么他们的三角形连接区域其实就是默认的三角形。</p>
+<p>　至此我们已经将所有类型的三角形连接区域构建方法完成了，但是在<code>TriangulateCorner</code>方法中，冗余的判断代码还是比较多的。下一章中，我们将对<code>TriangulateCorner</code>方法中，判断连接类型的代码进行一定的整理和优化，为之后的其他功能做准备。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/7c15ce9931954cb3aae0e073ae2f001ef5d55016">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1208,111 +1312,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/24/HexMap/3-7%20%E7%9F%A9%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E9%98%B6%E6%A2%AF%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/24/HexMap/3-7%20%E7%9F%A9%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E9%98%B6%E6%A2%AF%E5%8C%96/" class="post-title-link" itemprop="url">3-7 矩形连接区域阶梯化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-24 04:20:39" itemprop="dateCreated datePublished" datetime="2020-10-24T04:20:39+08:00">2020-10-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们创建了计算阶梯连接区域中各个顶点位置和颜色的方法。在这一章中，我们要使用这些方法对矩形连接区域进行三角剖分。计算出矩形连接区域阶梯化后各个顶点的位置和颜色。<br>　　首先，我们回到<code>HexMesh.TriangulateConnection</code>方法中，我们注释掉关于构建矩形连接区域，并为其顶点赋值颜色的代码。取代这部分代码的是一个新阶梯化连接区域的方法。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//进行矩形颜色混合区域的三角面片构建和赋值顶点颜色</span></span><br><span class="line">    <span class="comment">//AddQuad(v1, v2, v3, v4);</span></span><br><span class="line">    <span class="comment">//AddQuadColor(cell.color, neighbor.color);</span></span><br><span class="line">    <span class="comment">//以上方法注释掉，使用新的 TriangulateEdgeTerraces  进行替换</span></span><br><span class="line">    TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 阶梯化连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginLeft&quot;&gt;</span>cell到neighbor连接区域的第一个起点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginRight&quot;&gt;</span>cell到neighbor连接区域的第二个起点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>cell自身实例，用于获取颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endLeft&quot;&gt;</span>连接区域 连接到的neighbor的第一个终点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endRight&quot;&gt;</span>连接区域 连接到的neighbor的第二个终点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;endCell&quot;&gt;</span>连接到的neighbor实例，用于获取颜色<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 beginLeft, Vector3 beginRight, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 endLeft, Vector3 endRight, HexCell endCell</span></span></span><br><span class="line"><span class="function"><span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AddQuad(beginLeft, beginRight, endLeft, endRight);</span><br><span class="line">    AddQuadColor(beginCell.color, endCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　根据上一章中使用插值进行阶梯化的思路，这里先构建阶梯的第一个面。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 beginLeft, Vector3 beginRight, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 endLeft, Vector3 endRight, HexCell endCell</span></span></span><br><span class="line"><span class="function"><span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里先生成阶梯的第一个矩形面片。通过给定插值来计算出矩形面片的另外两个顶点</span></span><br><span class="line">    Vector3 v3 = HexMetrics.TerraceLerp(beginLeft, endLeft, <span class="number">1</span>);</span><br><span class="line">    Vector3 v4 = HexMetrics.TerraceLerp(beginRight, endRight, <span class="number">1</span>);</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    AddQuad(beginLeft, beginRight, v3, v4);</span><br><span class="line">    AddQuadColor(beginCell.color, c2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-7-1.png"></p>
-<p>　　生成第一个阶梯面片后，我们直接跳过中间步骤，将剩余部分用一个矩形面片连接起来。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 beginLeft, Vector3 beginRight, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 endLeft, Vector3 endRight, HexCell endCell</span></span></span><br><span class="line"><span class="function"><span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里先生成阶梯的第一个矩形面片。通过给定插值来计算出矩形面片的另外两个顶点</span></span><br><span class="line">    Vector3 v3 = HexMetrics.TerraceLerp(beginLeft, endLeft, <span class="number">1</span>);</span><br><span class="line">    Vector3 v4 = HexMetrics.TerraceLerp(beginRight, endRight, <span class="number">1</span>);</span><br><span class="line">    Color c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    AddQuad(beginLeft, beginRight, v3, v4);</span><br><span class="line">    AddQuadColor(beginCell.color, c2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接阶梯的剩余区域</span></span><br><span class="line">    AddQuad(v3, v4, endLeft, endRight);</span><br><span class="line">    AddQuadColor(c2, endCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-7-2.png"></p>
-<p>　　通过观察3-6章的示意图可以发现，除了阶梯的第一个矩形面片和最后的连接区域，其余部分可以通过一个循环来生成。思路就是将通过插值计算得出的两个顶点，作为下一个矩形面片的起始点，利用插值再计算出新矩形面片的两个终点。计算颜色也是这个思路。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 beginLeft, Vector3 beginRight, HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 endLeft, Vector3 endRight, HexCell endCell</span></span></span><br><span class="line"><span class="function"><span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    AddQuad(beginLeft, beginRight, v3, v4);</span><br><span class="line">    AddQuadColor(beginCell.color, c2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//阶梯的其他矩形面片，可以通过循环来生成</span></span><br><span class="line">    <span class="comment">//旧的矩形面片终点V3 V4，就是新面片的起点 V1 V2</span></span><br><span class="line">    <span class="comment">//然后再利用插值计算新面片的终点即可</span></span><br><span class="line">    <span class="comment">//颜色计算同理</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v3;</span><br><span class="line">        Vector3 v2 = v4;</span><br><span class="line">        Color c1 = c2;</span><br><span class="line">        v3 = HexMetrics.TerraceLerp(beginLeft, endLeft, i);</span><br><span class="line">        v4 = HexMetrics.TerraceLerp(beginRight, endRight, i);</span><br><span class="line">        c2 = HexMetrics.TerraceLerp(beginCell.color, endCell.color, i);</span><br><span class="line">        AddQuad(v1, v2, v3, v4);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接阶梯的剩余区域</span></span><br><span class="line">    AddQuad(v3, v4, endLeft, endRight);</span><br><span class="line">    AddQuadColor(c2, endCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-7-3.png"></p>
-<p>　　这样，我们就将之前的矩形连接区域转换成了阶梯状连接区域。并且可以自定义阶梯的段数。但是我们发现一个问题，就是在两个高度相同的地图单元之间，也进行了不必要的阶梯化，这样就产生了多于的三角面。在下一章中，我们会将高度进行分类，从而解决这个问题。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-7-4.png"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/2e1449870afd8f2429786841b32f7a9ff45be47a">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1368,13 +1367,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">155k</span>
+    <span title="站点总字数">157k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:21</span>
+    <span title="站点阅读时长">2:23</span>
   </span>
 </div>
 <div class="busuanzi-count">

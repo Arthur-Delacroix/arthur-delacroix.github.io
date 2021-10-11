@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">75</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,115 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">5-11 高度与颜色编辑可选功能</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-29 12:12:37" itemprop="dateCreated datePublished" datetime="2020-11-29T12:12:37+08:00">2020-11-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　现在我们可以创建更大尺寸的地图了，但是地图编剧工具的功能并没有任何变化。首先是对地图单元上色和调整高度是同时进行的。其次因为有了更大的地图，一次编辑一个地图单元显得过于繁琐。在这一章中，我们先实现编辑高度与颜色功能变为可选，也就是在点击一个地图单元的时候，可以选择只改变其颜色或者只改变其高度。<br>　　这个功能可以通过添加一个toggle组来实现。复制一个颜色选项卡并将标签名改为“—”或者其他字符，与颜色选择的勾选框文字进行区分。然后设置其OnValueChanged事件传递参数为-1。此选项目的是用来取消选中颜色。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-1.png"></p>
+<p>　　-1对于颜色数组来说是一个无效的下标，我们可以根据这个数值确定是否对地图单元进行颜色修改。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//表示当前是否可以修改cell的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyColor;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SelectColor</span>(<span class="params"><span class="keyword">int</span> _index</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当传入的索引值大于0的时候，才会获取当前选中的颜色</span></span><br><span class="line">        applyColor = _index &gt;= <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            activeColor = colors[_index];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当applyColor为true，也就是索引值大于等于0，才会修改cell的颜色</span></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        cell.Elevation = activeElevation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　修改地图单元高度使用的是一个Slider组件，在这里创建一个toggle表示是否应用高度编辑,默认设置为开启状态。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//是否启用修改cell高度的功能</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyElevation = <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//当toggle勾选时，才会修改cell的高度</span></span><br><span class="line">        <span class="keyword">if</span> (applyElevation)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Elevation = activeElevation;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成代码后，我们重新整理一下UI上各个组件的位置和层级结构，将所有UI都放入一个Panel中，然后再将颜色修改的UI与高度修改的UI分开，这样就显得更加整洁，也便于后期调试。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-2.png"></p>
+<p>　　为了让修改高度开关起效，我们需要创建一个方法，在Toggle每次勾选或取消选择时候都调用这个方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当高度修改的toggle点击时，调用此方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;toggle&quot;&gt;</span>toggle当前是否被选中<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetApplyElevation</span>(<span class="params"><span class="keyword">bool</span> toggle</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        applyElevation = toggle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成代码后，要在Toggle组件上挂载此方法。当挂载方法时确保是使用的方法列表顶端的dynamic bool method。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-3.png"></p>
+<p>　　现在我们在运行时就可以选择是修改颜色还是高度，或者像之前一样同时修改。甚至可以两个都不选，尽管现在这个功能没什么用。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-4.gif"></p>
+<blockquote>
+<p>为什么当我选择一个颜色后自动取消选择高度了？<br>这个情况发生在把所有的选项都放在一个Group时，可能是直接复制了一份颜色选项卡然后修改成高度选项卡，但没有清理Toggle组件的Group。</p>
+</blockquote>
+<p>　　至此，我们就完成了单独进行高度和颜色的可选编辑功能，虽然这个功能现在看上去好像没什么用。但是随着编辑器的功能不断增多，这个功能将在之后体现出来它的作用。在下一章中，我们将定义一个笔刷大小，用来批量修改地图单元的颜色或高度。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/bda7f8778241ae754f5d9a50582e6ae5e01e4960">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/28/HexMap/5-10%20%E6%91%84%E5%83%8F%E6%9C%BA%E6%97%8B%E8%BD%AC%E6%8E%A7%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1565,141 +1674,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/24/HexMap/5-5%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/24/HexMap/5-5%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">5-5 修复地图编辑器</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-24 11:44:23" itemprop="dateCreated datePublished" datetime="2020-11-24T11:44:23+08:00">2020-11-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们已经可以创建更大尺寸的地图了。但是因为删除了一些代码的原因，现在地图编辑器处于失效的状态中。在这一章中，我们将根据新的生成地图单元方式，修复地图编辑器。在上一章中我们删除了<code>HexGrid</code>中的<code>Refresh</code>，如果现在要改变某个地图单元的高度或者颜色，应该刷新其所在地图块的网格，而不是所有的地图单元网格。所以在<code>HexGridChunk</code>中添加新的<code>Refresh</code>方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 重新构建当前chunk内的所有cell</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　那应该在什么时候调用这个方法？之前我们是在改变地图单元的高度或者颜色的时候对mesh进行重新构建，因为那时只有一个mesh，但现在我们有很多的地图块，每个地图块都包含了一个mesh组件。就不能每个地图块都刷新，而是仅当地图块被改变时再刷新效率会更高，否则编辑较大地图时会感觉很卡。<br>　　接下来问题就变成了如何知道哪个地图块需要刷新。一个比较简单的方法是确保每个地图单元都知道它是属于哪一个地图块，这样地图单元就能在其被改变时刷新它所在的地图块，所以给<code>HexCell</code>一个地图块的引用。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//引用当前其所在的地图块</span></span><br><span class="line">    <span class="keyword">public</span> HexGridChunk chunk;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　当添加地图单元实例时<code>HexGridChunk</code>可以直接把自己赋值给它。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddCell</span>(<span class="params"><span class="keyword">int</span> index, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cells[index] = cell;</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//将chunk自身实例添加到cell中，这样cell就知道自己属于哪个chunk了</span></span><br><span class="line">    cell.chunk = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　将这些引用连接建立之后,在<code>HexCell</code>里创建一个<code>Refresh</code>方法，地图单元刷新时就同步刷新自己所在的地图块。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 当自身状态改变时，刷新自身所在chunk的所有cell</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    chunk.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们之所以不需要把<code>HexCell.Refresh</code>设置为<code>public</code>方法，因为只有地图单元自己清楚它什么时候发生了变化。例如，在高度改变之后。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置高度后刷新当前chunk</span></span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　其实只有当前地图单元的高度被设置成了一个不同值时才需要刷新，并不需要在赋了一个相同的高度值后重新计算，所以新的高度值相同时，可以在<code>set</code>属性的一开始就跳出。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当新的高度值赋值是，与旧的相同，直接返回，不执行之后的代码</span></span><br><span class="line">        <span class="keyword">if</span> (elevation == <span class="keyword">value</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　然而这会跳过第一次设置高度为0时的计算，因为0是地图网格的默认高度，为预防这一点，确保初始值是永远都不会用到的值。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//为高度赋初始值，这样避免了初始值为0，新输入的值也为0，不会刷新mesh的问题</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> elevation = <span class="keyword">int</span>.MinValue;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>什么是int.MinValue?<br>这是int所能表示的最小值，在C#中int是一个32位的数字,它有2的32次方种可能的整数值,分成正值和负值和0,其中一位用来指出这个值是不是负的。<br>最小值是负的2的31次方=-2147483648，我们永远不会使用这个高度等级。<br>最大值是2的31次方减1=2147483647,比2的31次方少1是因为还有0存在。<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.int32.minvalue?view=net-5.0">MSDN连接</a></p>
-</blockquote>
-<p>　　除了改变高度会刷新当前的地图块，改变颜色也会。为了检测颜色是否被改变，我们也要把颜色设置成一个属性。重命名成首字母大写的Color,接着改成属性并使用私有的color变量。颜色的默认值是标准黑色，这里就不用再添加赋初始值的代码了。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cell颜色</span></span><br><span class="line"><span class="keyword">private</span> Color color;</span><br><span class="line"></span><br><span class="line"><span class="comment">//cell颜色</span></span><br><span class="line"><span class="keyword">public</span> Color Color</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> color;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当新颜色与现在颜色相同时，不再进行赋值和刷新</span></span><br><span class="line">        <span class="keyword">if</span> (color == <span class="keyword">value</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        color = <span class="keyword">value</span>;</span><br><span class="line">        </span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到Unity中运行，我们发现会报空引用异常，这是因为在把地图单元赋值给它所在的地图块之前，就设置了其默认的颜色和高度。最好的办法是在这里先不刷新，因为我们会在初始化完成之后三角化它们。换句话说就是只有在地图块被赋值完成后才进行刷新。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (chunk != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        chunk.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在又可以使用地图编辑器了，但是我们发现一个问题，就是在两个地图块的交界处，如果地图单元的颜色不是白色， 那就会产生很明显的一个边界。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-5-1.png"></p>
-<p>　　这个问题很好理解，因为一个地图单元发生变化后，所有与它相邻的地图单元也会发生改变，而这些相邻的地图单元有可能在不同的地图块中。最简单的解决方案是当地图单元与其相邻地图单元不在一个地图块时，也刷新一下相邻单元格的地图块。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (chunk != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        chunk.Refresh();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历自身当前所有相邻的cell</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; neighbors.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            HexCell neighbor = neighbors[i];</span><br><span class="line"></span><br><span class="line">            <span class="comment">//当自身与相邻cell不在同一个chunk时，刷新相邻的chunk</span></span><br><span class="line">            <span class="keyword">if</span> (neighbor != <span class="literal">null</span> &amp;&amp; neighbor.chunk != chunk)</span><br><span class="line">            &#123;</span><br><span class="line">                neighbor.chunk.Refresh();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样修改虽然视觉效果正确，但我们要刷新单个地图块多次，一旦我们在一次绘制横跨多个地图单元时，情况就更糟糕了。我们没必要在地图块刷新信息时直接三角化，我们可以通知这个地图块需要刷新，然后在编辑完成时一次性三角化。<br>　　因为<code>HexGridChunk</code>没有用来做其它的事情，我们可以用脚本的enable状态作为需要刷新的信号，当开始刷新时，给脚本设置enable状态，就算多次设置也没关系，因为不会有变化。稍后脚本更新时，我们就在这里进行三角化，然后再次设置状态为disable。<br>　　因我们使用LateUpdate，这样就能确保三角化发生在当前帧编辑完成之后。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//hexMesh.Triangulate(cells);</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">//需要对当前Chunk刷新时，就启用当前脚本</span></span><br><span class="line">    enabled = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//完成三角构建后，就停用当前脚本，这样就不会发生重复刷新的问题了</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">    enabled = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Update与LateUpdate有什么区别？<br>每一帧中, 所有enabled状态的组件中的Update会在随机时候调用。在这结束之后，LateUpdate方法也是同样的逻辑。所以这是两个更新步骤，一个早一些一个晚一些。<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/ExecutionOrder.html">Unity官方文档</a><br>Unity内脚本的生命周期如下图：</p>
-</blockquote>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/Unity3D_MonoBehaviour_Lifecycle.jpg"></p>
-<p>　　因为脚本组件默认状态就是enabled，所以不再需要在Start里进行三角构建，现在就可以删掉这个方法了。</p>
-<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//private void Start()</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//    cell实例会由HexGrid创建</span></span><br><span class="line"><span class="comment">//    之后会将实例分配到各个HexGridChunk的数组中，这样再进行mesh的构建</span></span><br><span class="line"><span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-5-2.png"></p>
-<p>　　至此，我们就修复了地图编辑器的所有功能了，当我们编辑一个在地图块边缘的地图单元时，相邻地图块也会随之刷新。在接下来的章节中，我们会对现有代码进行一些优化。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b8806263fd26e8ec7691382ce368811deaf73686">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1755,13 +1729,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">157k</span>
+    <span title="站点总字数">159k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:23</span>
+    <span title="站点阅读时长">2:24</span>
   </span>
 </div>
 <div class="busuanzi-count">

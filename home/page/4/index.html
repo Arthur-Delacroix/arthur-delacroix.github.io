@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">75</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,100 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/04/HexMap/3-18%20%E6%95%B4%E7%90%86%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/04/HexMap/3-18%20%E6%95%B4%E7%90%86%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91/" class="post-title-link" itemprop="url">3-18 整理代码逻辑</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-04 09:17:32" itemprop="dateCreated datePublished" datetime="2020-11-04T09:17:32+08:00">2020-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在之前的章节中，我们完成了各类高低差不同的地图单元之间，其三角形连接区域的构建，有些是阶梯化的，有些则是一半阶梯一半三角形的。所有的情况如下图所示</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-18-2.png"><br>　　<br>　　判断地图单元格之间的连接关系，并决定使用哪种方式构建三角形连接区域的语句都在<code>TriangulateCorner</code>方法中。这里我们来整理一下这部分代码，用<code>if else</code>语句来代替现在的<code>return</code>。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Flat)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (leftCell.GetEdgeType(rightCell) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftCell.Elevation &lt; rightCell.Elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerCliffTerraces(right, rightCell, bottom, bottomCell, left, leftCell);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TriangulateCornerTerracesCliff(left, leftCell, right, rightCell, bottom, bottomCell);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        AddTriangle(bottom, left, right);</span><br><span class="line">        AddTriangleColor(bottomCell.color, leftCell.color, rightCell.color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-18-1.png"></p>
+<p>　　至此，我们就完成了所有地图单元之间连接类型的判断，以及构建其相邻的三角形连接区域的功能了。相比之前没有任何段落感的地形，现在的地形层次更加丰富，立体感更强。在接下来的章节中，我们要继续丰富地图的细节，使用一张随机的噪点图，对地图上的单元素进行一定的形变。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/97602cbf7949a6cf945984853ed783b2fcf70060">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1205,113 +1299,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/25/HexMap/3-8%20%E8%AE%BE%E7%BD%AE%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/25/HexMap/3-8%20%E8%AE%BE%E7%BD%AE%E8%BF%9E%E6%8E%A5%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">3-8 设置连接类型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-25 09:55:07" itemprop="dateCreated datePublished" datetime="2020-10-25T09:55:07+08:00">2020-10-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中完成了矩形连接区域的阶梯化，但是我们发现如果两个相邻的地图单元高度相同，那么他们之间的矩形连接区域可以不用阶梯化，从而避免产生多于的三角面片。相反的，如果两个相邻的地图单元高度相差较大的时候，3段阶梯又会被拉伸，感觉并不美观。<br>　　根据这个现象，我们将不同高度的连接分为三个类型：Flat(平坦)、Slop(倾斜)、Cliff(陡峭)，并为其创建一个新的枚举类型。</p>
-<figure class="highlight csharp"><figcaption><span>HexEdgeType.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//两个cell之间的高度差分类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> HexEdgeType</span><br><span class="line">&#123;</span><br><span class="line">    Flat,<span class="comment">//高度差为0</span></span><br><span class="line">    Slope,<span class="comment">//高度差为1</span></span><br><span class="line">    Cliff<span class="comment">//高度差大于1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　为了确认相邻地图单元的连接类型，在<code>HexMetrice.cs</code>中添加一个方法，通过计算两个相邻地图单元的高度差，来判断他们的连接类型。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrice.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 判断两个相邻的cell之间的高度差</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;elevation1&quot;&gt;</span>cell自身<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;elevation2&quot;&gt;</span>相邻的cell<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>两个相邻cell的连接类型<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexEdgeType <span class="title">GetEdgeType</span>(<span class="params"><span class="keyword">int</span> elevation1, <span class="keyword">int</span> elevation2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　如果两个相邻地图单元的高度相同，那么他们之间的连接类型就为Flat(平坦)。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrice.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexEdgeType <span class="title">GetEdgeType</span>(<span class="params"><span class="keyword">int</span> elevation1, <span class="keyword">int</span> elevation2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//两个相邻cell高度相同，为Flat</span></span><br><span class="line">    <span class="keyword">if</span> (elevation1 == elevation2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> HexEdgeType.Flat;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　如果两个相邻地图单元的高度差值为1，那么就是Slop(倾斜)。除此之外，均为Cliff(陡峭)。</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrice.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexEdgeType <span class="title">GetEdgeType</span>(<span class="params"><span class="keyword">int</span> elevation1, <span class="keyword">int</span> elevation2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//两个相邻cell高度差1，为Slope</span></span><br><span class="line">    <span class="keyword">int</span> delta = elevation2 - elevation1;</span><br><span class="line">    <span class="keyword">if</span> (delta == <span class="number">1</span> || delta == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> HexEdgeType.Slope;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//剩下的情况，均为Cliff</span></span><br><span class="line">    <span class="keyword">return</span> HexEdgeType.Cliff;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来回到<code>HexCell.cs</code>中，创建一个方法，用来获取指定方位相邻地图单元的连接类型。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 获取指定方位相邻cell 的连接类型(HexEdgeType)</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>指定的相邻方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> HexEdgeType <span class="title">GetEdgeType</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> HexMetrics.GetEdgeType(</span><br><span class="line">        elevation, neighbors[(<span class="keyword">int</span>)direction].elevation</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们对各种不同高差的连接类型进·完成了分类，并创建了一个获取相邻地图单元连接类型的方法。在接下来的一章中，我们将使用这些代码，只对Slop(倾斜)类型的连接进行阶梯化。</p>
-<blockquote>
-<p>是否需要在所有方向上都要检查存不存在相邻单元格？<br>你可能最终会在恰好位于地图边界上的方向获取边缘类型。在那种情况下是没有相邻地图单元的，同时我们也会得到一个空引用异常。当然可以在方法内就检查这个，然后如果发生这种情况抛出某种异常。但是那种情况下，异常就已经发生了，所以这是多此一举，除非你想抛出一个自定义的异常类型。<br>需要明确的是，我们只会在我们知道不是处理地图边界的时候才会使用这个方法，如果在某些地方出错了，我们肯定会得到一个空引用异常。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/97cf71f0d9338ad4cfcaf871c35207dc51eb6cd4">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1367,13 +1354,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">157k</span>
+    <span title="站点总字数">159k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:23</span>
+    <span title="站点阅读时长">2:24</span>
   </span>
 </div>
 <div class="busuanzi-count">

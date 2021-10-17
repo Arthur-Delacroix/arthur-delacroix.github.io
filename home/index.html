@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">78</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">79</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,102 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/" class="post-title-link" itemprop="url">5-14 添加高度数字显示和笔刷大小数字显示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-02 00:17:17" itemprop="dateCreated datePublished" datetime="2020-12-02T00:17:17+08:00">2020-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了坐标显示UI的关凯功能，在这一章中我们将对现有的UI作出一些调整和补充。现在的地图编辑器UI中，基本所有的元素和选项都混在一起，没有进行分类，视觉效果上并不美观。这里我们创建一个<code>Image</code>组件，宽度设置为100，高度设置为1，分别在颜色选择UI、高度选择UI、笔刷选择UI下方插入并调整它们之间的间距。这样我们对地图编辑器UI中的各项进行了分类，使视觉效果更佳清晰。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-1.png"></p>
+<p>　　接下来，我们在通过Slider组件调整高度和笔刷大小的时候，并不能看到确切的数值，这里我们首先在<code>HexMapEditor.cs</code>中添加两个<code>Text</code>类型的变量，用于获取UI中高度和笔刷大小的文本，在文字后方加入对应的数值显示。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//显示当前选择高度的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text elevationText = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//显示当前笔刷大小的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text brushSizeText = <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置高度和笔刷大小默认显示数值</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: 0&quot;</span>;</span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: 0&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetElevation</span>(<span class="params"><span class="keyword">float</span> elevation</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在改变高度的同时，更新显示的文字信息</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: &quot;</span> + elevation.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetBrushSize</span>(<span class="params"><span class="keyword">float</span> size</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在设置笔刷大小的同时，更新显示的文字信息</span></span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: &quot;</span> + size.ToString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，将ElevationToggle子物体中的Label与BrushSize_Text拖入对应<code>Hex Map Editor</code>变量位置即可。效果如下：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-2.png"></p>
+<p>　　至此，我们就完成了使用多个地图块拼接大地图，以及对应的摄像机控制、高度与颜色修改功能分离、添加笔刷等功能。在接下来的章节中，我们将为现在的地图添加更多的环境细节。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/commit/be4b35659b8979e71f2591964dd41459ca628cfd">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/01/HexMap/5-13%20%E5%9D%90%E6%A0%87%E6%98%BE%E7%A4%BAUI%E5%BC%80%E5%85%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1594,101 +1690,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/26/HexMap/5-7%20%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6%20%E8%B0%83%E6%95%B4%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/26/HexMap/5-7%20%E6%91%84%E5%83%8F%E6%9C%BA%E6%8E%A7%E5%88%B6%20%E8%B0%83%E6%95%B4%E5%B1%82%E7%BA%A7%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">5-7 摄像机控制 调整层级结构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-26 23:52:07" itemprop="dateCreated datePublished" datetime="2020-11-26T23:52:07+08:00">2020-11-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>755</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们对<code>HexMesh.cs</code>脚本中的代码进行了优化。现在我们能创建尺寸更大的地图了，但是摄像机依然只显示了几个地图单元的范围，这导致在游戏运行时我们没办法编辑摄像机事业之外的地图单元。为了能看清整各地图的全貌，那就需要摄像机有移动、旋转和焦距变化的功能，在接下来的章节中，我们步来实现。<br>　　现在我们需要对摄像机的层级结构做出一些调整，新建一个空对象命名为<code>Hex Map Camera</code>，重置它的<code>transform</code>组件。为其新建一个子对象并命名为<code>Swivel</code>，然后在<code>Swivel</code>下创建一个子对象<code>Stick</code>。把主相机设置为<code>Stick</code>的子物体,然后重置其<code>transform</code>组件。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-7-1.png"></p>
-<p>　　Swivel的控制摄像机看向的角度,把它的<code>Rotation</code>默认设置为<code>(45, 0, 0)</code>。Stick则是用来控制摄像机的远近,设置<code>Position</code>默认坐标为<code>(0, 0, -45)</code>。<br>　　接下来我们需要一个脚本来控制这个组合装置，在根节点添加这个脚本并添加Swivel和Stick的引用。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//控制camera视角旋转</span></span><br><span class="line">    <span class="keyword">private</span> Transform swivel;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//控制camera视角远近</span></span><br><span class="line">    <span class="keyword">private</span> Transform stick;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//获取对应的实例</span></span><br><span class="line">        swivel = transform.GetChild(<span class="number">0</span>);</span><br><span class="line">        stick = swivel.GetChild(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-7-2.png"></p>
-<p>　　这样我们就完成了摄像机层级的设置和创建脚本的准备工作了。在下一章中我们将添加调整摄像机视距的功能。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/50dff1ce86ed256373979fcdb2b32681ec5f41db">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1744,13 +1745,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">165k</span>
+    <span title="站点总字数">166k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:30</span>
+    <span title="站点阅读时长">2:31</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">78</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">79</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,112 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/07/HexMap/4-3%20%E9%A1%B6%E7%82%B9%E6%89%B0%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/07/HexMap/4-3%20%E9%A1%B6%E7%82%B9%E6%89%B0%E5%8A%A8/" class="post-title-link" itemprop="url">4-3 顶点扰动</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-07 23:07:19" itemprop="dateCreated datePublished" datetime="2020-11-07T23:07:19+08:00">2020-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们使用世界坐标中的一个点，在彩色噪点图上进行采样，得到了一个4D向量。在这一章中，我们使用这个4D向量，对地图内的各个顶点进行扰动，让地图看起来有更多的变化。我们回到<code>HexMesh.cs</code>中，在这里我们添加一个方法<code>Perturb </code>来负责这个工作。这个方法使用一个世界坐标内的点，进行扰动后，返回扰动后的坐标。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 通过世界内的一个点(vector3)，经过彩色噪点图扰动后，返回扰动后的Vect3</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>世界坐标内的点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>经过噪点图扰动后的点坐标<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//利用世界空间内一点，在彩色噪点图上进行采样，得到彩色噪点图内一点的RGBA信息</span></span><br><span class="line">        Vector4 sample = HexMetrics.SampleNoise(position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　通过世界坐标采样完成后，我们先使用原始坐标加采样坐标的方式获得新的扰动后坐标，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//使用原始坐标加上噪点图的采样坐标，得到扰动后坐标</span></span><br><span class="line">    position.x += sample.x;</span><br><span class="line">    position.y += sample.y;</span><br><span class="line">    position.z += sample.z;</span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　那么要如何快速的让地图中所有顶点都产生扰动？只需要在<code>AddTriangle</code>和<code>AddQuad</code>里添加顶点到列表中时修改每个顶点就行了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangle</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里的坐标变为扰动后的坐标</span></span><br><span class="line">    vertices.Add(Perturb(v1));</span><br><span class="line">    vertices.Add(Perturb(v2));</span><br><span class="line">    vertices.Add(Perturb(v3));</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuad</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里的坐标变为扰动后的坐标</span></span><br><span class="line">    vertices.Add(Perturb(v1));</span><br><span class="line">    vertices.Add(Perturb(v2));</span><br><span class="line">    vertices.Add(Perturb(v3));</span><br><span class="line">    vertices.Add(Perturb(v4));</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-3-1.png"></p>
+<blockquote>
+<p>为什么顶点扰动后四边形依然是平坦的？<br>很可能并不是。这些四边形由两个不再对齐的三角形构成，因为这些三角形共享两个顶点，这些顶点的法线会平滑变化。这意味着你看不到两个三角形之间的明显过渡，如果扭曲的不是太明显，视觉效果上仍然会感觉这个四边形是平的。</p>
+</blockquote>
+<p>　　经过扰动后看起来好像没多大变化，除了单元格的坐标数字不见了之外。这是因为我们把顶点加上了噪声采样的坐标，这些坐标的计算结果总是正值，所以所有三角形都在标签上方并覆盖了它们。所以我们需要把采样的范围控制在-1至1之间。代码如下</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Vector3 <span class="title">Perturb</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将采样后的扰动结果控制在1到-1之间</span></span><br><span class="line">    position.x += sample.x * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line">    position.y += sample.y * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line">    position.z += sample.z * <span class="number">2f</span> - <span class="number">1f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-3-2.png"></p>
+<p>　　现在我们就完成了通过一张彩色噪点图进行采样，并对地图中每个顶点进行伪随机的扰动。但是现在的扰动范围只是在-到-1之间，效果并不是很明显，在接下来的一章中，我们将加入新的参数，来控制扰动的强度。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/f7eb136ab9cea033d018e75cb24fb23d2a5b4ed1">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1202,124 +1308,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/28/HexMap/3-11%20slope%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/28/HexMap/3-11%20slope%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%B8%89%E8%A7%92%E5%BD%A2%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">3-11 Slope类型的三角形连接区域构建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-28 14:51:07" itemprop="dateCreated datePublished" datetime="2020-10-28T14:51:07+08:00">2020-10-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们对一个三角形连接区域，相邻的三个地图单元高度进行了分析，通过判断和比较，知道了三个地图单元中，哪个地图单元最高，哪个底图单元最低。<br>　　再结合之前章节中对高度差的分类，我们现在就可以对三角形连接区域进行构建了。不过因为高度差不同，所以三角形连接区域的构建也有很多种类。这里我们需要分类进行实现。<br>　　我们要构建三角形链接区域，首先需要知道我们处理的是哪种连接区域类型，在<code>HexCell.cs</code>中添加一个新的方法，来回去两个单元格之间对连接类型</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 对比自身和另一个cell的高度，返回两个cell的连接类型</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;otherCell&quot;&gt;</span>另一个cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>两个cell的连接类型<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> HexEdgeType <span class="title">GetEdgeType</span>(<span class="params">HexCell otherCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> HexMetrics.GetEdgeType(elevation, otherCell.elevation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在<code>HexMesh.TriangulateCorner</code>方法中，使用<code>GetEdgeType</code>确认相邻的Left和Right地图单元的连接类型。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell, </span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell, </span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里先获取Left和Right两个cell，相较于Bottom cell的高度类型，这样才能决定怎样做三角剖分</span></span><br><span class="line">    HexEdgeType leftEdgeType = bottomCell.GetEdgeType(leftCell);</span><br><span class="line">    HexEdgeType rightEdgeType = bottomCell.GetEdgeType(rightCell);</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　如果Left和Right两个地图单元，相较于Bottom对连接类型都是<code>Slope</code>类型。那么就说明，Left和Right两个地图单元高度是相同的，他们两者之间的连接类型是<code>Flat</code>。而且Left和Right两个地图单元与Bottom地图单元对矩形连接区域，都是阶梯状的。我们称这种连接类型为<code>Slope-Slope-Slat</code>，或者简称<code>SSF</code>。如图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-1.png"></p>
-<p>　　为了方便观察新构建的三角形连接区域，我们将之前的构建三角形连接区域的语句注释掉，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//AddTriangle(bottom, left, right);</span></span><br><span class="line">    <span class="comment">//AddTriangleColor(bottomCell.color, leftCell.color, rightCell.color);</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//AddTriangle(v2, v4, v5);</span></span><br><span class="line">    <span class="comment">//AddTriangleColor(cell.color, neighbor.color, nextNeighbor.color);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来，我们创建一个新的方法<code>TriangulateCornerTerraces</code>，这个方法专门用来创建阶梯状的三角形连接区域。如果在<code>TriangulateConnection</code>方法中判断两个相邻的地图单元难道连接类型为<code>SSF</code>，那么就调用这个方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCorner</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 bottom, HexCell bottomCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里通过获取的Left和Right 相较于Bottom的连接类型进行判断，具体三个cell的高度关系</span></span><br><span class="line">    <span class="comment">//判断完成后，直接调用对应的方法构建三角形连接区域，而不使用之前通用的方法构建</span></span><br><span class="line">    <span class="keyword">if</span> (leftEdgeType == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (rightEdgeType == HexEdgeType.Slope)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//这里判断为SSF类型</span></span><br><span class="line">            TriangulateCornerTerraces(bottom, bottomCell, left, leftCell, right, rightCell);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建阶梯状的三角形连接区域</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;begin&quot;&gt;</span>初始cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;beginCell&quot;&gt;</span>初始cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;left&quot;&gt;</span>左侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;leftCell&quot;&gt;</span>左侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;right&quot;&gt;</span>右侧cell位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;rightCell&quot;&gt;</span>右侧cell实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin,HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在Unity中运行代码，会看到现在符合<code>SSF</code>类型的连接，三角形连接区域是一个洞，这表明在洞的位置，我们调用了<code>TriangulateCornerTerraces</code>方法，而不是默认构建三角形连接区域的方法，如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-2.png"></p>
-<p>　　现在让我们用阶梯化的三角形连接区域填补上这个洞。要填补这个洞，就需要连接左右两个地图单元的矩形阶梯化连接区域。思路与创建矩形阶梯化连接区域基本相同，先从底部第一个阶梯开始构建。只不过顶点需要从左右两边的阶梯状矩形连接区域获取。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin,HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//计算出与begin相邻的两个cell，每个阶梯的顶点和其对应的颜色</span></span><br><span class="line">    Vector3 v3 = HexMetrics.TerraceLerp(begin, left, <span class="number">1</span>);</span><br><span class="line">    Vector3 v4 = HexMetrics.TerraceLerp(begin, right, <span class="number">1</span>);</span><br><span class="line">    Color c3 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, <span class="number">1</span>);</span><br><span class="line">    Color c4 = HexMetrics.TerraceLerp(beginCell.color, rightCell.color, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//与矩形阶梯区域不同的是，阶梯三角形连接区域最下端是一个三角形，这里先构建这个三角形</span></span><br><span class="line">    AddTriangle(begin, v3, v4);</span><br><span class="line">    AddTriangleColor(beginCell.color, c3, c4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们就得到了底部的第一段阶梯，如图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-3.png"></p>
-<p>　　与阶梯化矩形连接区域步骤相同，我们直接进行最后一步的构建，将第一段阶梯的两个顶点，和末端的两个顶点相连接，组成一个梯形。这里与阶梯化矩形区域不同的是，梯形的4个端点颜色是不同的，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin,HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//构建剩余的部分</span></span><br><span class="line">    AddQuad(v3, v4, left, right);</span><br><span class="line">    AddQuadColor(c3, c4, leftCell.color, rightCell.color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-4.png"></p>
-<p>　　最后，与构建阶梯矩形连接区域类似，循环获取阶梯上的各个顶点和颜色值，创建各个阶梯矩形区域即可。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateCornerTerraces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 begin,HexCell beginCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 left, HexCell leftCell,</span></span></span><br><span class="line"><span class="function"><span class="params">    Vector3 right, HexCell rightCell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//循环获取中间部分的顶点位置和颜色信息</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; HexMetrics.terraceSteps; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v1 = v3;</span><br><span class="line">        Vector3 v2 = v4;</span><br><span class="line">        Color c1 = c3;</span><br><span class="line">        Color c2 = c4;</span><br><span class="line">        v3 = HexMetrics.TerraceLerp(begin, left, i);</span><br><span class="line">        v4 = HexMetrics.TerraceLerp(begin, right, i);</span><br><span class="line">        c3 = HexMetrics.TerraceLerp(beginCell.color, leftCell.color, i);</span><br><span class="line">        c4 = HexMetrics.TerraceLerp(beginCell.color, rightCell.color, i);</span><br><span class="line">        AddQuad(v1, v2, v3, v4);</span><br><span class="line">        AddQuadColor(c1, c2, c3, c4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-11-5.png"></p>
-<p>　　这样，我们就完成了<code>SSF</code>类型连接区域的构建。不过<code>SSF</code>类型还存在一些变体情况，我们在下一个章节进行完善。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/566fa2e2e4e1d0894b0df0cec93fdc0742b43be6">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1375,13 +1363,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">165k</span>
+    <span title="站点总字数">166k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:30</span>
+    <span title="站点阅读时长">2:31</span>
   </span>
 </div>
 <div class="busuanzi-count">

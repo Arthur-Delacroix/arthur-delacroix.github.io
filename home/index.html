@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">81</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">82</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,116 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/05/HexMap/6-3%20%E7%A7%BB%E9%99%A4%E6%B2%B3%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/05/HexMap/6-3%20%E7%A7%BB%E9%99%A4%E6%B2%B3%E6%B5%81/" class="post-title-link" itemprop="url">6-3 移除河流</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-05 22:20:50" itemprop="dateCreated datePublished" datetime="2020-12-05T22:20:50+08:00">2020-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们创建了一些方法，来存储河流经过一个地图单元的方位等信息。在这一章节中，我们先来创建移除地图单元内河流的一些相关方法。<br>　　首先创建一个方法，移除地图单元内河流的流出部分，如果检测到当前地图单元没有河流的流出，那就直接跳出。如果有河流的流出，进行修改后，将标记设置为<code>false</code>并且刷新地图。这里实际移除河流的代码，会在之后的章节中完善。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 删除cell自身流出的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//判断当前cell是否有流出的河流</span></span><br><span class="line">    <span class="comment">//没有河流留出的话就直接跳出</span></span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//有流出的河流，就将cell流出状态改为false，并刷新当前chunk</span></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　如果当前地图单元有河流的流出，那么其相邻地图单元也一定会有河流的流入。根据处理流入的逻辑，用同样方法处理流出。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    Refresh();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//移除当前cell河流的流出部分，那就要同时移除相邻cell河流的流入部分</span></span><br><span class="line">    HexCell neighbor = GetNeighbor(outgoingRiver);</span><br><span class="line">    <span class="comment">//将相邻cell流入的标记设置为false</span></span><br><span class="line">    neighbor.hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//刷新相邻cell所在的chunk</span></span><br><span class="line">    neighbor.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>河流会延伸到地图之外么?<br>虽然有能实现这个功能,但我们不会这么做。所以也不用检查相邻地图单元存在。</p>
+</blockquote>
+<p>　　移除当前地图单元的河流，只会影响它自身的外观，这与改变高度与颜色不同，我们不用考虑其对相邻地图单元造成的影响，所以我们只需要刷新当前的地图单元就可以了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//Refresh();</span></span><br><span class="line">    <span class="comment">//与改变高度和颜色不同，移除河流只会影响自身，所以只需要刷新自身mesh即可</span></span><br><span class="line">    <span class="comment">//与其相邻的cell同理</span></span><br><span class="line">    RefreshSelfOnly();</span><br><span class="line"></span><br><span class="line">    HexCell neighbor = GetNeighbor(outgoingRiver);</span><br><span class="line">    neighbor.hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//刷新相邻cell所在的chunk</span></span><br><span class="line">    <span class="comment">//neighbor.Refresh();</span></span><br><span class="line">    neighbor.RefreshSelfOnly();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这个<code>RefershSelfOnly</code>方法目前就使用刷新当前你地图单元所在的地图块方法，因为当整个地图初始化时还没有对河流进行编辑，所以也不需要考虑此时地图块是否已赋值的问题。编辑河流后刷新自身的代码，会在之后的章节完善。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 刷新cell自身的mesh</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">RefreshSelfOnly</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//当前并未完善河流编辑功能，目前先使用刷新chunk的方法</span></span><br><span class="line">    chunk.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　移除相邻流入河流的方法思路基本相同。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 移除cell自身流入的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveIncomingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//思路与移除流出河流基本相同</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasIncomingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    RefreshSelfOnly();</span><br><span class="line"></span><br><span class="line">    HexCell neighbor = GetNeighbor(incomingRiver);</span><br><span class="line">    neighbor.hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    neighbor.RefreshSelfOnly();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后再添加一个方法，移除地图单元内的全部河流。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 移除cell自身流入和流出的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RemoveOutgoingRiver();</span><br><span class="line">    RemoveIncomingRiver();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此，我们就完成了移除地图单元内河流的方法。接下来的一章中，我们将创建给地图单元内添加河流的方法。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ecd7d026629a8301180a16438bfae442d1c28364">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/04/HexMap/6-2%20%E6%B2%B3%E6%B5%81%E6%96%B9%E5%90%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1541,115 +1651,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">5-11 高度与颜色编辑可选功能</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-29 12:12:37" itemprop="dateCreated datePublished" datetime="2020-11-29T12:12:37+08:00">2020-11-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　现在我们可以创建更大尺寸的地图了，但是地图编剧工具的功能并没有任何变化。首先是对地图单元上色和调整高度是同时进行的。其次因为有了更大的地图，一次编辑一个地图单元显得过于繁琐。在这一章中，我们先实现编辑高度与颜色功能变为可选，也就是在点击一个地图单元的时候，可以选择只改变其颜色或者只改变其高度。<br>　　这个功能可以通过添加一个toggle组来实现。复制一个颜色选项卡并将标签名改为“—”或者其他字符，与颜色选择的勾选框文字进行区分。然后设置其OnValueChanged事件传递参数为-1。此选项目的是用来取消选中颜色。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-1.png"></p>
-<p>　　-1对于颜色数组来说是一个无效的下标，我们可以根据这个数值确定是否对地图单元进行颜色修改。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//表示当前是否可以修改cell的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyColor;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SelectColor</span>(<span class="params"><span class="keyword">int</span> _index</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当传入的索引值大于0的时候，才会获取当前选中的颜色</span></span><br><span class="line">        applyColor = _index &gt;= <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            activeColor = colors[_index];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当applyColor为true，也就是索引值大于等于0，才会修改cell的颜色</span></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        cell.Elevation = activeElevation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　修改地图单元高度使用的是一个Slider组件，在这里创建一个toggle表示是否应用高度编辑,默认设置为开启状态。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//是否启用修改cell高度的功能</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyElevation = <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//当toggle勾选时，才会修改cell的高度</span></span><br><span class="line">        <span class="keyword">if</span> (applyElevation)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Elevation = activeElevation;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　完成代码后，我们重新整理一下UI上各个组件的位置和层级结构，将所有UI都放入一个Panel中，然后再将颜色修改的UI与高度修改的UI分开，这样就显得更加整洁，也便于后期调试。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-2.png"></p>
-<p>　　为了让修改高度开关起效，我们需要创建一个方法，在Toggle每次勾选或取消选择时候都调用这个方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当高度修改的toggle点击时，调用此方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;toggle&quot;&gt;</span>toggle当前是否被选中<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetApplyElevation</span>(<span class="params"><span class="keyword">bool</span> toggle</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        applyElevation = toggle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　完成代码后，要在Toggle组件上挂载此方法。当挂载方法时确保是使用的方法列表顶端的dynamic bool method。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-3.png"></p>
-<p>　　现在我们在运行时就可以选择是修改颜色还是高度，或者像之前一样同时修改。甚至可以两个都不选，尽管现在这个功能没什么用。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-4.gif"></p>
-<blockquote>
-<p>为什么当我选择一个颜色后自动取消选择高度了？<br>这个情况发生在把所有的选项都放在一个Group时，可能是直接复制了一份颜色选项卡然后修改成高度选项卡，但没有清理Toggle组件的Group。</p>
-</blockquote>
-<p>　　至此，我们就完成了单独进行高度和颜色的可选编辑功能，虽然这个功能现在看上去好像没什么用。但是随着编辑器的功能不断增多，这个功能将在之后体现出来它的作用。在下一章中，我们将定义一个笔刷大小，用来批量修改地图单元的颜色或高度。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/bda7f8778241ae754f5d9a50582e6ae5e01e4960">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1705,13 +1706,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">169k</span>
+    <span title="站点总字数">171k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:33</span>
+    <span title="站点阅读时长">2:35</span>
   </span>
 </div>
 <div class="busuanzi-count">

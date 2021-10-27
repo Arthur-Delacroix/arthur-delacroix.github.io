@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">83</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,98 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/07/HexMap/6-5%20%E9%98%B2%E6%AD%A2%E6%B2%B3%E6%B5%81%E9%80%86%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/07/HexMap/6-5%20%E9%98%B2%E6%AD%A2%E6%B2%B3%E6%B5%81%E9%80%86%E6%B5%81/" class="post-title-link" itemprop="url">6-5 防止河流逆流</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-07 00:19:22" itemprop="dateCreated datePublished" datetime="2020-12-07T00:19:22+08:00">2020-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>654</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在之前的章节中，我们创建了添加、移除河流的方法。但是我们忽略了一点，就是河流不能从低处往高处流，也就是河流逆流的情况。当我们编辑地图单元的高度的时候，我们需要判断其中的河流是否会发生逆流的情况，如果有的话，就要移除这些逆流的河流。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elevation;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//当前有河流从cell流出，如果流出cell高度小于相邻流入cell高度，这就是河流的逆流，移除流出河流</span></span><br><span class="line">        <span class="keyword">if</span> (hasOutgoingRiver &amp;&amp; elevation &lt; GetNeighbor(outgoingRiver).elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            RemoveOutgoingRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//与流出判断相类似，当流入cell高度大于流出cell高度时，也是逆流的情况</span></span><br><span class="line">        <span class="keyword">if</span> (hasIncomingRiver &amp;&amp; elevation &gt; GetNeighbor(incomingRiver).elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            RemoveIncomingRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，在编辑地图单元高度的时候，就可以防止河流出现逆流的情况了。在下一章中，我们要创建编辑河流的UI部分，为最后时限拖拽鼠标创建河流做准备。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ae932aaf8387aea2c875a0791aa42f637a421001">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/06/HexMap/6-4%20%E6%B7%BB%E5%8A%A0%E6%B2%B3%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1526,109 +1618,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/01/HexMap/5-13%20%E5%9D%90%E6%A0%87%E6%98%BE%E7%A4%BAUI%E5%BC%80%E5%85%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/01/HexMap/5-13%20%E5%9D%90%E6%A0%87%E6%98%BE%E7%A4%BAUI%E5%BC%80%E5%85%B3/" class="post-title-link" itemprop="url">5-13 坐标显示UI开关</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-01 20:19:37" itemprop="dateCreated datePublished" datetime="2020-12-01T20:19:37+08:00">2020-12-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们创建了笔刷功能，可以通过选择笔刷尺寸，来批量修改地图单元的颜色或高度。在这一章中，我们将做一个开关，用来隐藏或显示地图单元上的UI坐标。这是因为在之后的编辑地图中，我们并不需要时刻看到这些UI坐标，它们的存在有时候反而会妨碍我们对地图的编辑和查看。<br>　　由于整个大地图是由多个地图块拼接而成的，每一个地图块都有自己的canvas，所以需要在<code>HexGridChunk.cs</code>中添加一个<code>ShowUI</code>方法，来控制当前地图块的UI显示和隐藏。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGridChunk</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 控制当前地图块上的坐标显示UI 关闭/显示</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;visible&quot;&gt;</span>UI坐标显示状态<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowUI</span>(<span class="params"><span class="keyword">bool</span> visible</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        gridCanvas.gameObject.SetActive(visible);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　同时，在<code>Awake</code>方法中，默认关闭UI。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//默认关闭坐标的UI显示</span></span><br><span class="line">    ShowUI(<span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在地图编辑器中是通过一个按钮控制所有坐标UI的显示和隐藏，所以这里我们要在<code>HexGrid.cs</code>中也同样添加一个<code>ShowUI</code>方法，这个方法遍历所有的地图块，并控制其坐标UI的显示和隐藏。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 控制所有地图块的坐标显示UI的 显示/隐藏</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;visible&quot;&gt;</span>所有UI的显示状态<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowUI</span>(<span class="params"><span class="keyword">bool</span> visible</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; chunks.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        chunks[i].ShowUI(visible);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在<code>HexMapEditor.cs</code>中，也同样添加一个方法，供UI调用，将UI的状态传递至<code>HexGrid.cs</code>中。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过UI组件修改坐标UI的显示/隐藏</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;visible&quot;&gt;</span>UI坐标显示的状态<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowUI</span>(<span class="params"><span class="keyword">bool</span> visible</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    hexGrid.ShowUI(visible);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到Unity中，我们在地图编辑器中创建一个<code>Toggle</code>组件，并将<code>HexMapEditor.ShowUI</code>方法绑定到组件上即可。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-13-1.png"></p>
-<p>　　至此我们就完成了坐标显示UI开关的功能了，在程序启动时，是默认关闭所有UI显示的，通过点击最下方的<code>Label</code>开关，可以控制坐标显示UI的开启和关闭，从而达到印象或者显示全部坐标的效果。<br>　　在下一章中，我们将会对现有的UI作出一些修改，例如现在显示高度和笔刷范围，并不能看到数值，这在编辑的时候会很不方便。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/commit/92732821af9584adade3e0fa1f45c45be2cb2d5a">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1684,13 +1673,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">173k</span>
+    <span title="站点总字数">174k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:37</span>
+    <span title="站点阅读时长">2:38</span>
   </span>
 </div>
 <div class="busuanzi-count">

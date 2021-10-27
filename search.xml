@@ -531,31 +531,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
-</blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
-<ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
-</ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
-]]></content>
-      <categories>
-        <category>Unity 3D</category>
-      </categories>
-      <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Unity HDRP Visual Environment</title>
     <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
     <content><![CDATA[<p>#Visual Environment</p>
@@ -591,6 +566,31 @@
 </li>
 </ul>
 <p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
 ]]></content>
       <categories>
         <category>Unity 3D</category>
@@ -1040,26 +1040,6 @@
       </tags>
   </entry>
   <entry>
-    <title>2-10 颜色混合区域优化</title>
-    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
-<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
-<blockquote>
-<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2-1 计算相邻的地图单元的位置</title>
     <url>/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>　　上一章中我们完成了改变单个地图单元颜色的功能。但是通过观察可以发现，如果相邻的两个地图单元颜色不相同，他们之间的颜色过渡会显得非常的生硬。两者的对比效果如下图：</p>
@@ -1099,6 +1079,26 @@
 <p>什么是扩展方法？<br><a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
 </blockquote>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/18aca13c0edcfd279b0b54cd0fedbfaea4b91f9e">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2-10 颜色混合区域优化</title>
+    <url>/2020/10/15/HexMap/2-10%20%E9%A2%9C%E8%89%B2%E6%B7%B7%E5%90%88%E5%8C%BA%E5%9F%9F%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<p>　　在之前的章节中我们创建了专门进行颜色混合的区域，又将颜色混合区域进行拆分，分为了双色混合区域和三色混合区域。下图为我们目前各个颜色混合区域和地图单元的示意图。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-1.png"></p>
+<p>　　通过观察这个示意图并结合在Unity中生成的Mash可以发现：两个相邻的地图单元之间，是由两个矩形颜色混合区域进行链接，每个矩形颜色混合区域是由2个三角面片组成。而三色混合区域，是由6个三角面片组成的。<br>　　虽然在视觉效果上并没有什么不妥，但是如果在Unity中观察生成的Mash，我们发现现在的三角面片的分布有些过于复杂了。如果我们直接使用更少的三角面片进行连接，有很多进行颜色平均的步骤都不再需要了。这样能增加代码的运行效率，提高整体流畅度。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-10-2.png"></p>
+<blockquote>
+<p>我们为什么不在一开始就这么做？<br>你可能会在你的一生中问许多次这个问题，但这是马后炮。这是一个代码以逻辑方式演进的例子，直到获得了新的见解，从而产生了新的方法。这样的顿悟常常发生在你认为你已经搞定的时候。</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1948,6 +1948,34 @@
       </tags>
   </entry>
   <entry>
+    <title>4-10 连接六边形边缘与连接区域边缘</title>
+    <url>/2020/11/14/HexMap/4-10%20%E8%BF%9E%E6%8E%A5%E5%85%AD%E8%BE%B9%E5%BD%A2%E8%BE%B9%E7%BC%98%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E8%BE%B9%E7%BC%98/</url>
+    <content><![CDATA[<p>　　在上一章中，我们对每个六边形完成了细分，从之前的6个三角面片，增加到了18个三角面片。细节更加丰富。但是六边形边缘和其相邻的连接区域，还存在着破面与重面的问题，在这一章中，我们来修复这些问题。<br>　　对矩形连接区域的细分也会用到新增的顶点信息，所以要将这些信息传递到<code>TriangulateConnection</code>方法中，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//因为对六边形的每个边进行了细分，所以要把新的顶点也传入构建矩形连接区域的方法中</span></span><br><span class="line">    <span class="comment">//这样矩形区域使用新增的顶点后边缘之间才能吻合</span></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.SE)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateConnection(direction, cell, v1, e1, e2, v2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们要修改<code>TriangulateConnection</code>方法的参数列表，增加新的顶点参数，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//六边形增加了新的顶点，这里要修改参数列表，接收新的顶点</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们还需要计算与这个矩形连接区域相邻的另一个地图单元上的新增顶点信息。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    v3.y = v4.y = neighbor.Position.y;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里要计算与矩形连接区域相邻的，另一侧cell新增的两个顶点位置信息</span></span><br><span class="line">    Vector3 e3 = Vector3.Lerp(v3, v4, <span class="number">1f</span> / <span class="number">3f</span>);</span><br><span class="line">    Vector3 e4 = Vector3.Lerp(v3, v4, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，我们使用新的顶点信息构建矩形连接区域，这里我们先忽略阶梯化的问题，先解决在同一平面下不产生破面与重叠。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里使用新增的顶点进行连接区域的构建</span></span><br><span class="line">        AddQuad(v1, e1, v3, e3);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e1, e2, e3, e4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e2, v2, e4, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-10-1.png"></p>
+<p>　　至此我们就完成了地图单元与矩形连接区域产生破面与重面的问题。不过现在只是两个地图单元在相同高度的情况，阶梯化之后仍然存在问题。我们先将阶梯化的问题暂缓，现在我们为<code>TriangulateConnection</code>方法增加了参数，在方法内还要计算相邻地图单元一条边上的两个顶点，这样看来不太符合面向对象的思想。接下来我们会将这些计算过程进行封装，对现有的一些方法进行简化。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/d8ca0fe04a8a8a00ce33cedd5792d8cf96843b70">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>4-11 封装顶点计算方法</title>
     <url>/2020/11/15/HexMap/4-11%20%E5%B0%81%E8%A3%85%E9%A1%B6%E7%82%B9%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了地图单元与矩形连接区域的的连接。在我们新增代码的时候发现，计算六边形一条边上新增顶点的这部分代码，是可以单独抽象出来，组成一个新的方法，方便在之后计算顶点时调用。<br>　　我们创建一个新的脚本<code>EdgeVertices.cs</code>，其中是一个结构体，包含了4个顺时针排列在六边形一条边上的顶点。代码如下：</p>
@@ -1970,34 +1998,6 @@
 
 <p>　　至此，我们就完成了新方法的封装，这样在细分六边形三角面片、构建双色连接区域的时候，就不用在方法内部计算每个顶点的位置了。接下来的一章中，我们在这个基础上，完成阶梯状连接区域的细分。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/5d8981eed326d0ae687c424f89cc15c4607de765">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>4-10 连接六边形边缘与连接区域边缘</title>
-    <url>/2020/11/14/HexMap/4-10%20%E8%BF%9E%E6%8E%A5%E5%85%AD%E8%BE%B9%E5%BD%A2%E8%BE%B9%E7%BC%98%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E8%BE%B9%E7%BC%98/</url>
-    <content><![CDATA[<p>　　在上一章中，我们对每个六边形完成了细分，从之前的6个三角面片，增加到了18个三角面片。细节更加丰富。但是六边形边缘和其相邻的连接区域，还存在着破面与重面的问题，在这一章中，我们来修复这些问题。<br>　　对矩形连接区域的细分也会用到新增的顶点信息，所以要将这些信息传递到<code>TriangulateConnection</code>方法中，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//因为对六边形的每个边进行了细分，所以要把新的顶点也传入构建矩形连接区域的方法中</span></span><br><span class="line">    <span class="comment">//这样矩形区域使用新增的顶点后边缘之间才能吻合</span></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.SE)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateConnection(direction, cell, v1, e1, e2, v2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，我们要修改<code>TriangulateConnection</code>方法的参数列表，增加新的顶点参数，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//六边形增加了新的顶点，这里要修改参数列表，接收新的顶点</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们还需要计算与这个矩形连接区域相邻的另一个地图单元上的新增顶点信息。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    v3.y = v4.y = neighbor.Position.y;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里要计算与矩形连接区域相邻的，另一侧cell新增的两个顶点位置信息</span></span><br><span class="line">    Vector3 e3 = Vector3.Lerp(v3, v4, <span class="number">1f</span> / <span class="number">3f</span>);</span><br><span class="line">    Vector3 e4 = Vector3.Lerp(v3, v4, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，我们使用新的顶点信息构建矩形连接区域，这里我们先忽略阶梯化的问题，先解决在同一平面下不产生破面与重叠。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里使用新增的顶点进行连接区域的构建</span></span><br><span class="line">        AddQuad(v1, e1, v3, e3);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e1, e2, e3, e4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e2, v2, e4, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-10-1.png"></p>
-<p>　　至此我们就完成了地图单元与矩形连接区域产生破面与重面的问题。不过现在只是两个地图单元在相同高度的情况，阶梯化之后仍然存在问题。我们先将阶梯化的问题暂缓，现在我们为<code>TriangulateConnection</code>方法增加了参数，在方法内还要计算相邻地图单元一条边上的两个顶点，这样看来不太符合面向对象的思想。接下来我们会将这些计算过程进行封装，对现有的一些方法进行简化。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/d8ca0fe04a8a8a00ce33cedd5792d8cf96843b70">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -2937,6 +2937,24 @@
 
 <p>　　至此，我们就完成了在地图单元内创建河流的基本方法了。这些方法目前只是创建河流的基本思路，在之后的章节中，我们将逐步完善这些方法。在下一章中，我们将添加一些代码，来防止河流逆流的情况发生。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/43d90cd39cd6ddd7af3333eb5f14f30ad83ca9a5">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>6-5 防止河流逆流</title>
+    <url>/2020/12/07/HexMap/6-5%20%E9%98%B2%E6%AD%A2%E6%B2%B3%E6%B5%81%E9%80%86%E6%B5%81/</url>
+    <content><![CDATA[<p>　　在之前的章节中，我们创建了添加、移除河流的方法。但是我们忽略了一点，就是河流不能从低处往高处流，也就是河流逆流的情况。当我们编辑地图单元的高度的时候，我们需要判断其中的河流是否会发生逆流的情况，如果有的话，就要移除这些逆流的河流。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elevation;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//当前有河流从cell流出，如果流出cell高度小于相邻流入cell高度，这就是河流的逆流，移除流出河流</span></span><br><span class="line">        <span class="keyword">if</span> (hasOutgoingRiver &amp;&amp; elevation &lt; GetNeighbor(outgoingRiver).elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            RemoveOutgoingRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//与流出判断相类似，当流入cell高度大于流出cell高度时，也是逆流的情况</span></span><br><span class="line">        <span class="keyword">if</span> (hasIncomingRiver &amp;&amp; elevation &gt; GetNeighbor(incomingRiver).elevation)</span><br><span class="line">        &#123;</span><br><span class="line">            RemoveIncomingRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，在编辑地图单元高度的时候，就可以防止河流出现逆流的情况了。在下一章中，我们要创建编辑河流的UI部分，为最后时限拖拽鼠标创建河流做准备。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ae932aaf8387aea2c875a0791aa42f637a421001">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>

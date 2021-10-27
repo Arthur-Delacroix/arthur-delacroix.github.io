@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">83</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,107 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/22/HexMap/5-3%20%E5%B0%86%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%88%86%E9%85%8D%E5%88%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%9D%97%E4%B8%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/22/HexMap/5-3%20%E5%B0%86%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%88%86%E9%85%8D%E5%88%B0%E4%B8%8D%E5%90%8C%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%9D%97%E4%B8%AD/" class="post-title-link" itemprop="url">5-3 将地图单元分配到不同的地图块中</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-22 15:15:16" itemprop="dateCreated datePublished" datetime="2020-11-22T15:15:16+08:00">2020-11-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们创建了地图块的Prefab，并完成了其相关的脚本。在最后一流了一个问题，就是<code>HexGridChunk.Start</code>方法中的<code>hexMesh.Triangulate(cells);</code>语句会报空引用的错误，这是因为地图块只创建了存放地图单元实例的数组，而这个数组是空的。创建地图单元实例的语句是在<code>HexGrid</code>中，我们需要做的就是将创建的地图单元实例添加到其对应的地图块数组中，而不是在<code>HexGrid</code>中设置其父级和进行三角构建。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    HexCell cell;</span><br><span class="line">    cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">    cell = cells[i];</span><br><span class="line">    <span class="comment">//这里不再对cell实例设置父级，将其分配到对应chunk后，由chunk进行实例父级的设置</span></span><br><span class="line">    <span class="comment">//cell.transform.SetParent(transform, false);</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    Text label = Instantiate&lt;Text&gt;(cellLabelPrefab);</span><br><span class="line">    <span class="comment">//这里不再设置label的父级，而是将其分配到对应chunk中，由chunk进行父级的设置</span></span><br><span class="line">    <span class="comment">//label.rectTransform.SetParent(gridCanvas.transform, false);</span></span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    AddCellToChunk(x, z, cell);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过cell在数组中的坐标计算后，将其分配到对应的chunk中</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>cell在整体数组中的横坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>cell在整体数组中的纵坐标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>cell自身的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddCellToChunk</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们可以通过地图单元在<code>HexGrid.cells</code>数组中的横纵坐标，计算出当前地图单元应该属于哪个地图块。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddCellToChunk</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过cell整体数组的横纵坐标，计算出cell属于哪个chunk</span></span><br><span class="line">    <span class="keyword">int</span> chunkX = x / HexMetrics.chunkSizeX;</span><br><span class="line">    <span class="keyword">int</span> chunkZ = z / HexMetrics.chunkSizeZ;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过计算得到的坐标，获取对应chunk的实例</span></span><br><span class="line">    HexGridChunk chunk = chunks[chunkX + chunkZ * chunkCountX];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　通过计算结果，我们还可以知道当前地图单元在其对应地图块数组中的下标。有了这个下标，我们就可以将当前地图单元实例分配到对应的地图块数组中了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddCellToChunk</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//通过cell整体数组坐标，计算出其在对应chunk数组中的下标</span></span><br><span class="line">    <span class="keyword">int</span> localX = x - chunkX * HexMetrics.chunkSizeX;</span><br><span class="line">    <span class="keyword">int</span> localZ = z - chunkZ * HexMetrics.chunkSizeZ;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//得到下标后，将cell实例添加到对应chunk的数组中</span></span><br><span class="line">    chunk.AddCell(localX + localZ * HexMetrics.chunkSizeX, cell);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们回到<code>HexGridChunk</code>中，创建<code>AddCell</code>方法。这个方法负责将地图单元实例添加到自身数组中，并且设置地图单元及其UI的父节点。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 将cell实例添加到自身的数组中</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;index&quot;&gt;</span>cell在自身数组的下标<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddCell</span>(<span class="params"><span class="keyword">int</span> index, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过下标将cell实例添加到数组中</span></span><br><span class="line">    cells[index] = cell;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置cell和cell UI的父节点</span></span><br><span class="line">    cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">    cell.uiRect.SetParent(gridCanvas.transform, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此我们就完成了将地图单元实例分配到期对应地图块中的功能了。不过现在的代码还是有一些需要清理的地方，例如在<code>HexGrid</code>中依然有进行三角构建的的相关方法。在下一章中，我们要清理这些遗留的代码，让整个地图系统正常运行。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/e84f1311ce78af2593ceda4e41c7ef1163405ab2">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1205,105 +1306,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/12/HexMap/4-8%20%E4%BF%AE%E5%A4%8D%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/12/HexMap/4-8%20%E4%BF%AE%E5%A4%8D%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">4-8 修复连接区域</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-12 08:00:06" itemprop="dateCreated datePublished" datetime="2020-11-12T08:00:06+08:00">2020-11-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们完成了对每个地图单元整体进行海拔高度的扰动，但是我们在改变地图单元高度的时候，发现其相邻的连接区域并没有与地图单元相连接，产生了大量的破面。这是因为在构建连接区域的时候，并没有使用地图单元扰动后的高度。在<code>HexCell.cs</code>中我们添加一个属性，这样就可以在任何地方得到地图单元扰动后的坐标了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//获取cell在扰动后的实际坐标位置</span></span><br><span class="line">    <span class="keyword">public</span> Vector3 Position</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> transform.localPosition;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们就能在<code>HexMesh.Triangulate</code>方法中使用这个属性，来获得地图单元扰动后的位置了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//这里是获cell扰动后的位置</span></span><br><span class="line">    Vector3 center = cell.Position;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，在<code>TriangulateConnection</code>方法中，获取相邻地图单元位置时，也使用扰动后的坐标。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里在获取相邻cell的位置时，也是使用了扰动后的坐标位置</span></span><br><span class="line">    v3.y = v4.y = neighbor.Position.y;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//这里在获取相邻cell的位置时，也是使用了扰动后的坐标位置</span></span><br><span class="line">        v5.y = nextNeighbor.Position.y;</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-8-1.png"></p>
-<p>　　至此我们修复了地图单元相邻的连接区域高度不同，产生破面的问题。但是我们观察发现，在Cliff高度差类型的连接中，三角形连接区域会与矩形连接区域之间产生破面。这是因为插值计算斜边上一点的时候，使用的是扰动之前的坐标点。这个问题我们将随着细分地图单元及其周边连接区域，提升市局效果和细节的同事进行解决。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/a0412460fec876ffdb917245e4dbb5e8f3acddb3">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1359,13 +1361,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">173k</span>
+    <span title="站点总字数">174k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:37</span>
+    <span title="站点阅读时长">2:38</span>
   </span>
 </div>
 <div class="busuanzi-count">

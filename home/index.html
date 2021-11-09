@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">85</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,113 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/09/HexMap/6-7%20%E6%A3%80%E6%B5%8B%E9%BC%A0%E6%A0%87%E6%8B%96%E6%8B%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/09/HexMap/6-7%20%E6%A3%80%E6%B5%8B%E9%BC%A0%E6%A0%87%E6%8B%96%E6%8B%BD/" class="post-title-link" itemprop="url">6-7 检测鼠标拖拽</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-09 20:27:15" itemprop="dateCreated datePublished" datetime="2020-12-09T20:27:15+08:00">2020-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了河流编辑器的UI部分，通过点选<code>Toggle</code>就可以选择当前是否可以编辑河流。在这一章中，我们继续为创建河流做前期的一些工作，首先是通过什么样的交互形式来创建河流。这里我们通过参考其他的地图编辑器功能，选择了使用鼠标拖动的形式来创建河流。也就是拖动鼠标经过若干个地图单元，地图系统就会跟着鼠标的轨迹在这些地图单元上创建河流。<br>　　要实现这个功能，就需要同时获得地图单元的位置和鼠标在这个地图单元移动的方位，回到<code>HexMapEditor.cs</code>中，在脚本中添加获取这两个数据的方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//判断当前是否处于拖拽状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> isDrag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断鼠标在当前cell的移动方位</span></span><br><span class="line">    <span class="keyword">private</span> HexDirection dragDirection;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//当鼠标到下一个cell 的时候，这里记录上一个cell</span></span><br><span class="line">    <span class="keyword">private</span> HexCell previousCell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最初的时候是没有拖拽事件的，也就没有上一个地图单元的记录。所以当没有输入信息或者没有与地图交互时，需要设置其为null。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetMouseButtonUp(<span class="number">0</span>) &amp;&amp; !EventSystem.current.IsPointerOverGameObject())</span><br><span class="line">        &#123;</span><br><span class="line">            HandleInput();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当鼠标左键没有按下的时候，记录上一个经过的cell为空</span></span><br><span class="line">            previousCell = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当鼠标的射线未触碰到地图的时候，上一个经过的cell为空</span></span><br><span class="line">            previousCell = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　当前地图单元是根据射线碰撞点找到的，当在这一帧里结束编辑时，它就会变成下一次Update里的上一个地图单元。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//记录当前射线碰撞到的cell</span></span><br><span class="line">            HexCell currentCell = hexGrid.GetCell(_hit.point);</span><br><span class="line">            <span class="comment">//记录当前正在编辑的cell</span></span><br><span class="line">            EditCells(currentCell);</span><br><span class="line">            <span class="comment">//目前上一个cell与当前cell是一个</span></span><br><span class="line">            previousCell = currentCell;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　确认了当前射线碰撞到的地图单元之后,我们可以与前一个地图单元(如果有的话)进行比较,当发现是两个不同的单元格时,就说明可能存在有效拖动并需要去检测,要不就是没有拖拽事件。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            HexCell currentCell = hexGrid.GetCell(_hit.point);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//判断当前cell与之前的cell是否为同一个</span></span><br><span class="line">            <span class="comment">//如果是，就是在拖拽</span></span><br><span class="line">            <span class="keyword">if</span> (previousCell &amp;&amp; previousCell != currentCell)</span><br><span class="line">            &#123;</span><br><span class="line">                ValidateDrag(currentCell);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                isDrag = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　如何证实确实是拖拽事件？通过检测当前地图单元是否与前一个地图单元相邻，循环遍历前一个地图单元所有相邻地图单元来进行检测，如果找到了与当前地图单元相吻合的结果，就能同时确认拖拽的方向。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 确认拖拽方向</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;currentCell&quot;&gt;</span>当前射线所碰撞到的cell<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ValidateDrag</span>(<span class="params">HexCell currentCell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//循环遍历当前cell的6个方位</span></span><br><span class="line">        <span class="keyword">for</span> (dragDirection = HexDirection.NE; dragDirection &lt;= HexDirection.NW; dragDirection++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//如果之前cell某个方位上的cell，与当前射线触碰到的cell相同，就证明发生了碰撞</span></span><br><span class="line">            <span class="comment">//可以这样理解，当真实发生拖拽了，会记录下previousCell</span></span><br><span class="line">            <span class="comment">//鼠标移动至新的cell后，开始检测previousCell在对应方位上是不是有新的cell</span></span><br><span class="line">            <span class="comment">//如果有，就证明鼠标从previousCell拖拽移动到了新的cell上</span></span><br><span class="line">            <span class="keyword">if</span> (previousCell.GetNeighbor(dragDirection) == currentCell)</span><br><span class="line">            &#123;</span><br><span class="line">                isDrag = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        isDrag = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样逐帧检测这不会产生拖拽抖动么？<br>当你移动鼠标穿过地图单元边界时，可能会在单元格之间快速来回摆动，这确实会导致拖拽抖动，但情况没那么糟。<br>可以通过记录上一次拖拽事件来减缓抖动，然后防止下一次直接向相反方向拖拽即可。</p>
+</blockquote>
+<p>　　至此，我们完成了通过检测鼠标左键按下后，是否产生了拖拽的动作。在下一章中，我们将继续完善移除和添加河流的部分代码，并最终可以在Inspector的Debug模式下看到效果。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/bb92da8439479f62c024c9782f043dab01d95766">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/08/HexMap/6-6%20%E6%B2%B3%E6%B5%81%E7%BC%96%E8%BE%91%E5%99%A8UI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1527,98 +1634,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/03/HexMap/6-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8E%E6%B2%B3%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/03/HexMap/6-1%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8E%E6%B2%B3%E6%B5%81/" class="post-title-link" itemprop="url">6-1 地图单元与河流</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-03 08:04:44" itemprop="dateCreated datePublished" datetime="2020-12-03T08:04:44+08:00">2020-12-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>584</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　第6章是目前为止篇幅最长的一个章节，难度也相对之前的章节会大很多。在第6章中。我没事用的三角剖分方法会更为复杂，而且还要使用着色器代码实现一些简单的视觉效果。在之前的章节中，我们为了丰富地图的细节，加入了高度属性，又对地图单元之间的连接处进行了阶梯化，还加入了噪点扰动。但是这些细节并不够丰富，在接下来的章节中，我们将添加地貌的另一个基本要素：河流。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-1-1.png"></p>
-<p>　　在六边形地图中添加河流有三种方法：<br>　　第一种方法是让河流从地图单元中穿过，即从一个地图单元流向另一个地图单元,这是《无尽传说》中的做法。<br>　　第二种方法是让河流在地图单元之间流过，沿着地图单元的边缘到另一个地图单元的边缘,《文明5》中是这么做的。<br>　　第三种方法是不使用额外的河流结构特性，而是直接用特殊的地图单元表示水体,《奇迹时代3》中是这么做的。<br>　　第而在我们的项目中，由于地图单元的边缘连接已经用阶梯化或陡峭的方式特殊处理过，没有留给河流的空间，所以就采用第一种方法，让河流从一个单元格流向另一个单元格。这意味着每个单元格要么就是没有河流经过，要么河流穿过这个单元格，要么这个单元格是河流的起点或者终点。而在有河流穿过的单元格中，要么河流是笔直穿过，要么是一步锐角转弯，要么是两步钝角转弯。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-1-2.png"></p>
-<p>　　结合项目中地图单元的特性，分析后得出了一些有规律的信息。在接下来的章节中，我们首先通过代码设置有河流经过的地图单元中河流的方向。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1674,13 +1689,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">174k</span>
+    <span title="站点总字数">177k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:38</span>
+    <span title="站点阅读时长">2:41</span>
   </span>
 </div>
 <div class="busuanzi-count">

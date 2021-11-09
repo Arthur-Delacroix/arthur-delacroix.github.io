@@ -8,74 +8,451 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Unity HDRP Visual Environment</title>
-    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
-    <content><![CDATA[<p>#Visual Environment</p>
-<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
-</blockquote>
-<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
-<p>该模块主要控制天空和与雾效。</p>
+    <title>Github Markdown 中的公式书写</title>
+    <url>/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/</url>
+    <content><![CDATA[<h2 id="行内公式与行间公式"><a href="#行内公式与行间公式" class="headerlink" title="行内公式与行间公式"></a>行内公式与行间公式</h2><p>一般公式分为两种形式，行内公式和行间公式。</p>
 <ul>
-<li>Type：天空盒类型<ul>
-<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
-<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
-<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
-<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
+<li>行内公式：$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$</li>
 </ul>
-</li>
-<li>Ambient Mode：环境光(ambient light)的模式。<ul>
-<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
-<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
-[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
-</ul>
-</li>
-</ul>
-<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
+<p>代码：<br><code>$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$</code></p>
+<p>-行间公式：$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$$</p>
+<p>代码：<br><code>$$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$$</code></p>
 <hr>
-<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
-<li>Type： 雾效类型<ul>
-<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
-<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
-<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
-<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
-</ul>
-</li>
-</ul>
-<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
+<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>大写</th>
+<th>code</th>
+<th>小写</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alpha</td>
+<td>$\Alpha$</td>
+<td><code>$\Alpha$</code></td>
+<td>$\alpha$</td>
+<td><code>$\alpha$</code></td>
+</tr>
+<tr>
+<td>beta</td>
+<td>$\Beta$</td>
+<td><code>$\Beta$</code></td>
+<td>$\beta$</td>
+<td><code>$\beta$</code></td>
+</tr>
+<tr>
+<td>gamma</td>
+<td>$\Gamma$</td>
+<td><code>$\Gamma$</code></td>
+<td>$\gamma$</td>
+<td><code>$\gamma$</code></td>
+</tr>
+<tr>
+<td>delta</td>
+<td>$\Delta$</td>
+<td><code>$\Delta$</code></td>
+<td>$\delta$</td>
+<td><code>$\delta$</code></td>
+</tr>
+<tr>
+<td>epsilon</td>
+<td>$\Epsilon$</td>
+<td><code>$\Epsilon$</code></td>
+<td>$\epsilon$</td>
+<td><code>$\epsilon$</code></td>
+</tr>
+<tr>
+<td>zeta</td>
+<td>$\Zeta$</td>
+<td><code>$\Zeta$</code></td>
+<td>$\zeta$</td>
+<td><code>$\zeta$</code></td>
+</tr>
+<tr>
+<td>eta</td>
+<td>$\Eta$</td>
+<td><code>$\Eta$</code></td>
+<td>$\eta$</td>
+<td><code>$\eta$</code></td>
+</tr>
+<tr>
+<td>theta</td>
+<td>$\Theta$</td>
+<td><code>$\Theta$</code></td>
+<td>$\theta$</td>
+<td><code>$\theta$</code></td>
+</tr>
+<tr>
+<td>iota</td>
+<td>$\Iota$</td>
+<td><code>$\Iota$</code></td>
+<td>$\iota$</td>
+<td><code>$\iota$</code></td>
+</tr>
+<tr>
+<td>kappa</td>
+<td>$\Kappa$</td>
+<td><code>$\Kappa$</code></td>
+<td>$\kappa$</td>
+<td><code>$\kappa$</code></td>
+</tr>
+<tr>
+<td>lambda</td>
+<td>$\Lambda$</td>
+<td><code>$\Lambda$</code></td>
+<td>$\lambda$</td>
+<td><code>$\lambda$</code></td>
+</tr>
+<tr>
+<td>mu</td>
+<td>$\Mu$</td>
+<td><code>$\Mu$</code></td>
+<td>$\mu$</td>
+<td><code>$\mu$</code></td>
+</tr>
+<tr>
+<td>nu</td>
+<td>$\Nu$</td>
+<td><code>$\Nu$</code></td>
+<td>$\nu$</td>
+<td><code>$\nu$</code></td>
+</tr>
+<tr>
+<td>xi</td>
+<td>$\Xi$</td>
+<td><code>$\Xi$</code></td>
+<td>$\xi$</td>
+<td><code>$\xi$</code></td>
+</tr>
+<tr>
+<td>omicron</td>
+<td>$\Omicron$</td>
+<td><code>$\Omicron$</code></td>
+<td>$\omicron$</td>
+<td><code>$\omicron$</code></td>
+</tr>
+<tr>
+<td>pi</td>
+<td>$\Pi$</td>
+<td><code>$\Pi$</code></td>
+<td>$\pi$</td>
+<td><code>$\pi$</code></td>
+</tr>
+<tr>
+<td>rho</td>
+<td>$\Rho$</td>
+<td><code>$\Rho$</code></td>
+<td>$\rho$</td>
+<td><code>$\rho$</code></td>
+</tr>
+<tr>
+<td>sigma</td>
+<td>$\Sigma$</td>
+<td><code>$\Sigma$</code></td>
+<td>$\sigma$</td>
+<td><code>$\sigma$</code></td>
+</tr>
+<tr>
+<td>tau</td>
+<td>$\Tau$</td>
+<td><code>$\Tau$</code></td>
+<td>$\tau$</td>
+<td><code>$\tau$</code></td>
+</tr>
+<tr>
+<td>upsilon</td>
+<td>$\Upsilon$</td>
+<td><code>$\Upsilon$</code></td>
+<td>$\upsilon$</td>
+<td><code>$\upsilon$</code></td>
+</tr>
+<tr>
+<td>phi</td>
+<td>$\Phi$</td>
+<td><code>$\Phi$</code></td>
+<td>$\phi$</td>
+<td><code>$\phi$</code></td>
+</tr>
+<tr>
+<td>chi</td>
+<td>$\Chi$</td>
+<td><code>$\Chi$</code></td>
+<td>$\chi$</td>
+<td><code>$\chi$</code></td>
+</tr>
+<tr>
+<td>psi</td>
+<td>$\Psi$</td>
+<td><code>$\Psi$</code></td>
+<td>$\psi$</td>
+<td><code>$\psi$</code></td>
+</tr>
+<tr>
+<td>omega</td>
+<td>$\Omega$</td>
+<td><code>$\Omega$</code></td>
+<td>$\omega$</td>
+<td><code>$\omega$</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用 <code>^</code> 与 <code>_</code> 表示，例如 <code>$x_i^2$</code> 表示的是：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用 <code>$10^10$</code> 表示的是 $10^10$，而 <code>$10^&#123;10&#125;$</code> 才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如 <code>x^5^6</code> 将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code> ：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code> ：$x^{5^6}$。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Test.jpg"></p>
 ]]></content>
       <categories>
-        <category>Unity 3D</category>
+        <category>Github</category>
       </categories>
       <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
+        <tag>Github Blog</tag>
+        <tag>Mathjax</tag>
+        <tag>KaTeX</tag>
+        <tag>Next</tag>
       </tags>
   </entry>
   <entry>
-    <title>Unity HDRP Volume</title>
-    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
-    <content><![CDATA[<blockquote>
-<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+    <title>Github badge</title>
+    <url>/2021/03/19/Github/Github%20badge/</url>
+    <content><![CDATA[<p>　　在Github中仓库中，有很多大神的README.md看上去十分炫酷，在标题下方会有很多各种颜色的小图标，这些图标显示了这个仓库的一些基本信息，比如被Fork的次数、Pull requests的次数、使用的开原协议等。这些小图标在Github中被称为Shields。一开始我也只是简单的查看这些大神的README.md中的源代码，来照着在自己的仓库中添加一些类似的Shields。不过有很多参数并没有搞清楚，在这“Github Shields 相关设置”这个系列文章中，集中整理一下，给自己做个备忘。</p>
+<blockquote>
+<p><a href="https://github.com/badges/shields">Github Shields 仓库连接</a></p>
 </blockquote>
-<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<blockquote>
+<p><a href="https://shields.io/">制作badge页面</a></p>
+</blockquote>
+<p>　　首先是比较简单的，打开这个网页之后，在顶部直接输入自己仓库名字完整的URL，这样会帮你自动生成若干个badge。这些badge是根据你的仓库动态生成的。当然，你也可以自己自定义想要生成的内容。接下来我们慢慢研究badge中一些简单的参数。</p>
+<h3 id="1-自定义静态内容"><a href="#1-自定义静态内容" class="headerlink" title="1. 自定义静态内容"></a>1. 自定义静态内容</h3><p>　　自定义静态内容的badge由4部分组成：默认连接 + Label + Message + Color。</p>
 <ul>
-<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
-<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
-<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
-<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
-<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+<li>默认连接为 <code>https://img.shields.io/badge/</code></li>
+<li>Label为badge左侧的文字内容。</li>
+<li>Message为badge左侧的文字内容。</li>
+<li>Color为badge右侧文字的底色。</li>
 </ul>
-<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+<p>　　其中Label、Message、Color三个参数的顺序不可改变，三个参数之间使用英文“-”相连接。以下为一个自定义静态内容的badge示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Lrft-Right-orange</span><br></pre></td></tr></table></figure>
+<p> <img src="https://img.shields.io/badge/Lrft-Right-orange"></p>
+<p>　　这里要注意输入的一些特殊字符的问题，列表如下：</p>
+<table>
+<thead>
+<tr>
+<th>特殊字符</th>
+<th>输入内容</th>
+<th>显示内容</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>破折号“–”</td>
+<td>–</td>
+<td>-</td>
+<td><img src="https://img.shields.io/badge/Lr--ft-Right-orange"></td>
+</tr>
+<tr>
+<td>英文半角空格</td>
+<td>%20或“_”</td>
+<td>一个半角空格</td>
+<td><img src="https://img.shields.io/badge/Lr%20ft-Rig_ht-orange"></td>
+</tr>
+<tr>
+<td>下划线“_”</td>
+<td>__(两个英文半角下划线)</td>
+<td>_</td>
+<td><img src="https://img.shields.io/badge/Lr__ft-Right-orange"></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="2-文字背景色"><a href="#2-文字背景色" class="headerlink" title="2 文字背景色"></a>2 文字背景色</h3><p>　　你也可以自定义左右两边的颜色值，这里使用的是RGB16位色值。示例代码如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357</span><br></pre></td></tr></table></figure>
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?colorA=ff00ff&colorB=daa357"></p>
+<p>　　这里的<code>colorA=ff00ff</code>表示左半边的背景色值，<code>colorB=daa357</code>表示右半边背景色值。参数之间使用英文<code>&amp;</code>符号连接。<br>　　除了使用16位RGB值改变背景色之外，还可以使用Shields一些自带的默认样式，列表如下，其实还有很多其他颜色名称，这里就不一一列举了，都可以使用RGB来代替。</p>
+<table>
+<thead>
+<tr>
+<th>颜色名称</th>
+<th>示例</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>brightgreen</td>
+<td><img src="https://img.shields.io/badge/left-right-brightgreen"></td>
+<td><code>https://img.shields.io/badge/left-right-brightgreen</code></td>
+</tr>
+<tr>
+<td>green</td>
+<td><img src="https://img.shields.io/badge/left-right-green"></td>
+<td><code>ttps://img.shields.io/badge/left-right-green</code></td>
+</tr>
+<tr>
+<td>yellowgreen</td>
+<td><img src="https://img.shields.io/badge/left-right-yellowgreen"></td>
+<td><code>https://img.shields.io/badge/left-right-yellowgreen</code></td>
+</tr>
+<tr>
+<td>yellow</td>
+<td><img src="https://img.shields.io/badge/left-right-yellow"></td>
+<td><code>https://img.shields.io/badge/left-right-yellow</code></td>
+</tr>
+<tr>
+<td>orange</td>
+<td><img src="https://img.shields.io/badge/left-right-orange"></td>
+<td><code>ttps://img.shields.io/badge/left-right-orange</code></td>
+</tr>
+<tr>
+<td>red</td>
+<td><img src="https://img.shields.io/badge/left-right-red"></td>
+<td><code>https://img.shields.io/badge/left-right-red</code></td>
+</tr>
+<tr>
+<td>lightgrey</td>
+<td><img src="https://img.shields.io/badge/left-right-lightgrey"></td>
+<td><code>ttps://img.shields.io/badge/left-right-lightgrey</code></td>
+</tr>
+<tr>
+<td>blue</td>
+<td><img src="https://img.shields.io/badge/left-right-blue"></td>
+<td><code>https://img.shields.io/badge/left-right-blue</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-自定义样式"><a href="#3-自定义样式" class="headerlink" title="3 自定义样式"></a>3 自定义样式</h3><p>　　Shields还提供了很多外观样式，具体代码和样式如下：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>示例</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>plastic</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=plastic"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=plastic</code></td>
+</tr>
+<tr>
+<td>flat</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat</code></td>
+</tr>
+<tr>
+<td>flat-square</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat-square"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat-square</code></td>
+</tr>
+<tr>
+<td>for-the-badge</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge</code></td>
+</tr>
+<tr>
+<td>social</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=social"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=social</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="4-小图标"><a href="#4-小图标" class="headerlink" title="4 小图标"></a>4 小图标</h3><blockquote>
+<p><a href="https://simpleicons.org/">小图标参考页面</a>　　</p>
+</blockquote>
+<p>　　在badge的左侧，还可以加入一些小图标，示例代码如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unity</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Unity"> </p>
+<p>　　这里还需要注意一点，有些Logo的名字是带空格的，比如Adobe Lightroom Classic，要显示这个Logo，不能直接使用英文半角空格，而是要使用<code>%20</code>作为转译符号。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;Adobe%20Lightroom%20Classic</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Adobe%20Lightroom%20Classic"></p>
+<p>　　或者还可以使用半角英文减号“-”代替空格，也是一样的效果，示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;visual-studio-code</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=visual-studio-code"></p>
+<p>　　如果对Logo的颜色不满意，还可以更改Logo的颜色，颜色值使用16位RGB颜色。示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unreal-engine&amp;logoColor&#x3D;violet</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=unreal-engine&logoColor=violet"></p>
+<p>　　感觉Logo跟文字部分过于紧凑，还可以调整水平位置Logo所占宽度。不过这个宽度增加之后，Logo只会出现在剧中位置。示例代码如下：
+　　</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;bilibili&amp;logoWidth&#x3D;40</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=bilibili&logoWidth=40"></p>
+<hr>
+<h3 id="5-加入emoji"><a href="#5-加入emoji" class="headerlink" title="5 加入emoji"></a>5 加入emoji</h3><blockquote>
+<p><a href="https://apps.timwhitlock.info/emoji/tables/unicode#">emoji UTF‑8查询 1</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/sanderhahn/emoticons/blob/master/emoticons.md">emoji UTF‑8查询 2</a></p>
+</blockquote>
+<p>　　emoji同样可以嵌入到徽章内，不过是以UTF‑8编码格式书写的。每2组数值之前，要加英文百分号<code>%</code>，代码示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg"></p>
+<p>　　当然，也可以直接在网页上复制emoji，不过那样感觉就会很奇怪，在一堆代码里面出现了一个emoji的表情，感觉好像很不符合程序员的风格。</p>
+<hr>
+<h3 id="6-超级缝合怪！"><a href="#6-超级缝合怪！" class="headerlink" title="6 超级缝合怪！"></a>6 超级缝合怪！</h3><p>　　一个badge有多个参数，这些参数之间使用<code>&amp;</code>符号进行连接，没有先后顺序。所以依照这个特性，我们可以创建一个内容丰富、结构复杂的badge！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style&#x3D;for-the-badge&amp;colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357&amp;logo&#x3D;Blender&amp;logoWidth&#x3D;20&amp;logoColor&#x3D;black</span><br></pre></td></tr></table></figure>
+<p><img src="https://img.shields.io/badge/Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style=for-the-badge&colorA=ff00ff&colorB=daa357&logo=Blender&logoWidth=20&logoColor=black"></p>
 ]]></content>
       <categories>
-        <category>Unity 3D</category>
+        <category>Github</category>
       </categories>
       <tags>
-        <tag>Unity 3D</tag>
-        <tag>Render</tag>
-        <tag>HDRP</tag>
+        <tag>Github Blog</tag>
+        <tag>badge</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github Unity3D .gitignore 配置</title>
+    <url>/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>　　在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英文句号开头的文件为隐藏文件，如果要显示隐藏文件，可以按下快捷键<code>Command + Shift + .</code>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Unity3D generated file and folders</span><br><span class="line">[Ll]ibrary&#x2F;</span><br><span class="line">[Tt]emp&#x2F;</span><br><span class="line">[Oo]bj&#x2F;</span><br><span class="line">[Bb]uild&#x2F;</span><br><span class="line">[Bb]uilds&#x2F;</span><br><span class="line">[Ll]ogs&#x2F;</span><br><span class="line">[Uu]serSettings&#x2F;</span><br><span class="line">[Mm]emoryCaptures&#x2F;</span><br><span class="line">&#x2F;ignore.conf</span><br><span class="line">*.private</span><br><span class="line">*.private.meta</span><br><span class="line">^*.private.[0-9]+$</span><br><span class="line">^*.private.[0-9]+.meta$</span><br><span class="line">.collabignore</span><br><span class="line">**&#x2F;Assets&#x2F;AddressableAssetsData&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;assets&#x2F;addressableassetsdata&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;Assets&#x2F;StreamingAssets&#x2F;aa.meta</span><br><span class="line">**&#x2F;assets&#x2F;streamingassets&#x2F;*&#x2F;aa&#x2F;*</span><br><span class="line"></span><br><span class="line"># Unity3D generated PlasticSCM flies</span><br><span class="line">&#x2F;Assets&#x2F;Plugins&#x2F;PlasticSCM*</span><br><span class="line">&#x2F;assets&#x2F;plugins&#x2F;PlasticSCM*</span><br><span class="line"></span><br><span class="line"># Asset store tools plugin</span><br><span class="line">[Aa]ssets&#x2F;AssetStoreTools*</span><br><span class="line">**&#x2F;assets&#x2F;assetstoretools</span><br><span class="line"></span><br><span class="line"># Visual Studio cache directory</span><br><span class="line">.vs&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle cache directory</span><br><span class="line">.gradle&#x2F;</span><br><span class="line"></span><br><span class="line"># Autogenerated VS&#x2F;MD&#x2F;Consulo solution and project files</span><br><span class="line">ExportedObj&#x2F;</span><br><span class="line">.consulo&#x2F;</span><br><span class="line">*.csproj</span><br><span class="line">*.unityproj</span><br><span class="line">*.sln</span><br><span class="line">*.suo</span><br><span class="line">*.tmp</span><br><span class="line">*.user</span><br><span class="line">*.userprefs</span><br><span class="line">*.pidb</span><br><span class="line">*.booproj</span><br><span class="line">*.svd</span><br><span class="line">*.pdb</span><br><span class="line">*.mdb</span><br><span class="line">*.opendb</span><br><span class="line">*.VC.db</span><br><span class="line"></span><br><span class="line"># Unity3D generated meta files</span><br><span class="line">*.pidb.meta</span><br><span class="line">*.pdb.meta</span><br><span class="line">*.mdb.meta</span><br><span class="line"></span><br><span class="line"># Unity3D generated file on crash reports</span><br><span class="line">sysinfo.txt</span><br><span class="line"></span><br><span class="line"># Builds</span><br><span class="line">*.apk</span><br><span class="line">*.unitypackage</span><br><span class="line"></span><br><span class="line"># Crashlytics generated file</span><br><span class="line">crashlytics-build.properties</span><br><span class="line"></span><br><span class="line"># Mac files</span><br><span class="line">.DS_Store*</span><br><span class="line"></span><br><span class="line"># Windows files</span><br><span class="line">Thumbs.db</span><br><span class="line">Desktop.ini</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Github</category>
+      </categories>
+      <tags>
+        <tag>Github</tag>
+        <tag>Unity3D</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github Profile 相关配置</title>
+    <url>/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>　　在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。</p>
+<h4 id="1-GitHub-Streak-Stats"><a href="#1-GitHub-Streak-Stats" class="headerlink" title="1 GitHub Streak Stats"></a>1 GitHub Streak Stats</h4><blockquote>
+<p><a href="https://github.com/DenverCoder1/github-readme-streak-stats">Streak Stats</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/DenverCoder1/github-readme-streak-stats/blob/main/docs/themes/README.md">Streak Stats theme</a></p>
+</blockquote>
+<p>　　这个图片会动态的显示你Github总的贡献数量和最近一次最长的连续贡献数。主要参数是设置用户名和主题外观。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-streak-stats.herokuapp.com&#x2F;?user&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github-readme-streak-stats.herokuapp.com/?user=Arthur-Delacroix&theme=vue&hide_border=true" alt="GitHub Streak"></p>
+<h4 id="2-Stats-Card"><a href="#2-Stats-Card" class="headerlink" title="2 Stats Card"></a>2 Stats Card</h4><blockquote>
+<p><a href="https://github.com/anuraghazra/github-readme-stats">Stats Card</a></p>
+</blockquote>
+<p>　　这个动态图片分为2种，一种是显示总的Star数量、总提交数等。另一种是显示当前所有仓库用到的语言种类以及其占比。其他的还有指定仓库的状态卡片、周动态统计等卡片。其中除了一般的主题颜色、边框粗细等参数，在Stats Card中还可以隐藏具体的某一项，例如可以隐藏当前Star数量。具体的参数以及其作用，可以查看Stats Card Github主页。<br>　　Stats Card示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.anuraghazra1.vercel.app&#x2F;api?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true&amp;hide_title&#x3D;true&amp;count_private&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github-readme-stats.anuraghazra1.vercel.app/api?username=Arthur-Delacroix&theme=vue&hide_border=true&hide_title=true&count_private=true"></p>
+<p>　　Top Languages Card示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.vercel.app&#x2F;api&#x2F;top-langs&#x2F;?username&#x3D;Arthur-Delacroix&amp;layout&#x3D;compact&amp;theme&#x3D;vue&amp;card_width&#x3D;445&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Arthur-Delacroix&layout=compact&theme=vue&card_width=445&hide_border=true"></p>
+<h4 id="Trophy"><a href="#Trophy" class="headerlink" title="Trophy"></a>Trophy</h4><blockquote>
+<p><a href="https://github.com/ryo-ma/github-profile-trophy">Trophy</a></p>
+</blockquote>
+<p>　　Trophy是一个生成奖杯图片的工具，它会根据你的各项数值进行SSS到C的评级，具体评级标准可以在其Github主页上查看。以下是Trophy的实例代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-profile-trophy.vercel.app&#x2F;?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;flat&amp;column&#x3D;3&amp;margin-h&#x3D;15&amp;margin-w&#x3D;15&amp;&amp;no-bg&#x3D;true&amp;no-frame&#x3D;true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github-profile-trophy.vercel.app/?username=Arthur-Delacroix&theme=flat&column=3&margin-h=15&margin-w=15&&no-bg=true&no-frame=true"></p>
+]]></content>
+      <categories>
+        <category>Github</category>
+      </categories>
+      <tags>
+        <tag>Github Blog</tag>
+        <tag>Profile</tag>
       </tags>
   </entry>
   <entry>
@@ -141,6 +518,35 @@
       </tags>
   </entry>
   <entry>
+    <title>1-2 构建地图单元容器</title>
+    <url>/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/</url>
+    <content><![CDATA[<p>　　在1-1中，我们用代码创建了一个正六边形地图单元的基本结构，接下来，为了构建正六边形地图系统，首先需要构建一个正六边形地图单元实例。首先创建<code>HexCell</code>组件。这里不在此脚本中填写任何代码。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来在场景中创建一个Plane，重命名为Hex Cell，挂载<code>HexCell</code>组件，并且把这个Plane创建为Prefab。如下图：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-cell-plane.png"></p>
+<p>　　然后创建一个空物体，命名为Hex Grid，用来容纳地图单元。创建<code>HexGrid</code>脚本，并声明三个变量，分别表示在该容器中，地图单元的行数、列数和地图单元预置，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每一行有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//表示每一列有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放地图单元格的预置</span></span><br><span class="line">    <span class="keyword">public</span> HexCell cellPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-grid.png"></p>
+<p>　　地图单元的容器创建完成后，将Width和Height的值都设置为6，将之前创建好的HexCell预置拖入Hex Cell框内。</p>
+<p>　　现在，需要完成创建地图单元的代码，这里使用一个嵌套的for循环来创建地图单元，Width为每一行中有多少个地图单元，Height为行数。最后，将创建好的地图单元实例，存储在一个二维数组中，便于后期的查找和修改。<code>HexGrid</code>脚本添加代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存放实例化的地图单元</span></span><br><span class="line">HexCell[] cells;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//根据长度和宽度，初始化数组大小</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[height * width];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从左下角开始，依次往右，每一行为 width 个单元后，上移一行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; height; z++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建一个地图单元</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>地图单元是 横行中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>地图单元是 粽列中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>地图单元在<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//声明一个Vector3，用来</span></span><br><span class="line">    Vector3 position;</span><br><span class="line">    position.x = x * <span class="number">10f</span>;</span><br><span class="line">    position.y = <span class="number">0f</span>;</span><br><span class="line">    position.z = z * <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在数组cells的i位置实例化地图单元</span></span><br><span class="line">    <span class="comment">//cell用来给这个被实例化的单元设置父级和位置</span></span><br><span class="line">    HexCell cell;</span><br><span class="line">    cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">    cell = cells[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置被实例化地图单元的父级和位置</span></span><br><span class="line">    cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">    cell.transform.localPosition = position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这里要注意一点，在Unity中，一个默认Panel为10x10单位。所以在<code>CreateCell</code>方法中，<code>position.x = x * 10f</code>和<code>position.z = z * 10f</code>中的10f便是Panel的边长，要每次移动Panel边长的距离，让各个地图元素相邻。生成效果如下：</p>
+<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/square-grid-of-planes.png"></p>
+<p>　　至此，已经成功的生成了由正方形单元组成的地图网格。但是由于每个地图单元是紧紧相邻的，在Game窗口中很难快速定位每一个地图单元的位置，如果是正六边形的地图单元，这种情况还可能更加混乱。下一步，为了方便以后的调试和更加直观的查看，我们将为每一个地图单元加上自身的坐标。</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1-10 简单的地图编辑器</title>
     <url>/2020/10/05/HexMap/1-10%20%E7%AE%80%E5%8D%95%E7%9A%84%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/</url>
     <content><![CDATA[<p>　　在上一章中，我们实现了为被点击的地图单元添加指定的颜色。现在我们将这个功能拓展一下，制作一个简单的地图编辑器。在HexGrid.cs脚本中找到<code>TouchCell</code>方法，这个方法主要用来判断鼠标的点击位置并改变被点击地图单元的颜色。这里我们要对<code>TouchCell</code>方法进行一些修改，添加一个参数，使其可以接受任何颜色的信息，并将其访问修饰符改为public。代码如下：</p>
@@ -165,35 +571,6 @@
 
 <p>　　这样，我们就完成了一个很简单的地图编辑器，在一组单选按钮组中选择一个颜色后，点击任意的地图单元，这个地图单元就会变成相应的颜色。虽然在改变颜色的过程中，我们是通过重新构建整个六边形地图做到的，但是目前市局效果和逻辑是正确的。<br>　　在接下来的章节中，我们会先将注意力放在视觉效果部分，首先要让地图单元之间的颜色过渡更加自然，然后添加地形的高低起伏。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/1c74505102f46c26e21321d230a123a27a3d991c">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1-2 构建地图单元容器</title>
-    <url>/2020/09/27/HexMap/1-2%20%E6%9E%84%E5%BB%BA%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E5%AE%B9%E5%99%A8/</url>
-    <content><![CDATA[<p>　　在1-1中，我们用代码创建了一个正六边形地图单元的基本结构，接下来，为了构建正六边形地图系统，首先需要构建一个正六边形地图单元实例。首先创建<code>HexCell</code>组件。这里不在此脚本中填写任何代码。</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接下来在场景中创建一个Plane，重命名为Hex Cell，挂载<code>HexCell</code>组件，并且把这个Plane创建为Prefab。如下图：</p>
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-cell-plane.png"></p>
-<p>　　然后创建一个空物体，命名为Hex Grid，用来容纳地图单元。创建<code>HexGrid</code>脚本，并声明三个变量，分别表示在该容器中，地图单元的行数、列数和地图单元预置，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//表示每一行有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> width = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//表示每一列有多少个地图单元</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存放地图单元格的预置</span></span><br><span class="line">    <span class="keyword">public</span> HexCell cellPrefab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/hex-grid.png"></p>
-<p>　　地图单元的容器创建完成后，将Width和Height的值都设置为6，将之前创建好的HexCell预置拖入Hex Cell框内。</p>
-<p>　　现在，需要完成创建地图单元的代码，这里使用一个嵌套的for循环来创建地图单元，Width为每一行中有多少个地图单元，Height为行数。最后，将创建好的地图单元实例，存储在一个二维数组中，便于后期的查找和修改。<code>HexGrid</code>脚本添加代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">//存放实例化的地图单元</span></span><br><span class="line">HexCell[] cells;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//根据长度和宽度，初始化数组大小</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[height * width];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从左下角开始，依次往右，每一行为 width 个单元后，上移一行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; height; z++) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) </span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 创建一个地图单元</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;x&quot;&gt;</span>地图单元是 横行中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;z&quot;&gt;</span>地图单元是 粽列中的第几个<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;i&quot;&gt;</span>地图单元在<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCell</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> z, <span class="keyword">int</span> i</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//声明一个Vector3，用来</span></span><br><span class="line">    Vector3 position;</span><br><span class="line">    position.x = x * <span class="number">10f</span>;</span><br><span class="line">    position.y = <span class="number">0f</span>;</span><br><span class="line">    position.z = z * <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在数组cells的i位置实例化地图单元</span></span><br><span class="line">    <span class="comment">//cell用来给这个被实例化的单元设置父级和位置</span></span><br><span class="line">    HexCell cell;</span><br><span class="line">    cells[i] = Instantiate&lt;HexCell&gt;(cellPrefab);</span><br><span class="line">    cell = cells[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置被实例化地图单元的父级和位置</span></span><br><span class="line">    cell.transform.SetParent(transform, <span class="literal">false</span>);</span><br><span class="line">    cell.transform.localPosition = position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这里要注意一点，在Unity中，一个默认Panel为10x10单位。所以在<code>CreateCell</code>方法中，<code>position.x = x * 10f</code>和<code>position.z = z * 10f</code>中的10f便是Panel的边长，要每次移动Panel边长的距离，让各个地图元素相邻。生成效果如下：</p>
-<p><img src="https://catlikecoding.com/unity/tutorials/hex-map/part-1/grid-construction/square-grid-of-planes.png"></p>
-<p>　　至此，已经成功的生成了由正方形单元组成的地图网格。但是由于每个地图单元是紧紧相邻的，在Game窗口中很难快速定位每一个地图单元的位置，如果是正六边形的地图单元，这种情况还可能更加混乱。下一步，为了方便以后的调试和更加直观的查看，我们将为每一个地图单元加上自身的坐标。</p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -1242,6 +1619,28 @@
       </tags>
   </entry>
   <entry>
+    <title>3-5 修复相邻地图单元连接区域</title>
+    <url>/2020/10/22/HexMap/3-5%20%E4%BF%AE%E5%A4%8D%E7%9B%B8%E9%82%BB%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
+    <content><![CDATA[<p>　　在上一章中，我们修复了地图单元与其对应UI高度不同的问题。在这一章中，我们来修复两个相邻且高度不同的地图单元，它们之间的连接处断裂的问题。<br>　　先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法里我们计算了连接区域的每个顶点。与改变UI高度的思路相似，这里只需要将计算后的两个顶点加上高度即可。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里为连接相邻cell的v3 v4顶点加上其所在cell的高度</span></span><br><span class="line">    v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在我们已经修复了矩形颜色混合区域断裂的问题了。三角形颜色混合区域的思路相同，但是略微复杂一些。</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//声明一个新的vector3变量来存储高度改变后的顶点位置</span></span><br><span class="line">        <span class="comment">//v5的本质其实就是v2 + HexMetrics.GetBridge(direction.Next()加上高度值</span></span><br><span class="line">        Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line">        v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">        AddTriangle(v2, v4, v5);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-5-1.png"></p>
+<p>　　这样，我们就完成了所有连接区域的修复了。现在通过UI设置高度之后，点击任意的地图单元，其对应的坐标、周围的连接区域都完全正常了。但是连接区域部分只是简单的进行了拉伸，当两个相邻的地图单元高度差很大的时候，会显得比较突兀，而且整个地图的细节不够。在接下来的章节中，我们来丰富连接区域的细节，让连接区域更加有层次感。</p>
+<p>[Github代码](</p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>3-6 阶梯状的连接区域</title>
     <url>/2020/10/23/HexMap/3-6%20%E9%98%B6%E6%A2%AF%E7%8A%B6%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
     <content><![CDATA[<p>　　在之前的章节中我们修复了地图单元对应UI高度和连接区域断裂的问题。同时我们也发现一个问题，在两个相邻且有高差的地图单元之间，连接区域只是被简单的拉伸了。如果高差很大的话，这个现象就更加明显。在接下来的章节中，我们来丰富连接区域的细节。<br>　　增加连接区域的具体方式，我们可以参考《无尽传奇》这个游戏。将一个倾斜的连接区域插入两段阶梯，如下图所示。这样一个完整的斜面就被分为了三个小斜面。每个斜面之间用平面相连接。这就需要我们把这个阶梯斜面分为五个部分来看。</p>
@@ -1265,28 +1664,6 @@
 <figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过插值计算出集体装连接区域，每个顶点的颜色值</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 计算颜色值不需要考虑垂直方向坐标变化的问题，只需要根据水平插值便可以得出计算结果</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;a&quot;&gt;</span>起始顶点的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;b&quot;&gt;</span>结束顶点的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;step&quot;&gt;</span>第几个步长<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">TerraceLerp</span>(<span class="params">Color a, Color b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//单个步长的比例 与 步长的个数，计算出现在顶点所在的比例</span></span><br><span class="line">    <span class="keyword">float</span> h = step * horizontalTerraceStepSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过Color.Lerp方法，计算出现在顶点的颜色值</span></span><br><span class="line">    <span class="keyword">return</span> Color.Lerp(a, b, h);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>　　这样，我们就完成了计算阶梯连接区域中，每个步长顶点的位置、颜色的功能了。在下面的章节中，我们将调用这些方法来实现矩形连接区域的三角构建。</p>
-<p>[Github代码](</p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>3-5 修复相邻地图单元连接区域</title>
-    <url>/2020/10/22/HexMap/3-5%20%E4%BF%AE%E5%A4%8D%E7%9B%B8%E9%82%BB%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>　　在上一章中，我们修复了地图单元与其对应UI高度不同的问题。在这一章中，我们来修复两个相邻且高度不同的地图单元，它们之间的连接处断裂的问题。<br>　　先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法里我们计算了连接区域的每个顶点。与改变UI高度的思路相似，这里只需要将计算后的两个顶点加上高度即可。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里为连接相邻cell的v3 v4顶点加上其所在cell的高度</span></span><br><span class="line">    v3.y = v4.y = neighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在我们已经修复了矩形颜色混合区域断裂的问题了。三角形颜色混合区域的思路相同，但是略微复杂一些。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.E &amp;&amp; nextNeighbor != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//声明一个新的vector3变量来存储高度改变后的顶点位置</span></span><br><span class="line">        <span class="comment">//v5的本质其实就是v2 + HexMetrics.GetBridge(direction.Next()加上高度值</span></span><br><span class="line">        Vector3 v5 = v2 + HexMetrics.GetBridge(direction.Next());</span><br><span class="line">        v5.y = nextNeighbor.Elevation * HexMetrics.elevationStep;</span><br><span class="line"></span><br><span class="line">        AddTriangle(v2, v4, v5);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-5-1.png"></p>
-<p>　　这样，我们就完成了所有连接区域的修复了。现在通过UI设置高度之后，点击任意的地图单元，其对应的坐标、周围的连接区域都完全正常了。但是连接区域部分只是简单的进行了拉伸，当两个相邻的地图单元高度差很大的时候，会显得比较突兀，而且整个地图的细节不够。在接下来的章节中，我们来丰富连接区域的细节，让连接区域更加有层次感。</p>
 <p>[Github代码](</p>
 ]]></content>
       <categories>
@@ -2205,51 +2582,6 @@
       </tags>
   </entry>
   <entry>
-    <title>5-8 摄像机视距控制</title>
-    <url>/2020/11/26/HexMap/5-8%20%E6%91%84%E5%83%8F%E6%9C%BA%E8%A7%86%E8%B7%9D%E6%8E%A7%E5%88%B6/</url>
-    <content><![CDATA[<p>　　在上一章中，创建了新的摄像机层级关系。在这一章中我们来实现第一个功能，就是摄像机的视距远近控制。我们可以用一个float变量记录当前的视距，当这个值为0的时候表示摄像机视距最远，反之为1的时候表示摄像机的视距最近。初始值为1即最近。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera视距控制，0最远，1最近</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> zoom = <span class="number">1f</span>;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　在PC平台下，摄像机改变视距通常都是通过鼠标滚轮或者类似的输入方法控制，所以我们可以使用Unity默认的<code>MouseScrollWheel</code>在<code>Update</code>方法里检查是否有输入增量，如果有再调用相应方法调整视距。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//检测鼠标滚轮是否有输入，有输入的话就调用 AdjustZoom</span></span><br><span class="line">        <span class="keyword">float</span> zoomDelta = Input.GetAxis(<span class="string">&quot;Mouse ScrollWheel&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (zoomDelta != <span class="number">0f</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            AdjustZoom(zoomDelta);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 控制camera视距远近</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;delta&quot;&gt;</span>鼠标滚轮输入的值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　要控制视距缩放就简单的加上输入增量，然后将值限制在0-1之间即可。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将变化值限制在0到1之间</span></span><br><span class="line">    zoom = Mathf.Clamp01(zoom + delta);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　因为摄像机Stick的子物体，我们在改变摄像机视距远近，其实就是在改变Stick的Z轴坐标。添加两个公共类型的float变量,用来规定Stick的最远和最近距离。由于我们创建的地图相对较小，先暂时设置为-250和-45。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera的最远和最近视距</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> stickMinZoom;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> stickMaxZoom;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-1.png"></p>
-<p>　　设置好视距的最近最远值后，根据<code>stickMinZoom</code>、<code>stickMaxZoom</code>和<code>zoom</code>三个数值进行插值计算，得出Stick的Z轴坐标值，也就是摄像机的视距。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//视距远近其实就是stick.localPosition.z的值</span></span><br><span class="line">    <span class="comment">//设置最大值和最小值后，根据zoom取其插值即可</span></span><br><span class="line">    <span class="keyword">float</span> distance = Mathf.Lerp(stickMinZoom, stickMaxZoom, zoom);</span><br><span class="line">    stick.localPosition = <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, distance);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-2.gif"></p>
-<p>　　现在能调整摄像机的视距了，但还是有些不太好用。通常游戏中的摄像机会在视距拉远的时候从斜向45度视角过渡到由上至下俯视角。这里我们可以通过旋转Swivel来实现，所以也同样为Swivel添加最大和最小的旋转角度标量，默认设置为90和45。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera的俯角和仰角值</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> swivelMinZoom;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> swivelMaxZoom;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-3.png"></p>
-<p>　　与计算Stick的Z轴坐标值类似，我们使用<code>swivelMinZoom</code>、<code>swivelMaxZoom</code>和<code>zoom</code>三个值进行插值计算，得出Swivel的X轴旋转角度。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//在视距远近变化的时候，俯仰角也会变化</span></span><br><span class="line">    <span class="comment">//视距最小时是斜向45度，视距最大是垂直90度</span></span><br><span class="line">    <span class="keyword">float</span> angle = Mathf.Lerp(swivelMinZoom, swivelMaxZoom, zoom);</span><br><span class="line">    swivel.localRotation = Quaternion.Euler(angle, <span class="number">0f</span>, <span class="number">0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-4.gif"></p>
-<p>　　我们可以通过调整鼠标滚轮的灵敏度设置来控制视距的变化速度，在 Edit / ProjectSettings / Input Manager 面板中可以找到<code>Mouse ScrollWhell</code> / <code>Sensitivity</code>，例如可以把灵敏度默认值0.1改为0.025来获得更为平滑的视距变化感觉。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-5.png"></p>
-<p>　　如果不希望每次都要在Input Manager中修改鼠标滚轮的灵敏度，我们也可以创建一个控制鼠标灵敏度的变量，需要修改鼠标滚轮灵敏度的时候，我们只需要修改这个变量的值就可以了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//控制鼠标滚轮灵敏度，数值越大，速度越慢</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> <span class="keyword">float</span> zoomSensitivity = <span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//添加了灵敏度控制</span></span><br><span class="line">        zoom = Mathf.Clamp01(zoom + delta/zoomSensitivity);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　至此我们就完成了通过鼠标滚轮控制摄像机视距远近的功能，但是只能调整视距还无法满足灵活编辑地图的需求。在接下来的章节中，我们将为摄像机添加移动的功能。</p>
-<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/075bf320b8b2482f9a89569005798b5179500976">Github代码</a></p>
-]]></content>
-      <categories>
-        <category>Unity3D Hex Map</category>
-      </categories>
-      <tags>
-        <tag>Unity3D</tag>
-        <tag>Game develop</tag>
-        <tag>Hex Map</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>5-9 摄像机移动控制</title>
     <url>/2020/11/27/HexMap/5-9%20%E6%91%84%E5%83%8F%E6%9C%BA%E7%A7%BB%E5%8A%A8%E6%8E%A7%E5%88%B6/</url>
     <content><![CDATA[<p>　　在上一章中，我们完成了摄像机视距控制的功能，通过鼠标滚轮可以控制摄像机视距的远近。接下来我们继续完善摄像机控制的相关功能。<br>　　要让摄像机在水平和垂直方向移动，与调整摄像机视距思路相似，可以检测水平和垂直的输入信息，对应<code>Hex Map Camera</code>在X和Z方向的运动。代码如下</p>
@@ -2297,6 +2629,51 @@
 <p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-9-6.png"></p>
 <p>　　这样，我们就完成了摄像机的移动控制功能，在接下来的一章中，我们将完成通过鼠标旋转摄像机视角的功能。</p>
 <p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/a26d432d6429b410e712aa9693f349d3e745ed2a">Github代码</a></p>
+]]></content>
+      <categories>
+        <category>Unity3D Hex Map</category>
+      </categories>
+      <tags>
+        <tag>Unity3D</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>5-8 摄像机视距控制</title>
+    <url>/2020/11/26/HexMap/5-8%20%E6%91%84%E5%83%8F%E6%9C%BA%E8%A7%86%E8%B7%9D%E6%8E%A7%E5%88%B6/</url>
+    <content><![CDATA[<p>　　在上一章中，创建了新的摄像机层级关系。在这一章中我们来实现第一个功能，就是摄像机的视距远近控制。我们可以用一个float变量记录当前的视距，当这个值为0的时候表示摄像机视距最远，反之为1的时候表示摄像机的视距最近。初始值为1即最近。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera视距控制，0最远，1最近</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> zoom = <span class="number">1f</span>;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在PC平台下，摄像机改变视距通常都是通过鼠标滚轮或者类似的输入方法控制，所以我们可以使用Unity默认的<code>MouseScrollWheel</code>在<code>Update</code>方法里检查是否有输入增量，如果有再调用相应方法调整视距。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//检测鼠标滚轮是否有输入，有输入的话就调用 AdjustZoom</span></span><br><span class="line">        <span class="keyword">float</span> zoomDelta = Input.GetAxis(<span class="string">&quot;Mouse ScrollWheel&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (zoomDelta != <span class="number">0f</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            AdjustZoom(zoomDelta);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 控制camera视距远近</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;delta&quot;&gt;</span>鼠标滚轮输入的值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　要控制视距缩放就简单的加上输入增量，然后将值限制在0-1之间即可。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将变化值限制在0到1之间</span></span><br><span class="line">    zoom = Mathf.Clamp01(zoom + delta);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为摄像机Stick的子物体，我们在改变摄像机视距远近，其实就是在改变Stick的Z轴坐标。添加两个公共类型的float变量,用来规定Stick的最远和最近距离。由于我们创建的地图相对较小，先暂时设置为-250和-45。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera的最远和最近视距</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> stickMinZoom;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> stickMaxZoom;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-1.png"></p>
+<p>　　设置好视距的最近最远值后，根据<code>stickMinZoom</code>、<code>stickMaxZoom</code>和<code>zoom</code>三个数值进行插值计算，得出Stick的Z轴坐标值，也就是摄像机的视距。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//视距远近其实就是stick.localPosition.z的值</span></span><br><span class="line">    <span class="comment">//设置最大值和最小值后，根据zoom取其插值即可</span></span><br><span class="line">    <span class="keyword">float</span> distance = Mathf.Lerp(stickMinZoom, stickMaxZoom, zoom);</span><br><span class="line">    stick.localPosition = <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, distance);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-2.gif"></p>
+<p>　　现在能调整摄像机的视距了，但还是有些不太好用。通常游戏中的摄像机会在视距拉远的时候从斜向45度视角过渡到由上至下俯视角。这里我们可以通过旋转Swivel来实现，所以也同样为Swivel添加最大和最小的旋转角度标量，默认设置为90和45。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//camera的俯角和仰角值</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> swivelMinZoom;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> swivelMaxZoom;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-3.png"></p>
+<p>　　与计算Stick的Z轴坐标值类似，我们使用<code>swivelMinZoom</code>、<code>swivelMaxZoom</code>和<code>zoom</code>三个值进行插值计算，得出Swivel的X轴旋转角度。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//在视距远近变化的时候，俯仰角也会变化</span></span><br><span class="line">    <span class="comment">//视距最小时是斜向45度，视距最大是垂直90度</span></span><br><span class="line">    <span class="keyword">float</span> angle = Mathf.Lerp(swivelMinZoom, swivelMaxZoom, zoom);</span><br><span class="line">    swivel.localRotation = Quaternion.Euler(angle, <span class="number">0f</span>, <span class="number">0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-4.gif"></p>
+<p>　　我们可以通过调整鼠标滚轮的灵敏度设置来控制视距的变化速度，在 Edit / ProjectSettings / Input Manager 面板中可以找到<code>Mouse ScrollWhell</code> / <code>Sensitivity</code>，例如可以把灵敏度默认值0.1改为0.025来获得更为平滑的视距变化感觉。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-8-5.png"></p>
+<p>　　如果不希望每次都要在Input Manager中修改鼠标滚轮的灵敏度，我们也可以创建一个控制鼠标灵敏度的变量，需要修改鼠标滚轮灵敏度的时候，我们只需要修改这个变量的值就可以了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapCamera.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapCamera</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//控制鼠标滚轮灵敏度，数值越大，速度越慢</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> <span class="keyword">float</span> zoomSensitivity = <span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AdjustZoom</span>(<span class="params"><span class="keyword">float</span> delta</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//添加了灵敏度控制</span></span><br><span class="line">        zoom = Mathf.Clamp01(zoom + delta/zoomSensitivity);</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此我们就完成了通过鼠标滚轮控制摄像机视距远近的功能，但是只能调整视距还无法满足灵活编辑地图的需求。在接下来的章节中，我们将为摄像机添加移动的功能。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/075bf320b8b2482f9a89569005798b5179500976">Github代码</a></p>
 ]]></content>
       <categories>
         <category>Unity3D Hex Map</category>
@@ -2466,451 +2843,140 @@
       </tags>
   </entry>
   <entry>
-    <title>Github Markdown 中的公式书写</title>
-    <url>/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/</url>
-    <content><![CDATA[<h2 id="行内公式与行间公式"><a href="#行内公式与行间公式" class="headerlink" title="行内公式与行间公式"></a>行内公式与行间公式</h2><p>一般公式分为两种形式，行内公式和行间公式。</p>
-<ul>
-<li>行内公式：$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$</li>
-</ul>
-<p>代码：<br><code>$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$</code></p>
-<p>-行间公式：$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$$</p>
-<p>代码：<br><code>$$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$$</code></p>
-<hr>
-<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>大写</th>
-<th>code</th>
-<th>小写</th>
-<th>code</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>alpha</td>
-<td>$\Alpha$</td>
-<td><code>$\Alpha$</code></td>
-<td>$\alpha$</td>
-<td><code>$\alpha$</code></td>
-</tr>
-<tr>
-<td>beta</td>
-<td>$\Beta$</td>
-<td><code>$\Beta$</code></td>
-<td>$\beta$</td>
-<td><code>$\beta$</code></td>
-</tr>
-<tr>
-<td>gamma</td>
-<td>$\Gamma$</td>
-<td><code>$\Gamma$</code></td>
-<td>$\gamma$</td>
-<td><code>$\gamma$</code></td>
-</tr>
-<tr>
-<td>delta</td>
-<td>$\Delta$</td>
-<td><code>$\Delta$</code></td>
-<td>$\delta$</td>
-<td><code>$\delta$</code></td>
-</tr>
-<tr>
-<td>epsilon</td>
-<td>$\Epsilon$</td>
-<td><code>$\Epsilon$</code></td>
-<td>$\epsilon$</td>
-<td><code>$\epsilon$</code></td>
-</tr>
-<tr>
-<td>zeta</td>
-<td>$\Zeta$</td>
-<td><code>$\Zeta$</code></td>
-<td>$\zeta$</td>
-<td><code>$\zeta$</code></td>
-</tr>
-<tr>
-<td>eta</td>
-<td>$\Eta$</td>
-<td><code>$\Eta$</code></td>
-<td>$\eta$</td>
-<td><code>$\eta$</code></td>
-</tr>
-<tr>
-<td>theta</td>
-<td>$\Theta$</td>
-<td><code>$\Theta$</code></td>
-<td>$\theta$</td>
-<td><code>$\theta$</code></td>
-</tr>
-<tr>
-<td>iota</td>
-<td>$\Iota$</td>
-<td><code>$\Iota$</code></td>
-<td>$\iota$</td>
-<td><code>$\iota$</code></td>
-</tr>
-<tr>
-<td>kappa</td>
-<td>$\Kappa$</td>
-<td><code>$\Kappa$</code></td>
-<td>$\kappa$</td>
-<td><code>$\kappa$</code></td>
-</tr>
-<tr>
-<td>lambda</td>
-<td>$\Lambda$</td>
-<td><code>$\Lambda$</code></td>
-<td>$\lambda$</td>
-<td><code>$\lambda$</code></td>
-</tr>
-<tr>
-<td>mu</td>
-<td>$\Mu$</td>
-<td><code>$\Mu$</code></td>
-<td>$\mu$</td>
-<td><code>$\mu$</code></td>
-</tr>
-<tr>
-<td>nu</td>
-<td>$\Nu$</td>
-<td><code>$\Nu$</code></td>
-<td>$\nu$</td>
-<td><code>$\nu$</code></td>
-</tr>
-<tr>
-<td>xi</td>
-<td>$\Xi$</td>
-<td><code>$\Xi$</code></td>
-<td>$\xi$</td>
-<td><code>$\xi$</code></td>
-</tr>
-<tr>
-<td>omicron</td>
-<td>$\Omicron$</td>
-<td><code>$\Omicron$</code></td>
-<td>$\omicron$</td>
-<td><code>$\omicron$</code></td>
-</tr>
-<tr>
-<td>pi</td>
-<td>$\Pi$</td>
-<td><code>$\Pi$</code></td>
-<td>$\pi$</td>
-<td><code>$\pi$</code></td>
-</tr>
-<tr>
-<td>rho</td>
-<td>$\Rho$</td>
-<td><code>$\Rho$</code></td>
-<td>$\rho$</td>
-<td><code>$\rho$</code></td>
-</tr>
-<tr>
-<td>sigma</td>
-<td>$\Sigma$</td>
-<td><code>$\Sigma$</code></td>
-<td>$\sigma$</td>
-<td><code>$\sigma$</code></td>
-</tr>
-<tr>
-<td>tau</td>
-<td>$\Tau$</td>
-<td><code>$\Tau$</code></td>
-<td>$\tau$</td>
-<td><code>$\tau$</code></td>
-</tr>
-<tr>
-<td>upsilon</td>
-<td>$\Upsilon$</td>
-<td><code>$\Upsilon$</code></td>
-<td>$\upsilon$</td>
-<td><code>$\upsilon$</code></td>
-</tr>
-<tr>
-<td>phi</td>
-<td>$\Phi$</td>
-<td><code>$\Phi$</code></td>
-<td>$\phi$</td>
-<td><code>$\phi$</code></td>
-</tr>
-<tr>
-<td>chi</td>
-<td>$\Chi$</td>
-<td><code>$\Chi$</code></td>
-<td>$\chi$</td>
-<td><code>$\chi$</code></td>
-</tr>
-<tr>
-<td>psi</td>
-<td>$\Psi$</td>
-<td><code>$\Psi$</code></td>
-<td>$\psi$</td>
-<td><code>$\psi$</code></td>
-</tr>
-<tr>
-<td>omega</td>
-<td>$\Omega$</td>
-<td><code>$\Omega$</code></td>
-<td>$\omega$</td>
-<td><code>$\omega$</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用 <code>^</code> 与 <code>_</code> 表示，例如 <code>$x_i^2$</code> 表示的是：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用 <code>$10^10$</code> 表示的是 $10^10$，而 <code>$10^&#123;10&#125;$</code> 才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如 <code>x^5^6</code> 将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code> ：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code> ：$x^{5^6}$。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Test.jpg"></p>
-]]></content>
-      <categories>
-        <category>Github</category>
-      </categories>
-      <tags>
-        <tag>Github Blog</tag>
-        <tag>Mathjax</tag>
-        <tag>KaTeX</tag>
-        <tag>Next</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Github Profile 相关配置</title>
-    <url>/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>　　在Github中，有一个比较特殊的仓库，这个仓库的名字和你主页上显示的名字相同，这个仓库的README.md内容就会显示在你的主页顶部。这样，就可以作为一个简单的个人介绍页面，向访问你主页的人展示一些信息。这篇文章对Github Profile立面一些炫酷的效果进行详细的说明。</p>
-<h4 id="1-GitHub-Streak-Stats"><a href="#1-GitHub-Streak-Stats" class="headerlink" title="1 GitHub Streak Stats"></a>1 GitHub Streak Stats</h4><blockquote>
-<p><a href="https://github.com/DenverCoder1/github-readme-streak-stats">Streak Stats</a></p>
-</blockquote>
+    <title>6-7 检测鼠标拖拽</title>
+    <url>/2020/12/09/HexMap/6-7%20%E6%A3%80%E6%B5%8B%E9%BC%A0%E6%A0%87%E6%8B%96%E6%8B%BD/</url>
+    <content><![CDATA[<p>　　在上一章中，我们完成了河流编辑器的UI部分，通过点选<code>Toggle</code>就可以选择当前是否可以编辑河流。在这一章中，我们继续为创建河流做前期的一些工作，首先是通过什么样的交互形式来创建河流。这里我们通过参考其他的地图编辑器功能，选择了使用鼠标拖动的形式来创建河流。也就是拖动鼠标经过若干个地图单元，地图系统就会跟着鼠标的轨迹在这些地图单元上创建河流。<br>　　要实现这个功能，就需要同时获得地图单元的位置和鼠标在这个地图单元移动的方位，回到<code>HexMapEditor.cs</code>中，在脚本中添加获取这两个数据的方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//判断当前是否处于拖拽状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> isDrag;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断鼠标在当前cell的移动方位</span></span><br><span class="line">    <span class="keyword">private</span> HexDirection dragDirection;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//当鼠标到下一个cell 的时候，这里记录上一个cell</span></span><br><span class="line">    <span class="keyword">private</span> HexCell previousCell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最初的时候是没有拖拽事件的，也就没有上一个地图单元的记录。所以当没有输入信息或者没有与地图交互时，需要设置其为null。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetMouseButtonUp(<span class="number">0</span>) &amp;&amp; !EventSystem.current.IsPointerOverGameObject())</span><br><span class="line">        &#123;</span><br><span class="line">            HandleInput();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当鼠标左键没有按下的时候，记录上一个经过的cell为空</span></span><br><span class="line">            previousCell = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//当鼠标的射线未触碰到地图的时候，上一个经过的cell为空</span></span><br><span class="line">            previousCell = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　当前地图单元是根据射线碰撞点找到的，当在这一帧里结束编辑时，它就会变成下一次Update里的上一个地图单元。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//记录当前射线碰撞到的cell</span></span><br><span class="line">            HexCell currentCell = hexGrid.GetCell(_hit.point);</span><br><span class="line">            <span class="comment">//记录当前正在编辑的cell</span></span><br><span class="line">            EditCells(currentCell);</span><br><span class="line">            <span class="comment">//目前上一个cell与当前cell是一个</span></span><br><span class="line">            previousCell = currentCell;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　确认了当前射线碰撞到的地图单元之后,我们可以与前一个地图单元(如果有的话)进行比较,当发现是两个不同的单元格时,就说明可能存在有效拖动并需要去检测,要不就是没有拖拽事件。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(_inputRay, <span class="keyword">out</span> _hit))</span><br><span class="line">        &#123;</span><br><span class="line">            HexCell currentCell = hexGrid.GetCell(_hit.point);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//判断当前cell与之前的cell是否为同一个</span></span><br><span class="line">            <span class="comment">//如果是，就是在拖拽</span></span><br><span class="line">            <span class="keyword">if</span> (previousCell &amp;&amp; previousCell != currentCell)</span><br><span class="line">            &#123;</span><br><span class="line">                ValidateDrag(currentCell);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                isDrag = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　如何证实确实是拖拽事件？通过检测当前地图单元是否与前一个地图单元相邻，循环遍历前一个地图单元所有相邻地图单元来进行检测，如果找到了与当前地图单元相吻合的结果，就能同时确认拖拽的方向。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 确认拖拽方向</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;currentCell&quot;&gt;</span>当前射线所碰撞到的cell<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ValidateDrag</span>(<span class="params">HexCell currentCell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//循环遍历当前cell的6个方位</span></span><br><span class="line">        <span class="keyword">for</span> (dragDirection = HexDirection.NE; dragDirection &lt;= HexDirection.NW; dragDirection++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//如果之前cell某个方位上的cell，与当前射线触碰到的cell相同，就证明发生了碰撞</span></span><br><span class="line">            <span class="comment">//可以这样理解，当真实发生拖拽了，会记录下previousCell</span></span><br><span class="line">            <span class="comment">//鼠标移动至新的cell后，开始检测previousCell在对应方位上是不是有新的cell</span></span><br><span class="line">            <span class="comment">//如果有，就证明鼠标从previousCell拖拽移动到了新的cell上</span></span><br><span class="line">            <span class="keyword">if</span> (previousCell.GetNeighbor(dragDirection) == currentCell)</span><br><span class="line">            &#123;</span><br><span class="line">                isDrag = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        isDrag = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p><a href="https://github.com/DenverCoder1/github-readme-streak-stats/blob/main/docs/themes/README.md">Streak Stats theme</a></p>
+<p>这样逐帧检测这不会产生拖拽抖动么？<br>当你移动鼠标穿过地图单元边界时，可能会在单元格之间快速来回摆动，这确实会导致拖拽抖动，但情况没那么糟。<br>可以通过记录上一次拖拽事件来减缓抖动，然后防止下一次直接向相反方向拖拽即可。</p>
 </blockquote>
-<p>　　这个图片会动态的显示你Github总的贡献数量和最近一次最长的连续贡献数。主要参数是设置用户名和主题外观。代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-streak-stats.herokuapp.com&#x2F;?user&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-streak-stats.herokuapp.com/?user=Arthur-Delacroix&theme=vue&hide_border=true" alt="GitHub Streak"></p>
-<h4 id="2-Stats-Card"><a href="#2-Stats-Card" class="headerlink" title="2 Stats Card"></a>2 Stats Card</h4><blockquote>
-<p><a href="https://github.com/anuraghazra/github-readme-stats">Stats Card</a></p>
-</blockquote>
-<p>　　这个动态图片分为2种，一种是显示总的Star数量、总提交数等。另一种是显示当前所有仓库用到的语言种类以及其占比。其他的还有指定仓库的状态卡片、周动态统计等卡片。其中除了一般的主题颜色、边框粗细等参数，在Stats Card中还可以隐藏具体的某一项，例如可以隐藏当前Star数量。具体的参数以及其作用，可以查看Stats Card Github主页。<br>　　Stats Card示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.anuraghazra1.vercel.app&#x2F;api?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;vue&amp;hide_border&#x3D;true&amp;hide_title&#x3D;true&amp;count_private&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-stats.anuraghazra1.vercel.app/api?username=Arthur-Delacroix&theme=vue&hide_border=true&hide_title=true&count_private=true"></p>
-<p>　　Top Languages Card示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-readme-stats.vercel.app&#x2F;api&#x2F;top-langs&#x2F;?username&#x3D;Arthur-Delacroix&amp;layout&#x3D;compact&amp;theme&#x3D;vue&amp;card_width&#x3D;445&amp;hide_border&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Arthur-Delacroix&layout=compact&theme=vue&card_width=445&hide_border=true"></p>
-<h4 id="Trophy"><a href="#Trophy" class="headerlink" title="Trophy"></a>Trophy</h4><blockquote>
-<p><a href="https://github.com/ryo-ma/github-profile-trophy">Trophy</a></p>
-</blockquote>
-<p>　　Trophy是一个生成奖杯图片的工具，它会根据你的各项数值进行SSS到C的评级，具体评级标准可以在其Github主页上查看。以下是Trophy的实例代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github-profile-trophy.vercel.app&#x2F;?username&#x3D;Arthur-Delacroix&amp;theme&#x3D;flat&amp;column&#x3D;3&amp;margin-h&#x3D;15&amp;margin-w&#x3D;15&amp;&amp;no-bg&#x3D;true&amp;no-frame&#x3D;true</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github-profile-trophy.vercel.app/?username=Arthur-Delacroix&theme=flat&column=3&margin-h=15&margin-w=15&&no-bg=true&no-frame=true"></p>
+<p>　　至此，我们完成了通过检测鼠标左键按下后，是否产生了拖拽的动作。在下一章中，我们将继续完善移除和添加河流的部分代码，并最终可以在Inspector的Debug模式下看到效果。</p>
+<p><a href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/bb92da8439479f62c024c9782f043dab01d95766">Github代码</a></p>
 ]]></content>
       <categories>
-        <category>Github</category>
-      </categories>
-      <tags>
-        <tag>Github Blog</tag>
-        <tag>Profile</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Github Unity3D .gitignore 配置</title>
-    <url>/2021/03/30/Github/Github%20Unity3D%20.gitignore%20%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>　　在创建Unity3D后，VS和Unity会生成很多不需要同步的文件和文件夹，包括在Windows与Mac系统中，有时候也会自动生成一些多余的文件和文件夹。就要使用.gitignore文件中的规则来过滤这些不必要的文件和文件夹，经过整理和修改，这里给出一个较为完善的.gitignore配置文件，具体内容如下，在每次创建新的仓库时，可以使用这个.gitignore规则进行过滤。在Mac系统中，以英文句号开头的文件为隐藏文件，如果要显示隐藏文件，可以按下快捷键<code>Command + Shift + .</code>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Unity3D generated file and folders</span><br><span class="line">[Ll]ibrary&#x2F;</span><br><span class="line">[Tt]emp&#x2F;</span><br><span class="line">[Oo]bj&#x2F;</span><br><span class="line">[Bb]uild&#x2F;</span><br><span class="line">[Bb]uilds&#x2F;</span><br><span class="line">[Ll]ogs&#x2F;</span><br><span class="line">[Uu]serSettings&#x2F;</span><br><span class="line">[Mm]emoryCaptures&#x2F;</span><br><span class="line">&#x2F;ignore.conf</span><br><span class="line">*.private</span><br><span class="line">*.private.meta</span><br><span class="line">^*.private.[0-9]+$</span><br><span class="line">^*.private.[0-9]+.meta$</span><br><span class="line">.collabignore</span><br><span class="line">**&#x2F;Assets&#x2F;AddressableAssetsData&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;assets&#x2F;addressableassetsdata&#x2F;*&#x2F;*.bin*</span><br><span class="line">**&#x2F;Assets&#x2F;StreamingAssets&#x2F;aa.meta</span><br><span class="line">**&#x2F;assets&#x2F;streamingassets&#x2F;*&#x2F;aa&#x2F;*</span><br><span class="line"></span><br><span class="line"># Unity3D generated PlasticSCM flies</span><br><span class="line">&#x2F;Assets&#x2F;Plugins&#x2F;PlasticSCM*</span><br><span class="line">&#x2F;assets&#x2F;plugins&#x2F;PlasticSCM*</span><br><span class="line"></span><br><span class="line"># Asset store tools plugin</span><br><span class="line">[Aa]ssets&#x2F;AssetStoreTools*</span><br><span class="line">**&#x2F;assets&#x2F;assetstoretools</span><br><span class="line"></span><br><span class="line"># Visual Studio cache directory</span><br><span class="line">.vs&#x2F;</span><br><span class="line"></span><br><span class="line"># Gradle cache directory</span><br><span class="line">.gradle&#x2F;</span><br><span class="line"></span><br><span class="line"># Autogenerated VS&#x2F;MD&#x2F;Consulo solution and project files</span><br><span class="line">ExportedObj&#x2F;</span><br><span class="line">.consulo&#x2F;</span><br><span class="line">*.csproj</span><br><span class="line">*.unityproj</span><br><span class="line">*.sln</span><br><span class="line">*.suo</span><br><span class="line">*.tmp</span><br><span class="line">*.user</span><br><span class="line">*.userprefs</span><br><span class="line">*.pidb</span><br><span class="line">*.booproj</span><br><span class="line">*.svd</span><br><span class="line">*.pdb</span><br><span class="line">*.mdb</span><br><span class="line">*.opendb</span><br><span class="line">*.VC.db</span><br><span class="line"></span><br><span class="line"># Unity3D generated meta files</span><br><span class="line">*.pidb.meta</span><br><span class="line">*.pdb.meta</span><br><span class="line">*.mdb.meta</span><br><span class="line"></span><br><span class="line"># Unity3D generated file on crash reports</span><br><span class="line">sysinfo.txt</span><br><span class="line"></span><br><span class="line"># Builds</span><br><span class="line">*.apk</span><br><span class="line">*.unitypackage</span><br><span class="line"></span><br><span class="line"># Crashlytics generated file</span><br><span class="line">crashlytics-build.properties</span><br><span class="line"></span><br><span class="line"># Mac files</span><br><span class="line">.DS_Store*</span><br><span class="line"></span><br><span class="line"># Windows files</span><br><span class="line">Thumbs.db</span><br><span class="line">Desktop.ini</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Github</category>
+        <category>Unity3D Hex Map</category>
       </categories>
       <tags>
         <tag>Unity3D</tag>
-        <tag>Github</tag>
+        <tag>Game develop</tag>
+        <tag>Hex Map</tag>
       </tags>
   </entry>
   <entry>
-    <title>Github badge</title>
-    <url>/2021/03/19/Github/Github%20badge/</url>
-    <content><![CDATA[<p>　　在Github中仓库中，有很多大神的README.md看上去十分炫酷，在标题下方会有很多各种颜色的小图标，这些图标显示了这个仓库的一些基本信息，比如被Fork的次数、Pull requests的次数、使用的开原协议等。这些小图标在Github中被称为Shields。一开始我也只是简单的查看这些大神的README.md中的源代码，来照着在自己的仓库中添加一些类似的Shields。不过有很多参数并没有搞清楚，在这“Github Shields 相关设置”这个系列文章中，集中整理一下，给自己做个备忘。</p>
+    <title>Unity HDRP Visual Environment</title>
+    <url>/2019/06/24/Unity3D/Unity3D_HDRP_VisualEnvironment/</url>
+    <content><![CDATA[<p>#Visual Environment</p>
 <blockquote>
-<p><a href="https://github.com/badges/shields">Github Shields 仓库连接</a></p>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Override-Visual-Environment.html">官方文档</a></p>
 </blockquote>
-<blockquote>
-<p><a href="https://shields.io/">制作badge页面</a></p>
-</blockquote>
-<p>　　首先是比较简单的，打开这个网页之后，在顶部直接输入自己仓库名字完整的URL，这样会帮你自动生成若干个badge。这些badge是根据你的仓库动态生成的。当然，你也可以自己自定义想要生成的内容。接下来我们慢慢研究badge中一些简单的参数。</p>
-<h3 id="1-自定义静态内容"><a href="#1-自定义静态内容" class="headerlink" title="1. 自定义静态内容"></a>1. 自定义静态内容</h3><p>　　自定义静态内容的badge由4部分组成：默认连接 + Label + Message + Color。</p>
+<p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Override-VisualEnvironment1.png" alt="image"></p>
+<p>该模块主要控制天空和与雾效。</p>
 <ul>
-<li>默认连接为 <code>https://img.shields.io/badge/</code></li>
-<li>Label为badge左侧的文字内容。</li>
-<li>Message为badge左侧的文字内容。</li>
-<li>Color为badge右侧文字的底色。</li>
+<li>Type：天空盒类型<ul>
+<li><strong>None：</strong> 不使用天空盒，Camera在当前Volume中的时候，使用纯色。</li>
+<li><strong>Gradient Sky：</strong> 使用梯度天空盒。</li>
+<li><strong>HDRI Sky：</strong> 使用cubemap类型的HDRI图片作为天空盒。</li>
+<li><strong>Procedural Sky：</strong>  参数话天空盒，可以控制地面颜色，天空色调，太阳尺寸等。</li>
 </ul>
-<p>　　其中Label、Message、Color三个参数的顺序不可改变，三个参数之间使用英文“-”相连接。以下为一个自定义静态内容的badge示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Lrft-Right-orange</span><br></pre></td></tr></table></figure>
-<p> <img src="https://img.shields.io/badge/Lrft-Right-orange"></p>
-<p>　　这里要注意输入的一些特殊字符的问题，列表如下：</p>
-<table>
-<thead>
-<tr>
-<th>特殊字符</th>
-<th>输入内容</th>
-<th>显示内容</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>破折号“–”</td>
-<td>–</td>
-<td>-</td>
-<td><img src="https://img.shields.io/badge/Lr--ft-Right-orange"></td>
-</tr>
-<tr>
-<td>英文半角空格</td>
-<td>%20或“_”</td>
-<td>一个半角空格</td>
-<td><img src="https://img.shields.io/badge/Lr%20ft-Rig_ht-orange"></td>
-</tr>
-<tr>
-<td>下划线“_”</td>
-<td>__(两个英文半角下划线)</td>
-<td>_</td>
-<td><img src="https://img.shields.io/badge/Lr__ft-Right-orange"></td>
-</tr>
-</tbody></table>
+</li>
+<li>Ambient Mode：环境光(ambient light)的模式。<ul>
+<li><strong>Static：</strong> 环境光照来自于烘焙的环境光</li>
+<li><strong>Dynamic：</strong> 环境光来自当前使用的天空盒。这意味着，当前摄像机所在的Volume中，环境光可以实时变化。如果使用烘焙全局照明(baked global illumination)[2]，改变环境光照只会影响被环境探针(Ambient Probes)覆盖的物体[3]。<br>如果在Lighting Settings面板中勾选了实时环境光照(real-time global illumination)，改变环境光照将会同时影响静态物体和环境探针(Ambient Probes)所覆盖的物体。  <a id="more"></a>
+[1] 当 Ambient Mode 选择 Static 时，需要在当前物体上添加“<a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Static-Lighting-Sky.html">Static Lighting Sky</a>”组件，该组件引用当前Volume使用的配置文件，并指定当前使用哪个天空盒。烘焙完成后，静态游戏物体会使用烘焙时的环境光照，此时环境光改变的话，静态游戏物体不会随之变化。<br>[2] baked global illumination是在Lighting Settings面板面板中勾选Baked Global Illumination。<br>[3] Ambient Probes尚不明确，Unity文档中通篇未找到关于这个东西的详细描述，在API文档中也只是寥寥几句。个人感觉好像是Light Probes。</li>
+</ul>
+</li>
+</ul>
+<p>PS：每种天空盒组件可以独立添加，根据“Type”属性来确定使用哪种天空盒。</p>
 <hr>
-<h3 id="2-文字背景色"><a href="#2-文字背景色" class="headerlink" title="2 文字背景色"></a>2 文字背景色</h3><p>　　你也可以自定义左右两边的颜色值，这里使用的是RGB16位色值。示例代码如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357</span><br></pre></td></tr></table></figure>
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?colorA=ff00ff&colorB=daa357"></p>
-<p>　　这里的<code>colorA=ff00ff</code>表示左半边的背景色值，<code>colorB=daa357</code>表示右半边背景色值。参数之间使用英文<code>&amp;</code>符号连接。<br>　　除了使用16位RGB值改变背景色之外，还可以使用Shields一些自带的默认样式，列表如下，其实还有很多其他颜色名称，这里就不一一列举了，都可以使用RGB来代替。</p>
-<table>
-<thead>
-<tr>
-<th>颜色名称</th>
-<th>示例</th>
-<th>代码</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>brightgreen</td>
-<td><img src="https://img.shields.io/badge/left-right-brightgreen"></td>
-<td><code>https://img.shields.io/badge/left-right-brightgreen</code></td>
-</tr>
-<tr>
-<td>green</td>
-<td><img src="https://img.shields.io/badge/left-right-green"></td>
-<td><code>ttps://img.shields.io/badge/left-right-green</code></td>
-</tr>
-<tr>
-<td>yellowgreen</td>
-<td><img src="https://img.shields.io/badge/left-right-yellowgreen"></td>
-<td><code>https://img.shields.io/badge/left-right-yellowgreen</code></td>
-</tr>
-<tr>
-<td>yellow</td>
-<td><img src="https://img.shields.io/badge/left-right-yellow"></td>
-<td><code>https://img.shields.io/badge/left-right-yellow</code></td>
-</tr>
-<tr>
-<td>orange</td>
-<td><img src="https://img.shields.io/badge/left-right-orange"></td>
-<td><code>ttps://img.shields.io/badge/left-right-orange</code></td>
-</tr>
-<tr>
-<td>red</td>
-<td><img src="https://img.shields.io/badge/left-right-red"></td>
-<td><code>https://img.shields.io/badge/left-right-red</code></td>
-</tr>
-<tr>
-<td>lightgrey</td>
-<td><img src="https://img.shields.io/badge/left-right-lightgrey"></td>
-<td><code>ttps://img.shields.io/badge/left-right-lightgrey</code></td>
-</tr>
-<tr>
-<td>blue</td>
-<td><img src="https://img.shields.io/badge/left-right-blue"></td>
-<td><code>https://img.shields.io/badge/left-right-blue</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="3-自定义样式"><a href="#3-自定义样式" class="headerlink" title="3 自定义样式"></a>3 自定义样式</h3><p>　　Shields还提供了很多外观样式，具体代码和样式如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>示例</th>
-<th>代码</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>plastic</td>
-<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=plastic"></td>
-<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=plastic</code></td>
-</tr>
-<tr>
-<td>flat</td>
-<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat"></td>
-<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat</code></td>
-</tr>
-<tr>
-<td>flat-square</td>
-<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat-square"></td>
-<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat-square</code></td>
-</tr>
-<tr>
-<td>for-the-badge</td>
-<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge"></td>
-<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge</code></td>
-</tr>
-<tr>
-<td>social</td>
-<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=social"></td>
-<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=social</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="4-小图标"><a href="#4-小图标" class="headerlink" title="4 小图标"></a>4 小图标</h3><blockquote>
-<p><a href="https://simpleicons.org/">小图标参考页面</a>　　</p>
-</blockquote>
-<p>　　在badge的左侧，还可以加入一些小图标，示例代码如下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unity</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Unity"> </p>
-<p>　　这里还需要注意一点，有些Logo的名字是带空格的，比如Adobe Lightroom Classic，要显示这个Logo，不能直接使用英文半角空格，而是要使用<code>%20</code>作为转译符号。示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;Adobe%20Lightroom%20Classic</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Adobe%20Lightroom%20Classic"></p>
-<p>　　或者还可以使用半角英文减号“-”代替空格，也是一样的效果，示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;visual-studio-code</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=visual-studio-code"></p>
-<p>　　如果对Logo的颜色不满意，还可以更改Logo的颜色，颜色值使用16位RGB颜色。示例代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unreal-engine&amp;logoColor&#x3D;violet</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=unreal-engine&logoColor=violet"></p>
-<p>　　感觉Logo跟文字部分过于紧凑，还可以调整水平位置Logo所占宽度。不过这个宽度增加之后，Logo只会出现在剧中位置。示例代码如下：
-　　</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;bilibili&amp;logoWidth&#x3D;40</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=bilibili&logoWidth=40"></p>
-<hr>
-<h3 id="5-加入emoji"><a href="#5-加入emoji" class="headerlink" title="5 加入emoji"></a>5 加入emoji</h3><blockquote>
-<p><a href="https://apps.timwhitlock.info/emoji/tables/unicode#">emoji UTF‑8查询 1</a></p>
-</blockquote>
-<blockquote>
-<p><a href="https://github.com/sanderhahn/emoticons/blob/master/emoticons.md">emoji UTF‑8查询 2</a></p>
-</blockquote>
-<p>　　emoji同样可以嵌入到徽章内，不过是以UTF‑8编码格式书写的。每2组数值之前，要加英文百分号<code>%</code>，代码示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img.shields.io/badge/Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg"></p>
-<p>　　当然，也可以直接在网页上复制emoji，不过那样感觉就会很奇怪，在一堆代码里面出现了一个emoji的表情，感觉好像很不符合程序员的风格。</p>
-<hr>
-<h3 id="6-超级缝合怪！"><a href="#6-超级缝合怪！" class="headerlink" title="6 超级缝合怪！"></a>6 超级缝合怪！</h3><p>　　一个badge有多个参数，这些参数之间使用<code>&amp;</code>符号进行连接，没有先后顺序。所以依照这个特性，我们可以创建一个内容丰富、结构复杂的badge！</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style&#x3D;for-the-badge&amp;colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357&amp;logo&#x3D;Blender&amp;logoWidth&#x3D;20&amp;logoColor&#x3D;black</span><br></pre></td></tr></table></figure>
-<p><img src="https://img.shields.io/badge/Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style=for-the-badge&colorA=ff00ff&colorB=daa357&logo=Blender&logoWidth=20&logoColor=black"></p>
+<h4 id="Fog"><a href="#Fog" class="headerlink" title="Fog"></a>Fog</h4><ul>
+<li>Type： 雾效类型<ul>
+<li><strong>None：</strong> 在当前Volume中不使用任何雾效。</li>
+<li><strong>Linear Fog：</strong> 线性雾效，产生的雾效距离Camera越远，密度会成线性变大。</li>
+<li><strong>Exponential Fog：</strong> 指数型雾效，产生的雾效距离Camera越远，密度会成指数级变大。[1]</li>
+<li><strong>Volumetric Fog：</strong> 体积雾，体积雾会与真实光照产生交互，能产生真实的物理渲染效果。[2]</li>
+</ul>
+</li>
+</ul>
+<p>[1] 指数雾效 和 线性雾效相同点是都随着距离Camera越远变得越浓密，而感觉指数雾效会变化的比线性雾效更加快。<br>[2] 感觉类似体积雾的效果，光线穿过后就会有体积光的效果。</p>
 ]]></content>
       <categories>
-        <category>Github</category>
+        <category>Unity 3D</category>
       </categories>
       <tags>
-        <tag>Github Blog</tag>
-        <tag>badge</tag>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity HDRP Volume</title>
+    <url>/2019/05/07/Unity3D/Unity_HDRP_Volume/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Volumes.html">官方文档</a></p>
+</blockquote>
+<h3 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h3><p><img src="https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@6.7/manual/Images/Volumes1.png" alt="image"></p>
+<ul>
+<li>Is Global：勾选后Volume变为全局形式，影响整个场景。[1]</li>
+<li>Blend Distance：当Is Global未勾选时会显示此项。可以设置一个混合区域，该区域为从一个Volume到当前Volum时，各项数值渐变的一个区域。[2]</li>
+<li>Weight：混合程度，Camera进入到当前区域后，最终的混合结果。[3]</li>
+<li>Priority：当两个Volume重叠时，根据此项判断当前使用哪一个Volume的配置。该项数值越大，越会被优先使用。</li>
+<li>Profile：使用Volume配置文件，点击“New”新建一个配置文件。</li>
+</ul>
+<p>[1] 当Is Global未勾选时，需要在当前Volume所在物体上挂载Box Collider组件，并且勾选Box Collider组件的Is Trigger。<br>[2] 混合区域是从Collider外侧边缘开始计算。例如Collider为4，Blend Distance为5，混合区域位置就是4到9。<br>[3] 混合程度是 摄像机距离和混合距离 运算结果后，再乘以混合程度数值最终所得的结果。例如，当前Volume区域设置亮度为100，混合程度为0.5，在该Volume中最终亮度为50，当进入混合区域时，所有渐变的数值也会乘以0.5。</p>
+]]></content>
+      <categories>
+        <category>Unity 3D</category>
+      </categories>
+      <tags>
+        <tag>Unity 3D</tag>
+        <tag>Render</tag>
+        <tag>HDRP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Unity3D WebGL 相关踩坑记录 2</title>
+    <url>/2020/09/17/Hexo/Part2/</url>
+    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
+<ul>
+<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
+</li>
+<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
+</li>
+<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
+</li>
+<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
+</li>
+<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>遗留问题</p>
+<ul>
+<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Unity WebGL</tag>
       </tags>
   </entry>
   <entry>
@@ -2945,39 +3011,6 @@
 <li><code>&lt;head&gt;</code> 标签内的两个 script 引用，和 <code>&lt;body&gt;</code> 内的div引用，需要复制到引用该 WebGL 的 html 界面对应位置，注意，这里必须是由Hexo生成的Html界面。</li>
 <li>目前使用的Next深色主题，背景色为 <code>RGB(51, 51, 51, 1)</code>，宽度为800px。</li>
 <li>UnityLoader.js 必须 和Unity 打包好的资源文件放在相同的目录下。例如生成的 html 界面名字为post1.html，同级目录下存放WebGL的文件夹。文件夹内存放 UnityLoader.js 脚本和相关的WebGL资源。<br>可以通过修改 <code>&lt;script&gt;</code> 标签内的引用路径，将该资源存放到其他位置。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Unity WebGL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Unity3D WebGL 相关踩坑记录 2</title>
-    <url>/2020/09/17/Hexo/Part2/</url>
-    <content><![CDATA[<h5 id="自定义加载界面的-Logo-和进度条样式"><a href="#自定义加载界面的-Logo-和进度条样式" class="headerlink" title="自定义加载界面的 Logo 和进度条样式"></a>自定义加载界面的 Logo 和进度条样式</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Dark: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAATUlEQVRo3u3aIQ4AIAwEQUr4&#x2F;5cPiyMVBDOj0M2mCKgkGdAwjYCudZzLOLiITYPrCdEgGkSDaEA0iAbRIBpEA6JBNHx1vnL7V4NNwxsbCNMGI3YImu0AAAAASUVORK5CYII&#x3D;&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAO0lEQVRo3u3SQREAAAjDMMC&#x2F;56EB3omEXjtJCg5GAkyDaTANpsE0YBpMg2kwDaYB02AaTINpMA2Yhr8FO18EIBpZMeQAAAAASUVORK5CYII&#x3D;&quot;</span><br><span class="line">&#125;,</span><br><span class="line">Light: </span><br><span class="line">&#123;</span><br><span class="line">    progressLogoUrl: &quot;http:&#x2F;&#x2F;magi-melchiorl.gitee.io&#x2F;pages&#x2F;Logo.png&quot;,</span><br><span class="line">    progressEmptyUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAUUlEQVRo3u3aMQ4AEAxAUcRJzGb3v1mt3cQglvcmc&#x2F;NTA3XMFQUuNCPgVk&#x2F;nahwchE2D6wnRIBpEg2hANIgG0SAaRAOiQTR8lV+5&#x2F;avBpuGNDcz6A6oq1CgNAAAAAElFTkSuQmCC&quot;,</span><br><span class="line">    progressFullUrl: &quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAI0AAAASCAYAAABmbl0zAAAACXBIWXMAAAsSAAALEgHS3X78AAAAQElEQVRo3u3SMREAMAgAsVIpnTvj3xlogDmR8PfxftaBgSsBpsE0mAbTYBowDabBNJgG04BpMA2mwTSYBkzDXgP&#x2F;hgGnr4PpeAAAAABJRU5ErkJggg&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>修改加载界面Logo和进度条使用图片的代码，在UnityLoader.js的2388到2399行之间。Progress方法内有两组变量，Dark和Light为加载时候使用的的各类图片数组。</p>
-<ul>
-<li><p><code>progressLogoUrl</code> 为加载时候的LOGO图</p>
-</li>
-<li><p><code>progressEmptyUrl</code> 为空的加载进度条框</p>
-</li>
-<li><p><code>progressFullUrl</code> 为填满的加载进度条框</p>
-</li>
-<li><p>这里LOGO的引用可以是base64，也可以是png图片，按照这个情况，应该可以引用svg图片，未测试。</p>
-</li>
-<li><p>Unity默认使用的是Dark样式的加载界面，不知道是不是和使用的Unity版本有关，我使用的是Pro版发布的。如果使用个人版，是不是就会使用Light的界面样式。</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (e.Module) </span><br><span class="line">&#123;</span><br><span class="line">    var r &#x3D; UnityLoader.Progress.Styles[e.Module.splashScreenStyle],</span><br><span class="line">    n &#x3D; e.Module.progressLogoUrl ? e.Module.resolveBuildUrl(e.Module.progressLogoUrl) : r.progressLogoUrl,</span><br><span class="line">    o &#x3D; e.Module.progressEmptyUrl ? e.Module.resolveBuildUrl(e.Module.progressEmptyUrl) : r.progressEmptyUrl,</span><br><span class="line">    i &#x3D; e.Module.progressFullUrl ? e.Module.resolveBuildUrl(e.Module.progressFullUrl) : r.progressFullUrl,</span><br><span class="line">    a &#x3D; &quot;position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);&quot;;</span><br><span class="line">    e.logo || (e.logo &#x3D; document.createElement(&quot;div&quot;), e.logo.style.cssText &#x3D; a + &quot;background: url(&#39;&quot; + n + &quot;&#39;) no-repeat center &#x2F; contain; width: 154px; height: 130px;&quot;, e.container.appendChild(e.logo)),</span><br><span class="line">    e.progress || (e.progress &#x3D; document.createElement(&quot;div&quot;), e.progress.style.cssText &#x3D; a + &quot; height: 18px; width: 141px; margin-top: 90px;&quot;, e.progress.empty &#x3D; document.createElement(&quot;div&quot;), e.progress.empty.style.cssText &#x3D; &quot;background: url(&#39;&quot; + o + &quot;&#39;) no-repeat right &#x2F; cover; float: right; width: 100%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.empty), e.progress.full &#x3D; document.createElement(&quot;div&quot;), e.progress.full.style.cssText &#x3D; &quot;background: url(&#39;&quot; + i + &quot;&#39;) no-repeat left &#x2F; cover; float: left; width: 0%; height: 100%; display: inline-block;&quot;, e.progress.appendChild(e.progress.full), e.container.appendChild(e.progress)),</span><br><span class="line">    e.progress.full.style.width &#x3D; 100 * t + &quot;%&quot;,</span><br><span class="line">    e.progress.empty.style.width &#x3D; 100 * (1 - t) + &quot;%&quot;,</span><br><span class="line">    1 &#x3D;&#x3D; t &amp;&amp; (e.logo.style.display &#x3D; e.progress.style.display &#x3D; &quot;none&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>遗留问题</p>
-<ul>
-<li>这里应该有改变背景色的属性，使用css来改背景色。未研究。</li>
 </ul>
 ]]></content>
       <categories>

@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">85</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,141 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/24/HexMap/5-5%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/24/HexMap/5-5%20%E4%BF%AE%E5%A4%8D%E5%9C%B0%E5%9B%BE%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">5-5 修复地图编辑器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-24 11:44:23" itemprop="dateCreated datePublished" datetime="2020-11-24T11:44:23+08:00">2020-11-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们已经可以创建更大尺寸的地图了。但是因为删除了一些代码的原因，现在地图编辑器处于失效的状态中。在这一章中，我们将根据新的生成地图单元方式，修复地图编辑器。在上一章中我们删除了<code>HexGrid</code>中的<code>Refresh</code>，如果现在要改变某个地图单元的高度或者颜色，应该刷新其所在地图块的网格，而不是所有的地图单元网格。所以在<code>HexGridChunk</code>中添加新的<code>Refresh</code>方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 重新构建当前chunk内的所有cell</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　那应该在什么时候调用这个方法？之前我们是在改变地图单元的高度或者颜色的时候对mesh进行重新构建，因为那时只有一个mesh，但现在我们有很多的地图块，每个地图块都包含了一个mesh组件。就不能每个地图块都刷新，而是仅当地图块被改变时再刷新效率会更高，否则编辑较大地图时会感觉很卡。<br>　　接下来问题就变成了如何知道哪个地图块需要刷新。一个比较简单的方法是确保每个地图单元都知道它是属于哪一个地图块，这样地图单元就能在其被改变时刷新它所在的地图块，所以给<code>HexCell</code>一个地图块的引用。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//引用当前其所在的地图块</span></span><br><span class="line">    <span class="keyword">public</span> HexGridChunk chunk;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　当添加地图单元实例时<code>HexGridChunk</code>可以直接把自己赋值给它。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddCell</span>(<span class="params"><span class="keyword">int</span> index, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cells[index] = cell;</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//将chunk自身实例添加到cell中，这样cell就知道自己属于哪个chunk了</span></span><br><span class="line">    cell.chunk = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　将这些引用连接建立之后,在<code>HexCell</code>里创建一个<code>Refresh</code>方法，地图单元刷新时就同步刷新自己所在的地图块。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 当自身状态改变时，刷新自身所在chunk的所有cell</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    chunk.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们之所以不需要把<code>HexCell.Refresh</code>设置为<code>public</code>方法，因为只有地图单元自己清楚它什么时候发生了变化。例如，在高度改变之后。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置高度后刷新当前chunk</span></span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　其实只有当前地图单元的高度被设置成了一个不同值时才需要刷新，并不需要在赋了一个相同的高度值后重新计算，所以新的高度值相同时，可以在<code>set</code>属性的一开始就跳出。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当新的高度值赋值是，与旧的相同，直接返回，不执行之后的代码</span></span><br><span class="line">        <span class="keyword">if</span> (elevation == <span class="keyword">value</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　然而这会跳过第一次设置高度为0时的计算，因为0是地图网格的默认高度，为预防这一点，确保初始值是永远都不会用到的值。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//为高度赋初始值，这样避免了初始值为0，新输入的值也为0，不会刷新mesh的问题</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> elevation = <span class="keyword">int</span>.MinValue;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>什么是int.MinValue?<br>这是int所能表示的最小值，在C#中int是一个32位的数字,它有2的32次方种可能的整数值,分成正值和负值和0,其中一位用来指出这个值是不是负的。<br>最小值是负的2的31次方=-2147483648，我们永远不会使用这个高度等级。<br>最大值是2的31次方减1=2147483647,比2的31次方少1是因为还有0存在。<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.int32.minvalue?view=net-5.0">MSDN连接</a></p>
+</blockquote>
+<p>　　除了改变高度会刷新当前的地图块，改变颜色也会。为了检测颜色是否被改变，我们也要把颜色设置成一个属性。重命名成首字母大写的Color,接着改成属性并使用私有的color变量。颜色的默认值是标准黑色，这里就不用再添加赋初始值的代码了。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cell颜色</span></span><br><span class="line"><span class="keyword">private</span> Color color;</span><br><span class="line"></span><br><span class="line"><span class="comment">//cell颜色</span></span><br><span class="line"><span class="keyword">public</span> Color Color</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> color;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当新颜色与现在颜色相同时，不再进行赋值和刷新</span></span><br><span class="line">        <span class="keyword">if</span> (color == <span class="keyword">value</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        color = <span class="keyword">value</span>;</span><br><span class="line">        </span><br><span class="line">        Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　回到Unity中运行，我们发现会报空引用异常，这是因为在把地图单元赋值给它所在的地图块之前，就设置了其默认的颜色和高度。最好的办法是在这里先不刷新，因为我们会在初始化完成之后三角化它们。换句话说就是只有在地图块被赋值完成后才进行刷新。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (chunk != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        chunk.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在又可以使用地图编辑器了，但是我们发现一个问题，就是在两个地图块的交界处，如果地图单元的颜色不是白色， 那就会产生很明显的一个边界。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-5-1.png"></p>
+<p>　　这个问题很好理解，因为一个地图单元发生变化后，所有与它相邻的地图单元也会发生改变，而这些相邻的地图单元有可能在不同的地图块中。最简单的解决方案是当地图单元与其相邻地图单元不在一个地图块时，也刷新一下相邻单元格的地图块。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (chunk != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        chunk.Refresh();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历自身当前所有相邻的cell</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; neighbors.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            HexCell neighbor = neighbors[i];</span><br><span class="line"></span><br><span class="line">            <span class="comment">//当自身与相邻cell不在同一个chunk时，刷新相邻的chunk</span></span><br><span class="line">            <span class="keyword">if</span> (neighbor != <span class="literal">null</span> &amp;&amp; neighbor.chunk != chunk)</span><br><span class="line">            &#123;</span><br><span class="line">                neighbor.chunk.Refresh();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样修改虽然视觉效果正确，但我们要刷新单个地图块多次，一旦我们在一次绘制横跨多个地图单元时，情况就更糟糕了。我们没必要在地图块刷新信息时直接三角化，我们可以通知这个地图块需要刷新，然后在编辑完成时一次性三角化。<br>　　因为<code>HexGridChunk</code>没有用来做其它的事情，我们可以用脚本的enable状态作为需要刷新的信号，当开始刷新时，给脚本设置enable状态，就算多次设置也没关系，因为不会有变化。稍后脚本更新时，我们就在这里进行三角化，然后再次设置状态为disable。<br>　　因我们使用LateUpdate，这样就能确保三角化发生在当前帧编辑完成之后。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Refresh</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//hexMesh.Triangulate(cells);</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">//需要对当前Chunk刷新时，就启用当前脚本</span></span><br><span class="line">    enabled = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//完成三角构建后，就停用当前脚本，这样就不会发生重复刷新的问题了</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">    enabled = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Update与LateUpdate有什么区别？<br>每一帧中, 所有enabled状态的组件中的Update会在随机时候调用。在这结束之后，LateUpdate方法也是同样的逻辑。所以这是两个更新步骤，一个早一些一个晚一些。<a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/ExecutionOrder.html">Unity官方文档</a><br>Unity内脚本的生命周期如下图：</p>
+</blockquote>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/Unity3D_MonoBehaviour_Lifecycle.jpg"></p>
+<p>　　因为脚本组件默认状态就是enabled，所以不再需要在Start里进行三角构建，现在就可以删掉这个方法了。</p>
+<figure class="highlight csharp"><figcaption><span>HexGridChunk.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//private void Start()</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//    cell实例会由HexGrid创建</span></span><br><span class="line"><span class="comment">//    之后会将实例分配到各个HexGridChunk的数组中，这样再进行mesh的构建</span></span><br><span class="line"><span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-5-2.png"></p>
+<p>　　至此，我们就修复了地图编辑器的所有功能了，当我们编辑一个在地图块边缘的地图单元时，相邻地图块也会随之刷新。在接下来的章节中，我们会对现有代码进行一些优化。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b8806263fd26e8ec7691382ce368811deaf73686">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1207,108 +1342,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/14/HexMap/4-10%20%E8%BF%9E%E6%8E%A5%E5%85%AD%E8%BE%B9%E5%BD%A2%E8%BE%B9%E7%BC%98%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E8%BE%B9%E7%BC%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/14/HexMap/4-10%20%E8%BF%9E%E6%8E%A5%E5%85%AD%E8%BE%B9%E5%BD%A2%E8%BE%B9%E7%BC%98%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E8%BE%B9%E7%BC%98/" class="post-title-link" itemprop="url">4-10 连接六边形边缘与连接区域边缘</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-14 02:42:42" itemprop="dateCreated datePublished" datetime="2020-11-14T02:42:42+08:00">2020-11-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们对每个六边形完成了细分，从之前的6个三角面片，增加到了18个三角面片。细节更加丰富。但是六边形边缘和其相邻的连接区域，还存在着破面与重面的问题，在这一章中，我们来修复这些问题。<br>　　对矩形连接区域的细分也会用到新增的顶点信息，所以要将这些信息传递到<code>TriangulateConnection</code>方法中，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//因为对六边形的每个边进行了细分，所以要把新的顶点也传入构建矩形连接区域的方法中</span></span><br><span class="line">    <span class="comment">//这样矩形区域使用新增的顶点后边缘之间才能吻合</span></span><br><span class="line">    <span class="keyword">if</span> (direction &lt;= HexDirection.SE)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateConnection(direction, cell, v1, e1, e2, v2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，我们要修改<code>TriangulateConnection</code>方法的参数列表，增加新的顶点参数，代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//六边形增加了新的顶点，这里要修改参数列表，接收新的顶点</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　我们还需要计算与这个矩形连接区域相邻的另一个地图单元上的新增顶点信息。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    Vector3 v3 = v1 + bridge;</span><br><span class="line">    Vector3 v4 = v2 + bridge;</span><br><span class="line">    v3.y = v4.y = neighbor.Position.y;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里要计算与矩形连接区域相邻的，另一侧cell新增的两个顶点位置信息</span></span><br><span class="line">    Vector3 e3 = Vector3.Lerp(v3, v4, <span class="number">1f</span> / <span class="number">3f</span>);</span><br><span class="line">    Vector3 e4 = Vector3.Lerp(v3, v4, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，我们使用新的顶点信息构建矩形连接区域，这里我们先忽略阶梯化的问题，先解决在同一平面下不产生破面与重叠。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">     HexDirection direction, HexCell cell,</span></span></span><br><span class="line"><span class="function"><span class="params">     Vector3 v1, Vector3 e1, Vector3 e2, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//这里使用新增的顶点进行连接区域的构建</span></span><br><span class="line">        AddQuad(v1, e1, v3, e3);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e1, e2, e3, e4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">        AddQuad(e2, v2, e4, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-10-1.png"></p>
-<p>　　至此我们就完成了地图单元与矩形连接区域产生破面与重面的问题。不过现在只是两个地图单元在相同高度的情况，阶梯化之后仍然存在问题。我们先将阶梯化的问题暂缓，现在我们为<code>TriangulateConnection</code>方法增加了参数，在方法内还要计算相邻地图单元一条边上的两个顶点，这样看来不太符合面向对象的思想。接下来我们会将这些计算过程进行封装，对现有的一些方法进行简化。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/d8ca0fe04a8a8a00ce33cedd5792d8cf96843b70">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1364,13 +1397,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">174k</span>
+    <span title="站点总字数">177k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:38</span>
+    <span title="站点阅读时长">2:41</span>
   </span>
 </div>
 <div class="busuanzi-count">

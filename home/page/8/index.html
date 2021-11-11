@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,130 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/06/HexMap/2-1%20%E8%AE%A1%E7%AE%97%E7%9B%B8%E9%82%BB%E7%9A%84%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">2-1 计算相邻的地图单元的位置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-06 11:55:40" itemprop="dateCreated datePublished" datetime="2020-10-06T11:55:40+08:00">2020-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　上一章中我们完成了改变单个地图单元颜色的功能。但是通过观察可以发现，如果相邻的两个地图单元颜色不相同，他们之间的颜色过渡会显得非常的生硬。两者的对比效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-5.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-1.png"></p>
+<p>　　观察对比图可以发现，地图单元之间拥有颜色过渡后，视觉效果会更好一些。在接下来的部分，我们暂时将改变色时重新构建整个地图Mesh的问题放一边，重点放在视觉表现上面。</p>
+<p>　　要想产生平滑的颜色过渡，我们首先需要知道每个地图单元与谁相邻，才可以得到相邻地图单元的颜色，进一步进行颜色的平滑过渡。在这里我们创建一个新的脚本，命名为<code>HexDirection</code>，其中声明一个枚举，用来标识一个地图单元与其相邻的其他地图单元的方位。其分别为东北（NE）、东（ E )、东南(SE)、西南(SW)、西(W)、西北(NW)。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-2.png"></p>
+<figure class="highlight csharp"><figcaption><span>HexDirection.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表示相邻cell方位的枚举</span></span><br><span class="line"><span class="comment">//从左上角顺时针依次开始</span></span><br><span class="line"><span class="comment">//参考图：http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-2.png</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> HexDirection</span><br><span class="line">&#123;</span><br><span class="line">    NE,</span><br><span class="line">    E, </span><br><span class="line">    SE, </span><br><span class="line">    SW, </span><br><span class="line">    W, </span><br><span class="line">    NW</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>关于枚举类型<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/language-reference/builtin-types/enum">MSDN连接</a></br><br>可以使用<code>enum</code>关键字来定义枚举，是有名字的有序列表。这种类型的变量可以使用这些名称中的一个作为它的值，每个名称都对应一个数字，默认情况下从0开始。当你需要有限长度的可命名有序列表时，这些非常有用。<br>实际上枚举就是简单的整数。你可以对它们进行加、减操作，转换成整数再转回来。同样也可以转换成少数其他类型，但整数是其基本类型。</p>
+</blockquote>
+<p>　　回到HexCell.cs脚本中，在开头部分添加一个数组，用来存储相邻地图单元的实例。这里将该数组设置为Private，并使用<code>[SerializeField]</code>标记这个变量，使其能够在Inspector面板中显示出来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用来存储每个cell的 相邻cell实例</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> HexCell[] neighbors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在这里，我们会保留相邻地图单元的引用，虽然可以通过坐标来直接获取相邻地图单元，但是在有引用关系的情况下会更加方便一些，而且保留引用关系在之后的一些操作中也很便利。</p>
+<p>　　回到Unity中，选中Hex Cell的预置，我们可以看到neighbors变量已经显示在了Inspector面板上。因为每个地图单元最多可以有6个相邻地图单元。所以这里将neighbors数组的长度设置为6。效果如下：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-3.png"></p>
+<p>　　接下来在HexCell.cs脚本中，创建一个公共方法，用来获取<code>neighbors</code>数组中的内容。因为之前声明的<code>HexDirection</code>枚举，其取值范围在0-5之间，同时<code>neighbors</code>数组长度为6，所以这里不用检查数组下标是否越界。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 用来获取neighbors中相应方位cell的实例</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意，虽然HexDirection取值为0-5，neighbors长度为6，不会越界</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 但是不是所有cell都有6个相邻的cell_neighbor，所以可能取出为空，之后会添加判断</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位 枚举<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>相应方位cell 的实例<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> HexCell <span class="title">GetNeighbor</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> neighbors[(<span class="keyword">int</span>)direction];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为<code>neighbors</code>数组为private，所以还需要一个将相邻地图单元实例赋值到数组中的一个方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 将相邻的cell实例赋值到neighbors中对应的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意neighbors的索引下标，应与HexDirection方位的int值对应</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>相邻cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetNeighbor</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        neighbors[(<span class="keyword">int</span>)direction] = cell;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为方位是相对的。例如一个地图单元A，其E方位的地图单元实例为B，那么也可以说A在B的W方位。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-4.png"></p>
+<p>　　所以在获取自身相邻地图单元实例的时候，同时将自身加入其相邻单元格实例的<code>neighbors</code>数组中。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 将相邻的cell实例赋值到neighbors中对应的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 这里注意neighbors的索引下标，应与HexDirection方位的int值对应</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>相邻cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetNeighbor</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        neighbors[(<span class="keyword">int</span>)direction] = cell;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//在赋值自身的neighbors实例的同时，也将自身实例赋值到相邻cell的neighbors数组中</span></span><br><span class="line">        cell.neighbors[(<span class="keyword">int</span>)direction.Opposite()] = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，让我们到HexDirection.cs脚本中完成<code>Oppositie()</code>方法。这个方法主要是将地图单元自身实例，添加到相邻地图单元<code>neighbors</code>数组中的对应位置。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexDirection.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">…</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexDirectionExtensions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-1-4.png</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 根据 相邻cell 位于 自身cell 的位置，获得 自身cell 位于 相邻cell 的位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 也就是得到相反位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexDirection <span class="title">Opposite</span>(<span class="params"><span class="keyword">this</span> HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//return (int)direction &lt; 3 ? (direction + 3) : (direction - 3);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//已知了 相邻cell 的位置，自身cell位置与相邻cell位置相反</span></span><br><span class="line">        <span class="comment">//即 W(1) - E(4)这样的对应关系，之间正好相差3</span></span><br><span class="line">        <span class="keyword">if</span> ((<span class="keyword">int</span>)direction &lt; <span class="number">3</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (direction + <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (direction - <span class="number">3</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>什么是扩展方法？<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods">MSDN连接</a></br><br>扩展方法是一个静态类中的静态方法，但使用起来像是某些类型的实例方法。这个类型可以是任何东西:自定义类、接口、结构体、原生数据结构或者是枚举。扩展方法的第一个参数之前必须有this关键字,它定义方法将操作的类型和实例的值。<br>这个特性允许我们在任何东西上添加方法,就像是静态方法的参数可以是任何类型。在有节制适量使用的情况下这个特性非常方便。但过度使用会造成代码结构的混乱。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/18aca13c0edcfd279b0b54cd0fedbfaea4b91f9e">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1313,114 +1437,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/26/HexMap/1-1%20%E5%85%B3%E4%BA%8EHexmap/" class="post-title-link" itemprop="url">1-1 关于Hexmap</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-09-26 13:03:27" itemprop="dateCreated datePublished" datetime="2020-09-26T13:03:27+08:00">2020-09-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　地图系统是一个回合制策略游戏的基础，一个灵活、稳固、拓展性强的地图系统会给游戏带来更多的可能。</p>
-<p>　　在传统日式回合制策略RPG游戏中，大多使用了正方形元素来构建地图系统。正方形元素有绘制简单、三角面数较少、计算相对简单等优势，但是也具有一些先天性的劣势，下图为一个正方形地图单元，以及围绕其周围的8个地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-1.png"></p>
-<p>　　通过观察发现，水平和垂直相邻的地图单元，两者中点的距离为正方形单元边长，也就是绿色箭头表示的距离。</p>
-<p>　　而斜向位置的相邻地图单元，两者中点的距离为正方形单元边长的 $\sqrt 2$ 倍，也就是红色箭头表示的距离。</p>
-<p>　　由于相邻的地图单元之间有两种不同的距离，这种差异化的距离在实际游戏中会比较难处理。所以，有些游戏中，只会选择在地图单元的水平和垂直方向移动，从而避免距离差异化带来的问题。但是，这样在一定程度上减少了游戏的多样性与可玩性。</p>
-<p>　　为了解决距离差异化问题，并且同时保持游戏玩法的灵活与多样性，使用了正六边形地图单元来代替正方形地图单元。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-2.png"></p>
-<p>　　与正方形单元相比，正六边形单元有6个相邻单元。并且，两个单元中点之间的距离是相等的，不存在距离之间的差异化。这样就既消除了距离差异的问题，同时还保持了游戏的多样性和可玩性。</p>
-<p>　　在正式开始编码之前，还需要对正六边形单元做一些简单的设定。这里设定每个正六边形单元的边长为10。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-3.png"></p>
-<p>　　由<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2/810780">正六边形的几何特点</a>可知，如果正六边形的边长为10，其外接圆的半径也为10（蓝色实线线表示），其内切圆半径是边长的 $\frac {\sqrt 3} 2$（<a target="_blank" rel="noopener" href="https://www.zybang.com/question/23f1ea8b73c2d03cb2c400389bc90cef.html">证明过程</a>），也就是 $5 \sqrt3$（红色虚线表示）。</p>
-<p>　　基础的设定完成后，接下来就可以在Unity中创建脚本开始编码了。首先创建HexMetrics.cs脚本，声明2个常量，<code>outerRadius</code>和<code>innerRadius</code>，表示正六边形的外接圆和内切圆半径。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　脚本创建完成后，让我们来继续观察一下正六边形单元。在正六边形排列的形式有两种，一类是边朝上，一类是角朝上。为了方便之后的计算，我们选择角朝上的排列类型。如下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-1-4.png"></p>
-<p>　　在<code>HexMetrics</code>类中添加如下代码，通过正六边形的中点、外接圆半径、内切圆半径定义正六边形的六个顶点</p>
-<figure class="highlight csharp"><figcaption><span>exMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexMetrics</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//正六边形的边长 同时也是正六边形外接圆的半径</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> outerRadius = <span class="number">10f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的内切圆半径，长度为外接圆的 二分之根号三倍</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">float</span> innerRadius = outerRadius * <span class="number">0.866025404f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line">    <span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">        <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　这样，基本的地图单元就创建完成了，下一步，要创建一个二维数组，来存放实例化到场景中的地图单元，并且记录每个地图单元在该数组中的位置。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/4ca99fba905d26cc215b4b68bbb2ded305e4eb2b">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1476,13 +1492,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">177k</span>
+    <span title="站点总字数">179k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:41</span>
+    <span title="站点阅读时长">2:43</span>
   </span>
 </div>
 <div class="busuanzi-count">

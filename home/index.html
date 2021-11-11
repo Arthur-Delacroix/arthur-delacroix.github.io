@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,106 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/10/HexMap/6-8%20%E7%BC%96%E8%BE%91%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8A%E7%9A%84%E6%B2%B3%E6%B5%81%E4%BF%A1%E6%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/10/HexMap/6-8%20%E7%BC%96%E8%BE%91%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8A%E7%9A%84%E6%B2%B3%E6%B5%81%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">6-8 编辑地图单元上的河流信息</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-10 01:05:15" itemprop="dateCreated datePublished" datetime="2020-12-10T01:05:15+08:00">2020-12-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了对鼠标左键按下时拖拽的检测，并创建了相关逻辑处理的代码。在这一章中我们将完善这些逻辑，使我们可以在Inspector面板的Debug模式下，可以看到地图单元上是否有河流与河流的信息。<br>　　目前我们已经可以检测鼠标左键按下后的拖拽事件了。接下来，我们就可以对每个地图单元上添加或移除河流信息了。这里要注意，移除河流是不需要检测鼠标左键按下时的拖拽事件的。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cell)</span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (riverMode == OptionalToggle.No)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.RemoveRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (isDrag &amp;&amp; riverMode == OptionalToggle.Yes)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//设置之前的cell中 河流的流出方位</span></span><br><span class="line">            previousCell.SetOutgoingRiver(dragDirection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们就就可以通过数百左键按下拖拽，在两个相邻的地图单元上创建流入和流出的河流了。但这样只是针对单个地图单元进行操作，我们忽略了笔刷的因素，感觉上没有什么不妥。既然有笔刷这个属性，那么我们在创建河流的时候，就应该创建出所有在笔刷范围内地图单元的河流。既然是在笔刷覆盖单位内创建河流信息，那就要确保笔刷覆盖范围内，都有地图单元的实例。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cell)</span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (riverMode == OptionalToggle.No)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.RemoveRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (isDrag &amp;&amp; riverMode == OptionalToggle.Yes)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//检测当前cell的拖拽方位上，是否有相邻cell 的实例</span></span><br><span class="line">            <span class="comment">//如果有实例，就创建相应的河流信息</span></span><br><span class="line">            HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());</span><br><span class="line">            <span class="keyword">if</span> (otherCell)</span><br><span class="line">            &#123;</span><br><span class="line">                otherCell.SetOutgoingRiver(dragDirection);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　运行Unity，通过鼠标左键按下后拖拽，我们就可以创建地图单元上的河流信息了，虽然现在我们没办法在Game窗口中直接看到河流的创建和删除，但是我们可以通过Inspector面板的Debug模式来查看每个地图单元上的河流信息是否正确。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-8-1.png"></p>
+<p>　　这里要注意，我们之前使用了鼠标抬起事件<code>Input.GetMouseButtonUp(0)</code>来检测是否点击到了地图上，而现在因为添加了拖拽功能，所以只检测鼠标左键事件即可<code>Input.GetMouseButton(0)</code>。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>) &amp;&amp; !EventSystem.current.IsPointerOverGameObject())</span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　至此，我们就完成了鼠标左键按下拖拽进行河流的创建或移除的功能了。在接下来的章节中，我们将分析河流的三角剖分形状，逐步作出在地图系统中可见的河流。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/8f5e3aa80b860697dcb70deedb127cc02b2562f8">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/09/HexMap/6-7%20%E6%A3%80%E6%B5%8B%E9%BC%A0%E6%A0%87%E6%8B%96%E6%8B%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1527,113 +1627,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/04/HexMap/6-2%20%E6%B2%B3%E6%B5%81%E6%96%B9%E5%90%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/04/HexMap/6-2%20%E6%B2%B3%E6%B5%81%E6%96%B9%E5%90%91/" class="post-title-link" itemprop="url">6-2 河流方向</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-04 10:38:51" itemprop="dateCreated datePublished" datetime="2020-12-04T10:38:51+08:00">2020-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们确认了要使用哪种河流的形式，并分析了河流在地图单元中的几种分布形式。这一章中我们先创建一些变量和方法，用来存储和获取当前地图单元内是否有河流，并且记录河流的流向等。<br>　　首先我们先定义两个变量，用来存储河流经过当前地图单元的流向，即是流入还是流出的。这两个变量我们可以在<code>HexCell</code>中声明，因为构建单个地图单元，都是在这个勒种完成的。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//用来记录当前cell是否有河流 流入/流出</span></span><br><span class="line">    <span class="comment">//只流出是河流起点，只流入是河流终点</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> hasIncomingRiver;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> hasOutgoingRiver;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　但是仅仅只有河流的流入和流出信息还不够，我们还需要知道河流的流出方位与流出方位。再声明两个变量，用来存储河流是从哪个方位流入与流出的。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//记录河流的流入方位和流出方位</span></span><br><span class="line">    <span class="keyword">private</span> HexDirection incomingRiver;</span><br><span class="line">    <span class="keyword">private</span> HexDirection outgoingRiver;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　变量声明完成后，我们使用对应的Get属性来获取这些变量的值，对这些变量的赋值操作，将会在之后章节的其他方法中实现。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//cell中是否有河流 流入/流出 以及 流入、流出方位，都使用属性来获取</span></span><br><span class="line">    <span class="comment">//赋值部分会在其他的方法中进行</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell是否有河流的流入</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> HasIncomingRiver</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> hasIncomingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell是否有河流的流出</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> HasOutgoingRiver</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> hasOutgoingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell中河流的流入方向</span></span><br><span class="line">    <span class="keyword">public</span> HexDirection IncomingRiver</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> incomingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取cell中河流的流出方向</span></span><br><span class="line">    <span class="keyword">public</span> HexDirection OutgoingRiver</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> outgoingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着就是要能获取当前地图单元是否含有河流。我们同样声明一个属性来获取这个信息。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取当前cell中是否有河流</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> HasRiver</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> hasIncomingRiver || hasOutgoingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　然后是要判断，当前的地图单元是否为河流的起点或者终点，也就是说当<code>hasIncomingRiver</code>与<code>hasOutgoingRiver</code>两个变量的值不同的时候，就表示当前地图单元是河流的起点或者终点。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取当前的cell是否为河流的起点或终点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> HasRiverBeginOrEnd</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> hasIncomingRiver != hasOutgoingRiver;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，我们还需要一个方法来判断，地图单元的某个特定方位的边，是否有河流经过，不管河流是流入还是流出。这个方法是比较重要的，因为它涉及到后面一些三角剖分的工作。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexCell</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 检查cell中指定方位的边是否有河流经过，不论是流入还是流出</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>当前cell指定方位的边<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>true该边有河流经过，false该边没有河流经过<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">HasRiverThroughEdge</span>(<span class="params">HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">            <span class="comment">//检查指定方位是否有河流的流入</span></span><br><span class="line">            hasIncomingRiver &amp;&amp; incomingRiver == direction</span><br><span class="line">            ||</span><br><span class="line">            <span class="comment">//检查指定方位是否有河流的流出</span></span><br><span class="line">            hasOutgoingRiver &amp;&amp; outgoingRiver == direction;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　至此，我们创建了一些变量、属性和方法，用来保存和获取河流经过一个地图单元的各种形式和状态。在接下来的章节中，我们将创建一些方法用来移出和添加河流。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/commit/d95af304a44eb2fe5eba3cb4291d99e6996f3039">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1689,13 +1682,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">177k</span>
+    <span title="站点总字数">179k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:41</span>
+    <span title="站点阅读时长">2:43</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,120 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/05/HexMap/4-1%20%E5%AF%BC%E5%85%A5%E5%99%AA%E7%82%B9%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/05/HexMap/4-1%20%E5%AF%BC%E5%85%A5%E5%99%AA%E7%82%B9%E5%9B%BE/" class="post-title-link" itemprop="url">4-1 导入噪点图</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-05 10:24:56" itemprop="dateCreated datePublished" datetime="2020-11-05T10:24:56+08:00">2020-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　到目前为止，我们可以通过程序化生成一个正六边形有高低差的地图，并且在不同的高低差之间有更多的细节。但是现在的地图仍然是一个很规则精确的蜂窝状网格。在接下来的章节中，我们会使用一张噪点图，为现在的地图增加一些不规则感，让地图看起来更加自然。<br>　　要添加一些不规则的感，就需要一些随机性，但又不是真正的全随机。所以我们需要的是在编辑地图时未选中的位置保持不变，不然每改动一点地图就全变了。所以需要是一种可重现的伪随机，即噪声。<br>　　柏林噪声(Perlin noise)就是一个很好的选择，它在每个点的位置都可以重现。当多种不同频率的柏林噪声叠加时，能产生大范围来看变化很大，小范围内又接近一致的噪声纹理，生成相对平滑的形变，靠近的点更倾向于黏在一起而不是向相反的方向扭曲。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Perlin%E5%99%AA%E5%A3%B0">柏林噪声 wiki</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/206271895">柏林噪声 知乎相关文章</a></p>
+</blockquote>
+<p>　　柏林噪声可以程序化生成，也能使用一张预先生成的噪声纹理图。使用噪声纹理图的好处是它比直接计算多频率叠加的噪声更容易，也更快，缺点是纹理图需要占用内存并且噪声的区域大小相对有限。所以噪声纹理图需要平铺显示并且需要覆盖比较大的区域，使得产生的循环不那么频繁和紧密，从而产生伪随机和单调感。<br>　　使用噪点图的原理其实与一张尺寸较小的纹理贴图，贴在一个尺寸较大的物体上一样，如果贴图是循环铺满整个物体表面，那么横向和纵向都会产生很多的重复，视觉效果就会打折扣，而且显得很单调。<br>　　这里准备使用噪声纹理贴图，如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-1-1.png"></p>
+<p>　　这张纹理图包含多重频率叠加的平铺柏林噪声，并且是一张灰度图，其平均值接近0.5，极限值是0和1。<br>　　不过这不是我们最终要用的图，这张图的每个像素点上只有一个值，如果我们需要的是3D形变，我们至少得需要三个伪随机采样。所以除此之外还需要两张额外的不同噪声纹理图。<br>　　我们可以就用三张不同的纹理图，或者也可以用RGB通道来存储这些值，我们可以在一张彩色纹理图上，使用RGBA通道来存储四种不同样式的噪声，如下图，要使用它的话，直接在图片上单机鼠标右键保存至本地，然后导入Unity3D即可。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-1-2.png"></p>
+<p>　　将这张彩色噪点图导入Unity3D工程中后，我们要对这张图进行一些设置，以便在之后的步骤中顺利使用它。以下是对这张彩色噪点图的设置项：</p>
+<ol>
+<li>首先由于我们要用代码对彩色噪点图进行采样,所以它必须是可读写的。勾选Read/Write Enable。这样就能把纹理贴图的数据存储到内存中并用C#代码进行访问。</li>
+<li>取消勾选sRGB(Color Texture)选项</li>
+<li>图片格式设置成Automatic并且压缩方式设置成null，我们不想因为压缩纹理而破坏噪声图的样式。</li>
+<li>Generate Mip Maps也取消勾选,并不需要这个功能。<br>　　设置完成后如下图所示：</li>
+</ol>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-1-3.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/4-1-4.png"></p>
+<blockquote>
+<p>如果勾选sRGB会有什么影响?<br>如果我们在着色器的某些地方使用噪声纹理图，它可能会有些不同。当使用线性渲染模式时，纹理采样数据会自动从伽马空间转换到线性空间。这会对噪声纹理的采样数据产生一个错误的结果，而这是需要避免的。（注：Unity的默认渲染模式是线性模式）</p>
+</blockquote>
+<blockquote>
+<p>这篇教程所有的代码与设置，均使用Unity 2019.4.X版本，可能在之后的版本中，图中的设置选项位置有所不同。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/df84a9ab6129dac7e6e1f659a8bbe2bddb8e5031">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1203,102 +1317,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/26/HexMap/3-9%20%E9%98%B6%E6%A2%AF%E5%8C%96slope%E7%B1%BB%E5%9E%8B%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/26/HexMap/3-9%20%E9%98%B6%E6%A2%AF%E5%8C%96slope%E7%B1%BB%E5%9E%8B%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F/" class="post-title-link" itemprop="url">3-9 阶梯化Slope类型连接区域</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-26 09:10:01" itemprop="dateCreated datePublished" datetime="2020-10-26T09:10:01+08:00">2020-10-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们为不同高度的连接区域划分了类型，并创建了一个方法来判断两个相邻地图单元之间的连接区域是哪种类型。这一章中，我们来实现只阶梯化Slope类型的连接区域，其他的连接区域依然是由两个三角面片构成的矩形。<br>　　首先回到<code>HexMesh.TriangulateConnection</code>方法中，在这个方法中进行了阶梯化连接区域的操作，我们在阶梯化之前加入一个判断，当连接类型为Slope的时候才执行阶梯化操作。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，我们需要启用之前的代码，也就是判断如果连接类型不为Slope，那么连接区域就是矩形的。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//在这里新加入判断，当两个相邻cell的连接类型为Slope的时候，才会创建阶梯化连接</span></span><br><span class="line">    <span class="keyword">if</span> (cell.GetEdgeType(direction) == HexEdgeType.Slope)</span><br><span class="line">    &#123;</span><br><span class="line">        TriangulateEdgeTerraces(v1, v2, cell, v3, v4, neighbor);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//当连接类型不为Slope的时候，连接区域是矩形的</span></span><br><span class="line">        AddQuad(v1, v2, v3, v4);</span><br><span class="line">        AddQuadColor(cell.color, neighbor.color);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-9-1.png"></p>
-<p>　　这样，我们就完成了相邻地图单元连接区域的分类，并且会按照不同的分类，自动进行判断这个连接区域是否要进行阶梯化处理。在节省面数的同时，也让整个地图的层侧干更加的明显了。<br>　　不过当我们在Unity中运行时发现，如果连接类型为Slope的时候，矩形连接区域是正常的，但是三角形连接区域却没有完全贴合阶梯的边缘，导致有“破面”的情况发生。造成这个问题的原因是，我们只对矩形连接区域进行了阶梯化，而忽略了三角形连接区域。在接下来的章节中，我们将修复这个问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/995883a232455af345dbdc123f22698966bcd077">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1354,13 +1372,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">177k</span>
+    <span title="站点总字数">179k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:41</span>
+    <span title="站点阅读时长">2:43</span>
   </span>
 </div>
 <div class="busuanzi-count">

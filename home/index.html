@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">88</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,98 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/11/HexMap/6-9%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B2%B3%E9%81%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/11/HexMap/6-9%20%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B9%8B%E9%97%B4%E7%9A%84%E6%B2%B3%E9%81%93/" class="post-title-link" itemprop="url">6-9 地图单元之间的河道</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-11 09:21:10" itemprop="dateCreated datePublished" datetime="2020-12-11T09:21:10+08:00">2020-12-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>441</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在之前的章节中，我们已经完成了鼠标左键按下后创建和移除河流信息的基本逻辑，并可以在Inspector面板的Debug模式下看到这些信息。在接下来的章节中我们将再次修改地图的Mesh，创建真正可见的河流。<br>　　河流的三角剖分可以分为两个部分来考虑，即河道和水流，这里我们首先实现河道的三角剖分。在河道的三角剖分中，最简单的部分是两个地图单元之间的连接区域。目前这个区域是由3个四边形组成的，我们可以通过江都中间四边形的高度，并在其两侧增加两道墙来创建出一条河道，如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-9-1.png"></p>
+<p>　　按照这个思路来创建河道的话，我们就需要额外的两个四边形当作河道两边的墙。另外一种思路，是使用4个四边形组成连接区域，我们可以通过降低中间顶点的位置，来行程一个两边倾斜的河道。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-9-2.png"></p>
+<p>　　相比于增加两道墙的方案，4个四边形组成新的连接区域，面数并没有增加很多，而且我们只需要改变中间顶点的位置即可，不用在添加或移除河流的时候频繁的Mesh的创建和删除。在接下来的章节中，我们将先增加连接区域中的顶点，构建新的连接区域。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/10/HexMap/6-8%20%E7%BC%96%E8%BE%91%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8A%E7%9A%84%E6%B2%B3%E6%B5%81%E4%BF%A1%E6%81%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1499,116 +1591,6 @@
 
 <p>　　至此，我们就完成了在地图单元内创建河流的基本方法了。这些方法目前只是创建河流的基本思路，在之后的章节中，我们将逐步完善这些方法。在下一章中，我们将添加一些代码，来防止河流逆流的情况发生。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/43d90cd39cd6ddd7af3333eb5f14f30ad83ca9a5">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/05/HexMap/6-3%20%E7%A7%BB%E9%99%A4%E6%B2%B3%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/05/HexMap/6-3%20%E7%A7%BB%E9%99%A4%E6%B2%B3%E6%B5%81/" class="post-title-link" itemprop="url">6-3 移除河流</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-05 22:20:50" itemprop="dateCreated datePublished" datetime="2020-12-05T22:20:50+08:00">2020-12-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们创建了一些方法，来存储河流经过一个地图单元的方位等信息。在这一章节中，我们先来创建移除地图单元内河流的一些相关方法。<br>　　首先创建一个方法，移除地图单元内河流的流出部分，如果检测到当前地图单元没有河流的流出，那就直接跳出。如果有河流的流出，进行修改后，将标记设置为<code>false</code>并且刷新地图。这里实际移除河流的代码，会在之后的章节中完善。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 删除cell自身流出的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//判断当前cell是否有流出的河流</span></span><br><span class="line">    <span class="comment">//没有河流留出的话就直接跳出</span></span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//有流出的河流，就将cell流出状态改为false，并刷新当前chunk</span></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　如果当前地图单元有河流的流出，那么其相邻地图单元也一定会有河流的流入。根据处理流入的逻辑，用同样方法处理流出。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    Refresh();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//移除当前cell河流的流出部分，那就要同时移除相邻cell河流的流入部分</span></span><br><span class="line">    HexCell neighbor = GetNeighbor(outgoingRiver);</span><br><span class="line">    <span class="comment">//将相邻cell流入的标记设置为false</span></span><br><span class="line">    neighbor.hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//刷新相邻cell所在的chunk</span></span><br><span class="line">    neighbor.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>河流会延伸到地图之外么?<br>虽然有能实现这个功能,但我们不会这么做。所以也不用检查相邻地图单元存在。</p>
-</blockquote>
-<p>　　移除当前地图单元的河流，只会影响它自身的外观，这与改变高度与颜色不同，我们不用考虑其对相邻地图单元造成的影响，所以我们只需要刷新当前的地图单元就可以了。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveOutgoingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hasOutgoingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//Refresh();</span></span><br><span class="line">    <span class="comment">//与改变高度和颜色不同，移除河流只会影响自身，所以只需要刷新自身mesh即可</span></span><br><span class="line">    <span class="comment">//与其相邻的cell同理</span></span><br><span class="line">    RefreshSelfOnly();</span><br><span class="line"></span><br><span class="line">    HexCell neighbor = GetNeighbor(outgoingRiver);</span><br><span class="line">    neighbor.hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//刷新相邻cell所在的chunk</span></span><br><span class="line">    <span class="comment">//neighbor.Refresh();</span></span><br><span class="line">    neighbor.RefreshSelfOnly();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这个<code>RefershSelfOnly</code>方法目前就使用刷新当前你地图单元所在的地图块方法，因为当整个地图初始化时还没有对河流进行编辑，所以也不需要考虑此时地图块是否已赋值的问题。编辑河流后刷新自身的代码，会在之后的章节完善。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 刷新cell自身的mesh</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">RefreshSelfOnly</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//当前并未完善河流编辑功能，目前先使用刷新chunk的方法</span></span><br><span class="line">    chunk.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　移除相邻流入河流的方法思路基本相同。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 移除cell自身流入的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveIncomingRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//思路与移除流出河流基本相同</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (hasIncomingRiver == <span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    hasIncomingRiver = <span class="literal">false</span>;</span><br><span class="line">    RefreshSelfOnly();</span><br><span class="line"></span><br><span class="line">    HexCell neighbor = GetNeighbor(incomingRiver);</span><br><span class="line">    neighbor.hasOutgoingRiver = <span class="literal">false</span>;</span><br><span class="line">    neighbor.RefreshSelfOnly();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后再添加一个方法，移除地图单元内的全部河流。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 移除cell自身流入和流出的河流</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveRiver</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    RemoveOutgoingRiver();</span><br><span class="line">    RemoveIncomingRiver();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　至此，我们就完成了移除地图单元内河流的方法。接下来的一章中，我们将创建给地图单元内添加河流的方法。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/ecd7d026629a8301180a16438bfae442d1c28364">Github代码</a></p>
 
       
     </div>

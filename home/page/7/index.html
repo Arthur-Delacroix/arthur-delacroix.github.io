@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">91</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,108 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/20/HexMap/3-3%20%E8%AE%BE%E7%BD%AE%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83Mesh%E7%9A%84%E9%AB%98%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/20/HexMap/3-3%20%E8%AE%BE%E7%BD%AE%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83Mesh%E7%9A%84%E9%AB%98%E5%BA%A6/" class="post-title-link" itemprop="url">3-3 设置地图单元Mesh的高度</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-20 10:38:51" itemprop="dateCreated datePublished" datetime="2020-10-20T10:38:51+08:00">2020-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中我们为地图单元添加了高度属性，并完成了简单的UI，来为被点击的地图单元赋值高度信息。但是在构建地图Mesh的时候，并没有将这个高度值应用到被点击的地图单元上。这里我们就来实现这个功能，首先将<code>HexCell </code>中的<code>elevation</code>字段转换为属性。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> elevation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> elevation;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        elevation = <span class="keyword">value</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　然后在赋值高度的同时，修改地图单元Mesh的垂直坐标。</p>
+<figure class="highlight csharp"><figcaption><span>HexCell.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> Elevation</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">set</span></span><br><span class="line">    &#123;</span><br><span class="line">        elevation = <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在获取高度等级的时候，同时为cell的Mesh赋值相应的高度值</span></span><br><span class="line">        Vector3 position = transform.localPosition;</span><br><span class="line">        position.y = <span class="keyword">value</span> * HexMetrics.elevationStep;</span><br><span class="line">        transform.localPosition = position;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为将<code>elevation</code>字段转换为了属性，回到<code>HexMapEditor.EditCell</code>里将赋值语句的错误修改掉，</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cell.color = activeColor;</span><br><span class="line">    cell.Elevation = activeElevation;</span><br><span class="line">    hexGrid.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/3-3-1.png"></p>
+<blockquote>
+<p>MeshCollider是否能吻合新的高度地图?<br>旧版本的Unity需要在设置相同的Mesh信息之前先把MeshCollider设为null，它只是假设Mesh的数据不会改改变,所以只有不同的Mesh（或者null）能触发碰撞器的刷新，现在已经没这个必要了。所以我们现在的方法：在三角构建之后重新分配MeshCollider的Mesh信息，这是可行的。</p>
+</blockquote>
+<p>　　现在通过UI设置高度之后，点击一个地图单元，我们就可以看到被点击的地图单元升高了对应的高度。但是这里还有两个问题：<br>　　第一：跟随地图单元的坐标并没有随着地图单元的高度高边而改变，当地图单元高度变化的时候，其对应的坐标依然还是在水平高度上。<br>　　第二：地图单元之间的连接错误。颜色混合区域连接着两个相邻的地图单元，当两个地图单元的垂直高度不相同的时候，颜色混合区域应该依然连接着两个地图单元，因为高度不同只是被拉伸了而已。<br>　　在接下来的章节中，我们将会解决这些问题。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/9d32f7a5dfb884a2ff1c1ed30155d8de854e2455">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1175,112 +1277,10 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/10/HexMap/2-5%20%E8%AE%A9%E9%A2%9C%E8%89%B2%E8%BF%87%E6%B8%A1%E6%9B%B4%E5%8A%A0%E5%B9%B3%E6%BB%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/10/HexMap/2-5%20%E8%AE%A9%E9%A2%9C%E8%89%B2%E8%BF%87%E6%B8%A1%E6%9B%B4%E5%8A%A0%E5%B9%B3%E6%BB%91/" class="post-title-link" itemprop="url">2-5 让颜色过渡更加平滑</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-10 21:43:07" itemprop="dateCreated datePublished" datetime="2020-10-10T21:43:07+08:00">2020-10-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们重构了为三角面片赋值颜色的代码，为每个不同的顶点赋值了不同的颜色。实现了最基本的颜色不同切相邻的两个地图单元之间，会有颜色过渡的功能。但是视觉效果上并没有达到我们的预期。在这一章中，我们将优化现在的颜色混合视觉效果，让颜色过渡更加平滑。<br>　　首先，颜色不同切相邻的两个地图单元之间的边界颜色，应该是两个地图单元颜色的平均值。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//两个相邻的cell，其交界处的颜色应该是两个cell颜色的平均值</span></span><br><span class="line">    Color edgeColor = (cell.color + neighbor.color) * <span class="number">0.5f</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为三角面片的顶点赋颜色值</span></span><br><span class="line">    <span class="comment">//AddTriangleColor(cell.color, neighbor.color, neighbor.color);</span></span><br><span class="line">    AddTriangleColor(cell.color, edgeColor, edgeColor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-5-1.png"></p>
-<p>　　经过修改，虽然视觉效果好了一些，但是颜色交界的地方过渡依然显得有些突兀。这是因为在颜色过渡不平滑的位置，会有三个地图单元共享一个顶点位置的颜色，我们之前的方法只是在两两混合颜色。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-5-2.png"></p>
-<p>　　按照这个思路，我们在混合N方位地图单元的颜色时，还需要考虑N+1和N-1位置地图单元的颜色。</p>
-<figure class="highlight csharp"><figcaption><span>HexDirection.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HexDirectionExtensions</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取当前相邻cell 之前的一个cell的方位</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>当前相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexDirection <span class="title">Previous</span>(<span class="params"><span class="keyword">this</span> HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//如果当前cell位置为NE，即索引为0，其之前的一个cell方位应该为NE，即索引为6</span></span><br><span class="line">        <span class="comment">//除此之外的情况，只要当前索引值减1即可</span></span><br><span class="line">        <span class="keyword">return</span> direction == HexDirection.NE ? HexDirection.NW : (direction - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取当前相邻cell 之后的一个cell的方位</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;direction&quot;&gt;</span>当前相邻cell的方位<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexDirection <span class="title">Next</span>(<span class="params"><span class="keyword">this</span> HexDirection direction</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//与Previous方法中类似，方位索引为6时，回到0，其余情况则方位索引加1</span></span><br><span class="line">        <span class="keyword">return</span> direction == HexDirection.NW ? HexDirection.NE : (direction + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们可以通过新增的两个方法，来获取N+1和N-1位置地图单元的颜色了。然后再分别进行颜色混合。</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取当前相邻方位cell，索引值-1相邻cell的实例</span></span><br><span class="line">    HexCell prevNeighbor = cell.GetNeighbor(direction.Previous()) ?? cell;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取与自身当前相邻的cell的颜色值</span></span><br><span class="line">    <span class="comment">//每个cell会在 Triangulate(HexCell cell) 方法中将与自身相邻的cell遍历一次</span></span><br><span class="line">    <span class="comment">//?? 为 可空合并运算符，即cell.GetNeighbor(direction)的值为null时，使用 cell的值</span></span><br><span class="line">    HexCell neighbor = cell.GetNeighbor(direction) ?? cell;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取当前相邻方位cell，索引值+1相邻cell的实例</span></span><br><span class="line">    HexCell nextNeighbor = cell.GetNeighbor(direction.Next()) ?? cell;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//两个相邻的cell，其交界处的颜色应该是两个cell颜色的平均值</span></span><br><span class="line">    <span class="comment">//Color edgeColor = (cell.color + neighbor.color) * 0.5f;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取到相邻方位cell，以及相邻方位cell +1和-1 cell的实例，接下来进行颜色混合</span></span><br><span class="line">    <span class="comment">//三角面片3个顶点颜色分别为</span></span><br><span class="line">    <span class="comment">//自身颜色</span></span><br><span class="line">    <span class="comment">//自身颜色，自身颜色+相邻cell方位减1颜色，相邻cell颜色</span></span><br><span class="line">    <span class="comment">//自身颜色，自身颜色+相邻cell方位加1颜色，相邻cell颜色</span></span><br><span class="line">    AddTriangleColor(</span><br><span class="line">        cell.color,</span><br><span class="line">        (cell.color+prevNeighbor.color+neighbor.color)/<span class="number">3.0f</span>,</span><br><span class="line">        (cell.color+nextNeighbor.color+neighbor.color)/<span class="number">3.0f</span></span><br><span class="line">        );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/2-5-3.png"></p>
-<p>　　现在，我们就得到了新的颜色混合效果。但是通过观察发现，在地图边缘的这些地图单元，颜色混合是存在一些问题的。造成这种现象的原因是边缘的单元格缺失了N+1和N-1位置的地图单元，导致了颜色混合还是会有明显的边界。在下一章中，我们需要更换一下思路，来解决这个问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/315a3f87f036cfe4c7fc49763a804a79d5d1904f">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/home/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/home/">1</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/home/page/8/">8</a><a class="page-number" href="/home/page/9/">9</a><a class="extend next" rel="next" href="/home/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/home/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/home/">1</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/home/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/10/">10</a><a class="extend next" rel="next" href="/home/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1332,13 +1332,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">183k</span>
+    <span title="站点总字数">184k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:46</span>
+    <span title="站点阅读时长">2:47</span>
   </span>
 </div>
 <div class="busuanzi-count">

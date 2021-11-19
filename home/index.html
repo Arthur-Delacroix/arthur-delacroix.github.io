@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">90</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">91</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1025,6 +1025,103 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/14/HexMap/6-12%20%E5%88%9B%E5%BB%BA%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%9A%84%E6%B2%B3%E9%81%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/14/HexMap/6-12%20%E5%88%9B%E5%BB%BA%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E7%9A%84%E6%B2%B3%E9%81%93/" class="post-title-link" itemprop="url">6-12 创建连接区域的河道</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-14 14:08:38" itemprop="dateCreated datePublished" datetime="2020-12-14T14:08:38+08:00">2020-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们声明了一个常量用来存储河床最低点的偏移量。在这一章中，我们要使用这个偏移量来构建连接区域。<br>　　首先回到<code>HexMesh.cs</code>甲苯中，在这里有构建连接区域的方法。当我们构建地图单元的时候，获取其河流的状态。如果存在流入或者流出的河流，那么我们就修改中间顶点的高度。让其变为河床的最低点。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexDirection direction, HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    EdgeVertices e = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        center + HexMetrics.GetFirstSolidCorner(direction),</span><br><span class="line">        center + HexMetrics.GetSecondSolidCorner(direction)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">//检测当前边缘是否有河流穿过</span></span><br><span class="line">    <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果有河流穿过，就降低中间顶点的高度，使其成为河床最低点</span></span><br><span class="line">        e.v3.y = cell.StreamBedY;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    TriangulateEdgeFan(center, e, cell.Color);</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-12-1.png"></p>
+<p>　　通过上图我们发现，在连接区域产生了破面的情况。要填补这些破面，就要在进行三角构建连接区域的时候，同时要将相邻地图单元边上中央顶点的坐标也下降到相应高度。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateConnection</span>(<span class="params">HexDirection direction, HexCell cell, EdgeVertices e1</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    EdgeVertices e2 = <span class="keyword">new</span> EdgeVertices(e1.v1 + bridge, e1.v5 + bridge);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使得相邻地图单元的中间顶点坐标也下降到河床最低点位置，不然会有破面产生</span></span><br><span class="line">    <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction))</span><br><span class="line">    &#123;</span><br><span class="line">        e2.v3.y = neighbor.StreamBedY;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-12-2.png"></p>
+<p>　　现在，我们就可以通过按下鼠标左脚拖拽在地图上创建河流了。不过我们发现一个问题，就是河流穿过地图单元中央的时候，河流就收缩到一起了。这明显是不正确的，我们将会在接下来的章节修复这个问题。</p>
+<p>[Github代码](</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/13/HexMap/6-11%20%E8%AE%BE%E7%BD%AE%E6%B2%B3%E5%BA%8A%E9%AB%98%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1520,107 +1617,10 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/08/HexMap/6-6%20%E6%B2%B3%E6%B5%81%E7%BC%96%E8%BE%91%E5%99%A8UI/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/08/HexMap/6-6%20%E6%B2%B3%E6%B5%81%E7%BC%96%E8%BE%91%E5%99%A8UI/" class="post-title-link" itemprop="url">6-6 河流编辑器UI</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-08 17:58:31" itemprop="dateCreated datePublished" datetime="2020-12-08T17:58:31+08:00">2020-12-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>827</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在之前的章节中，我们创建了添加、移除河流的相关方法，并对每个地图单元内的河流作出了防止逆流的检测。在这一章中，我们要创建地图编辑器UI中，与创建河流相关的功能UI。在现有UI基础上，我们添加一个河流选项卡，选项卡中有三种模式可选，分别是：关闭、添加、移除。这个选项卡的形式，与颜色选项卡类似，都使用<code>Toggle</code>组件即可。同时我们使用枚举来记录当前的选中状态。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//河流编辑器的状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">enum</span> OptionalToggle</span><br><span class="line">    &#123;</span><br><span class="line">        Ignore, Yes, No</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当前河流编辑器选中的状态</span></span><br><span class="line">    <span class="keyword">private</span> OptionalToggle riverMode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，要创建一个方法以供UI中的选项卡按钮调用，来更改当前状态。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设置河流编辑器的状态</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;mode&quot;&gt;</span>状态美剧索引值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetRiverMode</span>(<span class="params"><span class="keyword">int</span> mode</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        riverMode = (OptionalToggle)mode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接最后我们需要一个新的<code>Toggle Group</code>组件来建立这三个<code>Toggle</code>组件的联系。并且这三个<code>Toggle</code>组件都挂载<code>SetRiverMode</code>方法。最终结果如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-6-1.png"></p>
-<p>　　至此，我们就完成了河流编辑器UI部分的功能了。在下一章中，我们将检测鼠标左键按下时的拖拽信息，这些信息可以用来当做创建河流的起点和方向。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b42ce1a50db76badcb4563e79364b64e10ad5d6b">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/home/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/9/">9</a><a class="extend next" rel="next" href="/home/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/home/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/home/page/10/">10</a><a class="extend next" rel="next" href="/home/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1672,13 +1672,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">183k</span>
+    <span title="站点总字数">184k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:46</span>
+    <span title="站点阅读时长">2:47</span>
   </span>
 </div>
 <div class="busuanzi-count">

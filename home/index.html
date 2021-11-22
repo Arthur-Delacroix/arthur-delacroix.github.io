@@ -791,14 +791,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -999,16 +999,49 @@
 </tr>
 </tbody></table>
 <hr>
-<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用<code>^</code>与<code>_</code>表示，例如<code>$x_i^2$</code>表示的是：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用<code>$10^10$</code>表示的是：$10^10$，而<code>$10^&#123;10&#125;$</code>才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如<code>$x^5^6$</code>将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code>：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code>：$x^{5^6}$。</p>
+<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用<code>^</code>与<code>_</code>表示，例如<code>$x_i^2$</code>输出为：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用<code>$10^10$</code>输出为：$10^10$，而<code>$10^&#123;10&#125;$</code>才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如<code>$x^5^6$</code>将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code>：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code>：$x^{5^6}$。</p>
 <h2 id="括号"><a href="#括号" class="headerlink" title="括号"></a>括号</h2><h3 id="小括号与方括号"><a href="#小括号与方括号" class="headerlink" title="小括号与方括号"></a>小括号与方括号</h3><ul>
-<li>使用英文半角<code>( )</code>和<code>[ ]</code>即可。例如如<code>$(2+3)[4+4]$</code>：$(2+3)[4+4]$</li>
-<li>使用<code>\left(</code>或<code>\right)</code>使符号大小与邻近的公式相适应（该语句适用于所有括号类型），如<code>$\left(\frac&#123;x&#125;&#123;y&#125;\right)$</code>　：$\left[\frac{x}{y}\right]$</li>
+<li>使用英文半角<code>( )</code>和<code>[ ]</code>即可。例如如<code>$(2+3)[4+4]$</code>输出为：$(2+3)[4+4]$</li>
+<li>使用<code>\left(</code>或<code>\right)</code>使符号大小与邻近的公式相适应（该语句适用于所有括号类型），如<code>$\left(\frac&#123;x&#125;&#123;y&#125;\right)$</code>输出为：$\left[\frac{x}{y}\right]$</li>
 </ul>
 <h3 id="大括号"><a href="#大括号" class="headerlink" title="大括号"></a>大括号</h3><ul>
-<li>由于大括号<code>&#123; &#125;</code>被用于分组，因此需要使用<code>\&#123;</code>和<code>\&#125;</code>表示大括号，也可以使用<code>\lbrace</code>和<code>\rbrace</code>来表示。如<code>$\&#123;a+b\&#125;:a-b$</code>或<code>$\lbrace a+b\rbrace:a-b$</code> 表示。${a+b}:{a-b}$</li>
+<li>由于大括号<code>&#123; &#125;</code>被用于分组，因此需要使用<code>\&#123;</code>和<code>\&#125;</code>表示大括号，也可以使用<code>\lbrace</code>和<code>\rbrace</code>来表示。如<code>$\&#123;a+b\&#125;:a-b$</code>或<code>$\lbrace a+b\rbrace:a-b$</code> 输出为：${a+b}:{a-b}$</li>
 </ul>
 <h3 id="尖括号"><a href="#尖括号" class="headerlink" title="尖括号"></a>尖括号</h3><ul>
-<li>区分于小于号和大于号，使用<code>\langle</code>和<code>\rangle</code>表示左尖括号和右尖括号。如<code>$\langle x \rangle$</code>表示：$\langle x \rangle$</li>
+<li>区分于小于号和大于号，使用<code>\langle</code>和<code>\rangle</code>表示左尖括号和右尖括号。如<code>$\langle x \rangle$</code>输出为：$\langle x \rangle$</li>
+</ul>
+<h3 id="上取整"><a href="#上取整" class="headerlink" title="上取整"></a>上取整</h3><ul>
+<li>使用<code>\lceil</code>和<code>\rceil</code>表示上取整符号。如<code>$\lceil x \rceil$</code>输出为： $\lceil x \rceil$</li>
+</ul>
+<h3 id="下取整"><a href="#下取整" class="headerlink" title="下取整"></a>下取整</h3><ul>
+<li>使用<code>\lfloor</code>和<code>\rfloor</code>表示下取整符号。如<code>$\lfloor x \rfloor$</code>输出为：$\lfloor x \rfloor$</li>
+</ul>
+<h2 id="求和与积分"><a href="#求和与积分" class="headerlink" title="求和与积分"></a>求和与积分</h2><h3 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h3><ul>
+<li><code>\sum</code>用来表示求和符号，其下标表示求和下限，上标表示上限。如:<code>$\sum_&#123;r=1&#125;^n$</code>输出为：$\sum_{r=1}^n$</li>
+<li><code>$$\sum_&#123;r=1&#125;^n$$</code>行间公式输出为：<br>$$\sum_{r=1}^n$$</li>
+</ul>
+<h3 id="积分"><a href="#积分" class="headerlink" title="积分"></a>积分</h3><ul>
+<li><code>\int</code>用来表示积分符号，同样地，其上下标表示积分的上下限。如<code>$\int_&#123;r=1&#125;^\infty$</code>输出为：$\int_{r=1}^\infty$</li>
+<li>多重积分同样使用<code>int</code>，通过<code>i</code>的数量表示积分导数。例如：</li>
+</ul>
+<p><code>$\iint$</code>输出为：$\iint$</p>
+<p><code>$\iiint$</code>输出为：$\iiint$</p>
+<h3 id="连乘"><a href="#连乘" class="headerlink" title="连乘"></a>连乘</h3><ul>
+<li><code>$\prod &#123;a+b&#125;$</code>输出为：$\prod {a+b}$</li>
+<li><code>$\prod_&#123;i=1&#125;^&#123;K&#125;$</code>输出为：$\prod_{i=1}^{K}$</li>
+<li><code>$\prod_&#123;i=1&#125;^&#123;K&#125;$</code>输出为：$$\prod_{i=1}^{K}$$</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>与此类似的符号还有，</p>
+<ul>
+<li><code>$\prod$</code>输出为：$\prod$</li>
+<li><code>$\bigcup$</code>输出为：$\bigcup$</li>
+<li><code>$\bigcap$</code>输出为：$\bigcap$</li>
+<li><code>$arg\,\max_&#123;c_k&#125;$</code>输出为：$arg,\max_{c_k}$</li>
+<li><code>$arg\,\min_&#123;c_k&#125;$</code>输出为：$arg,\min_{c_k}$</li>
+<li><code>$\mathop &#123;argmin&#125;_&#123;c_k&#125;$</code>输出为：$\mathop {argmin}_{c_k}$</li>
+<li><code>$\mathop &#123;argmax&#125;_&#123;c_k&#125;$</code>输出为：$\mathop {argmax}_{c_k}$`</li>
+<li><code>$\max_&#123;c_k&#125;$</code>输出为：$\max_{c_k}$</li>
+<li><code>$\min_&#123;c_k&#125;$</code>输出为：$\min_{c_k}$</li>
 </ul>
 <p>博客内图片宽度830px<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/25f0139637b7">https://www.jianshu.com/p/25f0139637b7</a></p>
 
@@ -1684,13 +1717,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">184k</span>
+    <span title="站点总字数">185k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:47</span>
+    <span title="站点阅读时长">2:48</span>
   </span>
 </div>
 <div class="busuanzi-count">

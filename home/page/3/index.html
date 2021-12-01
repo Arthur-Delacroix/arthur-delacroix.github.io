@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">91</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,115 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/29/HexMap/5-11%20%E9%AB%98%E5%BA%A6%E4%B8%8E%E9%A2%9C%E8%89%B2%E7%BC%96%E8%BE%91%E5%8F%AF%E9%80%89%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">5-11 高度与颜色编辑可选功能</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-29 12:12:37" itemprop="dateCreated datePublished" datetime="2020-11-29T12:12:37+08:00">2020-11-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　现在我们可以创建更大尺寸的地图了，但是地图编剧工具的功能并没有任何变化。首先是对地图单元上色和调整高度是同时进行的。其次因为有了更大的地图，一次编辑一个地图单元显得过于繁琐。在这一章中，我们先实现编辑高度与颜色功能变为可选，也就是在点击一个地图单元的时候，可以选择只改变其颜色或者只改变其高度。<br>　　这个功能可以通过添加一个toggle组来实现。复制一个颜色选项卡并将标签名改为“—”或者其他字符，与颜色选择的勾选框文字进行区分。然后设置其OnValueChanged事件传递参数为-1。此选项目的是用来取消选中颜色。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-1.png"></p>
+<p>　　-1对于颜色数组来说是一个无效的下标，我们可以根据这个数值确定是否对地图单元进行颜色修改。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//表示当前是否可以修改cell的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyColor;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SelectColor</span>(<span class="params"><span class="keyword">int</span> _index</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当传入的索引值大于0的时候，才会获取当前选中的颜色</span></span><br><span class="line">        applyColor = _index &gt;= <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            activeColor = colors[_index];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//当applyColor为true，也就是索引值大于等于0，才会修改cell的颜色</span></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        cell.Elevation = activeElevation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　修改地图单元高度使用的是一个Slider组件，在这里创建一个toggle表示是否应用高度编辑,默认设置为开启状态。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//是否启用修改cell高度的功能</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> applyElevation = <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (applyColor)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Color = activeColor;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//当toggle勾选时，才会修改cell的高度</span></span><br><span class="line">        <span class="keyword">if</span> (applyElevation)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.Elevation = activeElevation;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成代码后，我们重新整理一下UI上各个组件的位置和层级结构，将所有UI都放入一个Panel中，然后再将颜色修改的UI与高度修改的UI分开，这样就显得更加整洁，也便于后期调试。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-2.png"></p>
+<p>　　为了让修改高度开关起效，我们需要创建一个方法，在Toggle每次勾选或取消选择时候都调用这个方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 当高度修改的toggle点击时，调用此方法</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;toggle&quot;&gt;</span>toggle当前是否被选中<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetApplyElevation</span>(<span class="params"><span class="keyword">bool</span> toggle</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        applyElevation = toggle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　完成代码后，要在Toggle组件上挂载此方法。当挂载方法时确保是使用的方法列表顶端的dynamic bool method。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-3.png"></p>
+<p>　　现在我们在运行时就可以选择是修改颜色还是高度，或者像之前一样同时修改。甚至可以两个都不选，尽管现在这个功能没什么用。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-11-4.gif"></p>
+<blockquote>
+<p>为什么当我选择一个颜色后自动取消选择高度了？<br>这个情况发生在把所有的选项都放在一个Group时，可能是直接复制了一份颜色选项卡然后修改成高度选项卡，但没有清理Toggle组件的Group。</p>
+</blockquote>
+<p>　　至此，我们就完成了单独进行高度和颜色的可选编辑功能，虽然这个功能现在看上去好像没什么用。但是随着编辑器的功能不断增多，这个功能将在之后体现出来它的作用。在下一章中，我们将定义一个笔刷大小，用来批量修改地图单元的颜色或高度。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/bda7f8778241ae754f5d9a50582e6ae5e01e4960">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1263,113 +1372,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/20/HexMap/5-1%20%E5%9C%B0%E5%9B%BE%E7%BD%91%E6%A0%BC%E5%9D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/20/HexMap/5-1%20%E5%9C%B0%E5%9B%BE%E7%BD%91%E6%A0%BC%E5%9D%97/" class="post-title-link" itemprop="url">5-1 地图网格块</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-20 05:20:57" itemprop="dateCreated datePublished" datetime="2020-11-20T05:20:57+08:00">2020-11-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在之前的章节中，我们使用一张彩色噪点图，并采样噪点图中的像素点，对地图中的每个顶点进行位置扰动，让地图整体看起来有一些随机性，视觉效果也更加自然。在接下来的章节中，我们将创建更大的地图区域，并为地图编辑器添加新的功能。<br>　　在Unity3D中单个mesh的顶点容量是65000个，所以我们不能把单个地图尺寸设置的过大。如果想要一张尺寸更大的地图，解决方案是将多个mesh进行拼接，也就是使用若干小块拼接成一个尺寸更大的地图。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-1-1.png"></p>
-<p>　　这里我们先定义一个地图块的尺寸为$5*5$，也就是说一个地图块由25个地图单元组成。这个尺寸在<code>HexMetrics.cs</code>中进行定义。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> HexMetrics</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//应为Unity mesh最多只能有65000个顶点，想要尺寸更大的地图，就只能将多个chunk拼接起来</span></span><br><span class="line">    <span class="comment">//这里定义一个chunk的长宽各有几个cell</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> chunkSizeX = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> chunkSizeZ = <span class="number">5</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>地图块的尺寸设置成多大比较合适？<br>视情况而定，较大的地图块意味着地图块数量少，但是每个地图块的mesh中会有比较多的顶点，这会使draw calls较少。但是较小的地图块会在视锥体裁剪剔除时效率较高，绘制的三角形较少。实际方法就是先设置一个预估的大小，根据不同的需求再进行微调。</p>
-</blockquote>
-<p>　　接下来我们定义整个地图中长宽各有多少个地图块。这里定义地图的尺寸为$4<em>3$，也就是整个地图由12个地图块拼接组成。根据之前代码地图的尺寸定义，整个地图是由$12</em>25$，也就是300个地图单元组成。这个尺寸对于我们目前测试与查看效果是比较合适的。定义地图块尺寸在<code>HexGrid.cs</code>中的代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//定义整个地图长宽各有多少个chunk</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> chunkCountX = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> chunkCountZ = <span class="number">3</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-1-2.png"></p>
-<p>　　在<code>HexGrid.cs</code>中，我们使用<code>width</code>和<code>height</code>这两个变量来初始化存储地图单元数组的大小。这里仍然要使用这两个变量，但要将它们变成私有类型。然后重命名为<code>cellCountX</code>和<code>cellCountZ</code>。使用IDE的快捷功能可以一次重命名所有出现这些变量的位置。这样在处理地图块或者单元格的个数时就会很清楚。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> HexGrid</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//这里使用新的变量来初始化cells的尺寸</span></span><br><span class="line">    <span class="comment">//这两个变量的值可以通过地图中有几个chunk和每个chunk的尺寸计算出来</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cellCountX;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> cellCountZ;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　重命名完成后，<code>cellCountX</code>和<code>cellCountZ</code>的值就可以通过在<code>Awake</code>方法中地图块尺寸和地图尺寸相乘计算得出。同时，我们再将数组初始化的代码提取出来，封装成一个方法，这样让整个<code>Awake</code>方法就看起来更加整洁。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//计算出整个地图横向和纵向cell的个数，也就是二维数组的长和宽</span></span><br><span class="line">    cellCountX = chunkCountX * HexMetrics.chunkSizeX;</span><br><span class="line">    cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;</span><br><span class="line"></span><br><span class="line">    CreateCells();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 初始化存储cell实例的数组</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateCells</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//通过计算出来的长和宽，对数组进行初始化</span></span><br><span class="line">    cells = <span class="keyword">new</span> HexCell[cellCountZ * cellCountX];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> z = <span class="number">0</span>, i = <span class="number">0</span>; z &lt; cellCountZ; z++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; cellCountX; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            CreateCell(x, z, i++);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　现在，我们就初步完成了地图网格块的设置，规定了一个大地图由多少个地图块构成，每个地图块有多少个地图单元构成，同时还对之前存储所有地图单元的数组，其初始化方式作出了调整。在下一章节中，我们将修改场景中的一些结构及组件，创建地图块Prefab，为之后在场景中生成地图块做准备。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/21f655175246ba12b8de067e67a25669736018b2">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1425,13 +1427,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">188k</span>
+    <span title="站点总字数">190k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:51</span>
+    <span title="站点阅读时长">2:53</span>
   </span>
 </div>
 <div class="busuanzi-count">

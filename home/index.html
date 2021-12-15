@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">93</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1136,6 +1136,128 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/16/HexMap/6-14%20%E6%B2%B3%E6%B5%81%E7%AC%94%E7%9B%B4%E7%A9%BF%E8%BF%87%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/16/HexMap/6-14%20%E6%B2%B3%E6%B5%81%E7%AC%94%E7%9B%B4%E7%A9%BF%E8%BF%87%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/" class="post-title-link" itemprop="url">6-14 河流笔直穿过地图单元的三角剖分</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-16 11:48:57" itemprop="dateCreated datePublished" datetime="2020-12-16T11:48:57+08:00">2020-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们将有河流穿过和没河流穿过地地图单元进行了区分，并且创建了一个方法，专门对有河流穿过的地图单元进行构建。在这一章中，我们先分析最简单的情况：河流笔直穿过一个地图单元。并实现这种情况的构建。<br>　　要构建一个笔直的河道，就需要把汇聚到地图单元中心的点，延伸成一条与河道宽度相同的直线。通过观察现在的三角剖分可以发现，如果我们只改变当前河流经过的扇形区域，对其进行拉伸或缩放，那其他两侧相邻的扇形区域就一定会产生破面或重面的情况。所以我们不仅要对当前扇形区域内的顶点进行计算，还会涉及到其两侧相邻的扇形区域内的顶点。<br>　　之前我们用5个顶点，将地图单元的每一条边分城了4等份，河道宽度为二分之一边长。而且通过之前的章节我们已经知道，地图单元的外接圆直径与边长相等。如果要实现河流在地图单元中心也保持这个宽度，那么需要将其两侧的扇形区域中，之前的顶点与地图单元重点重合，现在要变为距中心点四分之一距离处。左右两个各四分之一外接圆半径长度，两个组成二分之一外接圆半径长度，刚好跟河道宽度相同。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//河流宽度为二分之一cell边长，又已知边长与外接圆半径(cell外径outerRadius)相同</span></span><br><span class="line">    <span class="comment">//为了保持河道在cell中央的时候不会变形，且没有破面等现象产生</span></span><br><span class="line">    <span class="comment">//所以要将当前河流穿过区域左右两侧的外径，之前顶点与中心重合，现在变为各自距离中心四分之一处</span></span><br><span class="line">    Vector3 centerL = center + HexMetrics.GetFirstSolidCorner(direction.Previous()) * <span class="number">0.25f</span>;</span><br><span class="line">    Vector3 centerR = center + HexMetrics.GetSecondSolidCorner(direction.Next()) * <span class="number">0.25f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　我们计算出了两个新的顶点坐标，根据这两个坐标，使用<code>EdgeVertices</code>结构体来计算其余3个顶点的坐标，并将它们全都保存下来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据两侧新的顶点位置，计算出其余顶点的位置</span></span><br><span class="line">    EdgeVertices m = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        Vector3.Lerp(centerL, e.v1, <span class="number">0.5f</span>),</span><br><span class="line">        Vector3.Lerp(centerR, e.v5, <span class="number">0.5f</span>)</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们修改中间顶点的高度，使其下降成为河道。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将河道中心的顶点高度下降</span></span><br><span class="line">    m.v3.y = center.y = e.v3.y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　然后，我们先使用<code>TriangulateEdgeStrip</code>方法来构建连接区域。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//通过计算后的顶点构建连接区域</span></span><br><span class="line">    TriangulateEdgeStrip(m, cell.Color, e, cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-1.png"></p>
+<p>　　我们观察构建的结果，发现好像河道还是向内压缩了。河道左右两边的顶点还是在向中间靠拢。结合下图、运行效果与<code>TriangulateEdgeStrip</code>方法来看。我们理想中的构建方式，应该是河道宽度保持不变，而河道左右两侧的平面，越接近中心位置就越窄。也就是下图中所表示的情况。而我们现在因为使用了<code>TriangulateEdgeStrip</code>方法来计算中间的三个顶点。导致这五个顶点是等距分布在梯形的中位线上的，结果也就是上图运行效果的样子。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png"></p>
+<p>　　所以在这里，我们需要重载<code>TriangulateEdgeStrip</code>方法，使其按照新的方式来计算梯形中位线上的5个顶点。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 有河流经过一条边时，三角形变为梯形，提醒区域中位线的顶点分布不是平均的</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;corner1&quot;&gt;</span>梯形区域第一个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;corner2&quot;&gt;</span>提醒区域最后一个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;outerStep&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EdgeVertices</span>(<span class="params">Vector3 corner1, Vector3 corner2, <span class="keyword">float</span> outerStep</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//注意，这里不再是等距分布一条直线上的5个顶点</span></span><br><span class="line">        <span class="comment">//而是按照左右较窄，中间宽度为四分之一外径，这样分布的</span></span><br><span class="line">        v1 = corner1;</span><br><span class="line">        v2 = Vector3.Lerp(corner1, corner2, outerStep);</span><br><span class="line">        v3 = Vector3.Lerp(corner1, corner2, <span class="number">0.5f</span>);</span><br><span class="line">        v4 = Vector3.Lerp(corner1, corner2, <span class="number">1f</span> - outerStep);</span><br><span class="line">        v5 = corner2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们就可以回到构建河道连接区域的方法中，调用<code>TriangulateEdgeStrip</code>方法的重载。这里要注意我们计算梯形区域中位线上五个顶点的位置中间顶点，及其两侧的顶点计算方式不变，因为河道的宽度不变。主要是最外侧两个顶点的位置需要重新计算。这里观察上图我们发现，中位线是底边长度的四分之三，也就是外径长度的四分之三。而两侧顶点各偏移了八分之一外径长，也就是六分之一的中位线长。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里使用新的顶点计算方式，关键是两侧顶点的偏移量</span></span><br><span class="line">    <span class="comment">//参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png</span></span><br><span class="line">    <span class="comment">//注意梯形中位线部分，中间河道为 1/4+1/4，只看左侧顶点偏移，为1/4的一半，也就是1/8</span></span><br><span class="line">    <span class="comment">//并且中位线是底边长的3/4，以中位线为计算基础，左右两个顶点其实各偏移了中位线的6/1</span></span><br><span class="line">    <span class="comment">//可以这么理解： 1/4 + 1/4 + (1/8 +1/8) 是中位线宽度，其中的1/4其实是中位线的1/3、而一侧偏移量是1/8，也就是中位线的1/6</span></span><br><span class="line">    EdgeVertices m = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        Vector3.Lerp(centerL, e.v1, <span class="number">0.5f</span>),</span><br><span class="line">        Vector3.Lerp(centerR, e.v5, <span class="number">0.5f</span>),</span><br><span class="line">        <span class="number">1f</span> / <span class="number">6f</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，梯形区域的一部分就已经可以正常的构建出来了。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-3.png"></p>
+<p>　　接下来我们将构建剩下的部分。梯形的顶边上只有三个顶点，无法用之前的方法进行顶点计算。这里我们手动添加顶点进行构建。首先创建河道两侧的三角形面片。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//之前构建的是梯形中位线到底边的部分</span></span><br><span class="line">    <span class="comment">//这里构建中位线到顶边的部分</span></span><br><span class="line">    <span class="comment">//由于之前所有方法均不适用于这里，所以手动添加顶点</span></span><br><span class="line">    <span class="comment">//首先构建河道两侧三角形区域</span></span><br><span class="line">    AddTriangle(centerL, m.v1, m.v2);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">    AddTriangle(centerR, m.v4, m.v5);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-4.png"></p>
+<p>　　通过观察运行结果，河道两边的三角形区域正确构建了出来。接下来构建中间河道的四边形部分。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//之前构建的是梯形中位线到底边的部分</span></span><br><span class="line">    <span class="comment">//这里构建中位线到顶边的部分</span></span><br><span class="line">    <span class="comment">//由于之前所有方法均不适用于这里，所以手动添加顶点</span></span><br><span class="line">    <span class="comment">//首先构建河道两侧三角形区域</span></span><br><span class="line">    AddTriangle(centerL, m.v1, m.v2);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">    AddTriangle(centerR, m.v4, m.v5);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们之前没有使用一个颜色值作为参数构建四边形区域的方法，这里我们重载<code>AddQuadColor</code>方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 使用一个颜色值构建四边形区域，河道在cell中心时候用到</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>cell自身的颜色值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuadColor</span>(<span class="params">Color color</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-5.png"></p>
+<p>　　至此，我们就完成了集中河流组合中最简单的一种：河流笔直穿过一个地图单元，这种情况下的地图单元构建。接下来的章节中，我们先来分析河流起点和终点应该如何进行三角构建，并实现。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/a2a6458abff017eae5ebb9397743f6641a524a41">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/15/HexMap/6-13%20%E5%8C%BA%E5%88%86%E6%98%AF%E5%90%A6%E6%9C%89%E6%B2%B3%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1623,106 +1745,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/10/HexMap/6-8%20%E7%BC%96%E8%BE%91%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8A%E7%9A%84%E6%B2%B3%E6%B5%81%E4%BF%A1%E6%81%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/10/HexMap/6-8%20%E7%BC%96%E8%BE%91%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E4%B8%8A%E7%9A%84%E6%B2%B3%E6%B5%81%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">6-8 编辑地图单元上的河流信息</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-10 01:05:15" itemprop="dateCreated datePublished" datetime="2020-12-10T01:05:15+08:00">2020-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们完成了对鼠标左键按下时拖拽的检测，并创建了相关逻辑处理的代码。在这一章中我们将完善这些逻辑，使我们可以在Inspector面板的Debug模式下，可以看到地图单元上是否有河流与河流的信息。<br>　　目前我们已经可以检测鼠标左键按下后的拖拽事件了。接下来，我们就可以对每个地图单元上添加或移除河流信息了。这里要注意，移除河流是不需要检测鼠标左键按下时的拖拽事件的。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cell)</span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (riverMode == OptionalToggle.No)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.RemoveRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (isDrag &amp;&amp; riverMode == OptionalToggle.Yes)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//设置之前的cell中 河流的流出方位</span></span><br><span class="line">            previousCell.SetOutgoingRiver(dragDirection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们就就可以通过数百左键按下拖拽，在两个相邻的地图单元上创建流入和流出的河流了。但这样只是针对单个地图单元进行操作，我们忽略了笔刷的因素，感觉上没有什么不妥。既然有笔刷这个属性，那么我们在创建河流的时候，就应该创建出所有在笔刷范围内地图单元的河流。既然是在笔刷覆盖单位内创建河流信息，那就要确保笔刷覆盖范围内，都有地图单元的实例。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cell)</span><br><span class="line">    &#123;</span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (riverMode == OptionalToggle.No)</span><br><span class="line">        &#123;</span><br><span class="line">            cell.RemoveRiver();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (isDrag &amp;&amp; riverMode == OptionalToggle.Yes)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//检测当前cell的拖拽方位上，是否有相邻cell 的实例</span></span><br><span class="line">            <span class="comment">//如果有实例，就创建相应的河流信息</span></span><br><span class="line">            HexCell otherCell = cell.GetNeighbor(dragDirection.Opposite());</span><br><span class="line">            <span class="keyword">if</span> (otherCell)</span><br><span class="line">            &#123;</span><br><span class="line">                otherCell.SetOutgoingRiver(dragDirection);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　运行Unity，通过鼠标左键按下后拖拽，我们就可以创建地图单元上的河流信息了，虽然现在我们没办法在Game窗口中直接看到河流的创建和删除，但是我们可以通过Inspector面板的Debug模式来查看每个地图单元上的河流信息是否正确。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-8-1.png"></p>
-<p>　　这里要注意，我们之前使用了鼠标抬起事件<code>Input.GetMouseButtonUp(0)</code>来检测是否点击到了地图上，而现在因为添加了拖拽功能，所以只检测鼠标左键事件即可<code>Input.GetMouseButton(0)</code>。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>) &amp;&amp; !EventSystem.current.IsPointerOverGameObject())</span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            …</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　至此，我们就完成了鼠标左键按下拖拽进行河流的创建或移除的功能了。在接下来的章节中，我们将分析河流的三角剖分形状，逐步作出在地图系统中可见的河流。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/8f5e3aa80b860697dcb70deedb127cc02b2562f8">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1778,13 +1800,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">194k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:57</span>
   </span>
 </div>
 <div class="busuanzi-count">

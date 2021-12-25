@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">94</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">95</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1136,6 +1136,112 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/18/HexMap/6-16%20%E4%B8%80%E6%8A%98%E6%B2%B3%E9%81%93%E7%9A%84%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/18/HexMap/6-16%20%E4%B8%80%E6%8A%98%E6%B2%B3%E9%81%93%E7%9A%84%E6%9E%84%E5%BB%BA/" class="post-title-link" itemprop="url">6-16 一折河道的构建</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-18 15:11:11" itemprop="dateCreated datePublished" datetime="2020-12-18T15:11:11+08:00">2020-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了河流的起点或终点在地图单元中的构建。结合之前笔直穿过地图单元的河流，我们现在已经可以在地图上画出不拐弯的河流并正确的显示出来了。但是我们发现，如果一条河流经过地图单元的时候，方向发生了变化，那么河流的视觉效果就产生了错误。如下图所示：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-16-1.png"></p>
+<p>　　这里，我们将河流在一个地图单元上的流入口和流出口，在两个相邻边上的情况，叫做<code>一折河道</code>，另外一种情况，就是流出口和流入口中间相隔一条边的情况，叫做<code>二折河道</code>。在本章中，我们来实现如何正确的构建一折河道的三角面片。<br>　　我们回到<code>HexMesh.TriangulateWithRiver</code>方法中，在这里进行判断，如果河流是笔直穿过地图单元，那么就使用现有的方式进行构建。否则依然将中位线上的5个顶点平均分布在其上，使得河道呈现向地图单元中心点聚拢的效果。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 centerL, centerR;</span><br><span class="line">    <span class="comment">//这里将河道情况分开讨论了</span></span><br><span class="line">    <span class="comment">//1 笔直穿过cell的河道</span></span><br><span class="line">    <span class="comment">//2 出入口相邻的河道</span></span><br><span class="line">    <span class="comment">//3 出入口间隔一条边的河道</span></span><br><span class="line">    <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Opposite()))<span class="comment">//先判断是否是笔直穿过</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = center + HexMetrics.GetFirstSolidCorner(direction.Previous()) * <span class="number">0.25f</span>;</span><br><span class="line">        centerR = center + HexMetrics.GetSecondSolidCorner(direction.Next()) * <span class="number">0.25f</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果不是笔直的河道，就将河流端点聚拢在cell中心</span></span><br><span class="line">        centerL = centerR = center;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-16-2.png"></p>
+<p>　　接着，我们判断当前河道的两个相邻边，是否有其他河道，这样我们就知道当前穿过地图单元的河道是否为一折河道了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Opposite()))</span><br><span class="line">    &#123;</span><br><span class="line">        centerL = center + HexMetrics.GetFirstSolidCorner(direction.Previous()) * <span class="number">0.25f</span>;</span><br><span class="line">        centerR = center + HexMetrics.GetSecondSolidCorner(direction.Next()) * <span class="number">0.25f</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Next()))<span class="comment">//出入口相邻的河道 出口在下面</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = center;</span><br><span class="line">        centerR = Vector3.Lerp(center, e.v5, <span class="number">0.5f</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Previous()))<span class="comment">//出入口相邻的河道 出口在上面</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = Vector3.Lerp(center, e.v1, <span class="number">0.5f</span>);</span><br><span class="line">        centerR = center;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = centerR = center;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在确认了河道两侧端点位置之后，我们可以通过偏移中心点的位置，使其偏离河道的中心一些，让河道在转弯处看起来没那么狭窄。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Opposite()))</span><br><span class="line">    &#123;</span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新计算cell中心点的位置，让其偏离河道弯折处，这样河道在转弯的地方就不会显得狭窄了</span></span><br><span class="line">    center = Vector3.Lerp(centerL, centerR, <span class="number">0.5f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-16-3.png"></p>
+<p>　　在观察运行结果之后，我们发现虽然河道宽度在转弯的时候没有改变，但还是有一种河道被挤压了的感觉。这是应为河道因为转弯，中心线形成了一个60度的夹角，内侧看起来就像变窄了一样。在这里我们将弯道内侧的顶点偏移量减小，使得内侧的空间变大，来避免出现这种挤压感。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Next()))<span class="comment">//出入口相邻的河道 出口在下面</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = center;</span><br><span class="line">        <span class="comment">//虽然河道宽度一直没有改变，但是因为弯道造成了一种挤压感</span></span><br><span class="line">        <span class="comment">//这里将弯道内侧的顶点偏移量减小，环节视觉上的挤压感</span></span><br><span class="line">        centerR = Vector3.Lerp(center, e.v5, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cell.HasRiverThroughEdge(direction.Previous()))<span class="comment">//出入口相邻的河道 出口在上面</span></span><br><span class="line">    &#123;</span><br><span class="line">        centerL = Vector3.Lerp(center, e.v1, <span class="number">2f</span> / <span class="number">3f</span>);</span><br><span class="line">        centerR = center;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-16-4.png"></p>
+<p>　　至此，我们就完成了一折河道的构建，并优化了其在视觉上产生的一些挤压感，让河道看起来更加自然。在下一章中，我们将分析并完成二折河道的构建。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/e56e19fa8c02c9a7af9630dc29691bd6060cf4da">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/17/HexMap/6-15%20%E6%B2%B3%E6%B5%81%E7%9A%84%E8%B5%B7%E7%82%B9%E4%B8%8E%E7%BB%88%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1642,115 +1748,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/12/HexMap/6-10%20%E5%A2%9E%E5%8A%A0%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E4%B8%AD%E7%9A%84%E9%A1%B6%E7%82%B9%E6%95%B0%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/12/HexMap/6-10%20%E5%A2%9E%E5%8A%A0%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E4%B8%AD%E7%9A%84%E9%A1%B6%E7%82%B9%E6%95%B0%E9%87%8F/" class="post-title-link" itemprop="url">6-10 增加连接区域中的顶点数量</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-12 15:36:06" itemprop="dateCreated datePublished" datetime="2020-12-12T15:36:06+08:00">2020-12-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们在两种创建连接区域的河道方案中选择了较为合适的一种，就是在连接区域内增加一个四边形，通过调整连接区域中间位置的顶点高度，来形成一条两侧倾斜的河道。<br>　　要把连接处的3个四边形变为4个，就需要在地图单元的每条边上增加额外的顶点。首先我们回到<code>EdgeVertices.cs</code>脚本中，在这里我们来修改顶点的数量。首先使用IDE的重命名功能，将<code>v4</code>重命名为<code>v5</code>，接着将<code>v3</code>重命名为<code>v4</code>。注意，这里一定要使用IDE工具的重命名功能，不然只能手动的搜索整个项目中的脚本来重命名变量了，很可能导致不可预知的错误发生。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Vector3 v1, v2, v4, v5;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　重命名完成后，再添加一个新的变量<code>v3</code>。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> Vector3 v1, v2, v3, v4, v5;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　因为增加了新的顶点，我们就要修改构造函数。添加新增的这个顶点。<code>v3</code>是在连接区域的中央，也就是0.5的位置上，而与其左右相邻的两个顶点，就分别到了0.25和0.75的位置上。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EdgeVertices</span>(<span class="params">Vector3 corner1, Vector3 corner2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        v1 = corner1;</span><br><span class="line">        <span class="comment">//v2 = Vector3.Lerp(corner1, corner2, 1f / 3f);</span></span><br><span class="line">        <span class="comment">//v4 = Vector3.Lerp(corner1, corner2, 2f / 3f);</span></span><br><span class="line">        <span class="comment">//添加了新的v3顶点，其左右相邻的顶点位置也要相应的改变</span></span><br><span class="line">        v2 = Vector3.Lerp(corner1, corner2, <span class="number">0.25f</span>);</span><br><span class="line">        v3 = Vector3.Lerp(corner1, corner2, <span class="number">0.5f</span>);</span><br><span class="line">        v4 = Vector3.Lerp(corner1, corner2, <span class="number">0.75f</span>);</span><br><span class="line">        v5 = corner2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　同样的，我们在<code>TerraceLerp</code>方法中，也要将新的<code>v3</code>顶点添加进去。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> EdgeVertices <span class="title">TerraceLerp</span>(<span class="params">EdgeVertices a, EdgeVertices b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        EdgeVertices result;</span><br><span class="line">        result.v1 = HexMetrics.TerraceLerp(a.v1, b.v1, step);</span><br><span class="line">        result.v2 = HexMetrics.TerraceLerp(a.v2, b.v2, step);</span><br><span class="line">        <span class="comment">//添加了新的v3顶点</span></span><br><span class="line">        result.v3 = HexMetrics.TerraceLerp(a.v3, b.v3, step);</span><br><span class="line">        result.v4 = HexMetrics.TerraceLerp(a.v4, b.v4, step);</span><br><span class="line">        result.v5 = HexMetrics.TerraceLerp(a.v5, b.v5, step);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　接着，我们回到<code>HexMesh.cs</code>中，这里对<code>EdgeVertices.cs</code>中的方法进行了调用构建mesh，所以也要做出一些修改。首先是<code>TriangulateEdgeFan</code>方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeFan</span>(<span class="params">Vector3 center, EdgeVertices edge, Color color</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddTriangle(center, edge.v1, edge.v2);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        <span class="comment">//AddTriangle(center, edge.v2, edge.v4);</span></span><br><span class="line">        <span class="comment">//AddTriangleColor(color);</span></span><br><span class="line">        <span class="comment">//加入了新的顶点信息</span></span><br><span class="line">        AddTriangle(center, edge.v2, edge.v3);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        AddTriangle(center, edge.v3, edge.v4);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line"></span><br><span class="line">        AddTriangle(center, edge.v4, edge.v5);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　然后要修改<code>TriangulateEdgeStrip</code>方法。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeStrip</span>(<span class="params">EdgeVertices e1, Color c1, EdgeVertices e2, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        <span class="comment">//AddQuad(e1.v2, e1.v4, e2.v2, e2.v4);</span></span><br><span class="line">        <span class="comment">//AddQuadColor(c1, c2);</span></span><br><span class="line">        <span class="comment">//添加了新的顶点信息</span></span><br><span class="line">        AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line"></span><br><span class="line">        AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　这样，我们就完成了添加顶点数量的相关代码。下图是添加顶点前后地图mesh的变化对比。在下一章中，我们将设置河道的高度，这样可以将地面与河道使用不同高度区分开来。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-10-1.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-10-2.png"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/adb88c20545b2f5b820f8ae539f56ace7271d9b8">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1806,13 +1803,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">196k</span>
+    <span title="站点总字数">199k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:58</span>
+    <span title="站点阅读时长">3:01</span>
   </span>
 </div>
 <div class="busuanzi-count">

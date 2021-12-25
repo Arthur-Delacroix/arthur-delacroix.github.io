@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">94</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">95</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,102 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/" class="post-title-link" itemprop="url">5-14 添加高度数字显示和笔刷大小数字显示</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-02 00:17:17" itemprop="dateCreated datePublished" datetime="2020-12-02T00:17:17+08:00">2020-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们完成了坐标显示UI的关凯功能，在这一章中我们将对现有的UI作出一些调整和补充。现在的地图编辑器UI中，基本所有的元素和选项都混在一起，没有进行分类，视觉效果上并不美观。这里我们创建一个<code>Image</code>组件，宽度设置为100，高度设置为1，分别在颜色选择UI、高度选择UI、笔刷选择UI下方插入并调整它们之间的间距。这样我们对地图编辑器UI中的各项进行了分类，使视觉效果更佳清晰。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-1.png"></p>
+<p>　　接下来，我们在通过Slider组件调整高度和笔刷大小的时候，并不能看到确切的数值，这里我们首先在<code>HexMapEditor.cs</code>中添加两个<code>Text</code>类型的变量，用于获取UI中高度和笔刷大小的文本，在文字后方加入对应的数值显示。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//显示当前选择高度的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text elevationText = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//显示当前笔刷大小的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text brushSizeText = <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置高度和笔刷大小默认显示数值</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: 0&quot;</span>;</span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: 0&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetElevation</span>(<span class="params"><span class="keyword">float</span> elevation</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在改变高度的同时，更新显示的文字信息</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: &quot;</span> + elevation.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetBrushSize</span>(<span class="params"><span class="keyword">float</span> size</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在设置笔刷大小的同时，更新显示的文字信息</span></span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: &quot;</span> + size.ToString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，将ElevationToggle子物体中的Label与BrushSize_Text拖入对应<code>Hex Map Editor</code>变量位置即可。效果如下：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-2.png"></p>
+<p>　　至此，我们就完成了使用多个地图块拼接大地图，以及对应的摄像机控制、高度与颜色修改功能分离、添加笔刷等功能。在接下来的章节中，我们将为现在的地图添加更多的环境细节。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/commit/be4b35659b8979e71f2591964dd41459ca628cfd">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1292,108 +1388,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/11/23/HexMap/5-4%20%E6%B8%85%E7%90%86%E4%BB%A3%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/23/HexMap/5-4%20%E6%B8%85%E7%90%86%E4%BB%A3%E7%A0%81/" class="post-title-link" itemprop="url">5-4 清理代码</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-11-23 13:15:48" itemprop="dateCreated datePublished" datetime="2020-11-23T13:15:48+08:00">2020-11-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们通过计算一个地图单元在数组中的下标，将其分配到对应的地图块中。不过现在项目中依然存在很多我们不需要的代码，在这一章中，我们将清理这些代码。<br>　　首先在<code>HexGrid</code>中清除掉<code>gridCanvas</code>和<code>hexMesh</code>这两个对象，还有与其相关的代码。如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexGrid</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//private Canvas gridCanvas;</span></span><br><span class="line">    <span class="comment">//private HexMesh hexMesh;</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//hexMesh = GetComponentInChildren&lt;HexMesh&gt;();</span></span><br><span class="line">        <span class="comment">//gridCanvas = GetComponentInChildren&lt;Canvas&gt;();</span></span><br><span class="line">    </span><br><span class="line">        …</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//private void Start()</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment">//public void Refresh()</span></span><br><span class="line">    <span class="comment">//&#123;</span></span><br><span class="line">    <span class="comment">//    hexMesh.Triangulate(cells);</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//hexMesh.Triangulate(cells);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　因为我们删除了<code>Refresh</code>方法，所以在<code>HexMapEditor</code>中不能再调用它了。</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">EditCell</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cell.color = activeColor;</span><br><span class="line">    cell.Elevation = activeElevation;</span><br><span class="line">    <span class="comment">//hexGrid.Refresh();</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　回到Unity中，因为我们删除了掉<code>gridCanvas</code>和<code>hexMesh</code>，所以在场景中我们不再需要<code>Hex Grid Canvas</code>和<code>Hex Mesh</code>这两个对象，删除后入下图所示：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-1.png"></p>
-<p>　　清理完成后，运行游戏。我们发现Game窗口中地图生成并没有发生变化，但是Hierarchy窗口中的层级关系已经发生了变化。<code>HexGrid</code>生成地图块，再由每个地图块的实例生成地图单元和其相对应的UI。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-2.png"></p>
-<p>　　经过观察我们还发现一个问题，地图单元的坐标显示UI还存在一些问题：我们一开始设置的标签宽度是5，这足够显示两个字符。在较小的地图上刚好用完，但现在我们可以获取到“-10”这样有三个字符的坐标，这样一来字符无法相匹配并有断层。把UI的宽度增加到10或更多来解决这个问题。</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-3.png"></p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-4-4.png"></p>
-<p>　　现在我们终于可以创建一个比之前章节中尺寸更大的底图了！虽然生成地图需要花费比原来尺寸较小地图更长的时间，不过生化池呢个完成后，我们就拥有了一个尺寸跟大的地图。因为删除掉一些代码的原因，我们的地图编辑器功能不再起作用了，下一章中我们将解决这个问题。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/b5782f3190a4c9858f978735597d267cc5b5d6aa">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1449,13 +1443,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">196k</span>
+    <span title="站点总字数">199k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:58</span>
+    <span title="站点阅读时长">3:01</span>
   </span>
 </div>
 <div class="busuanzi-count">

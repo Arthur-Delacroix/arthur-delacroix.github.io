@@ -145,7 +145,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">94</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">95</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -219,7 +219,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -271,6 +271,115 @@
       
 
       
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/12/HexMap/6-10%20%E5%A2%9E%E5%8A%A0%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E4%B8%AD%E7%9A%84%E9%A1%B6%E7%82%B9%E6%95%B0%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/12/HexMap/6-10%20%E5%A2%9E%E5%8A%A0%E8%BF%9E%E6%8E%A5%E5%8C%BA%E5%9F%9F%E4%B8%AD%E7%9A%84%E9%A1%B6%E7%82%B9%E6%95%B0%E9%87%8F/" class="post-title-link" itemprop="url">6-10 增加连接区域中的顶点数量</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-12 15:36:06" itemprop="dateCreated datePublished" datetime="2020-12-12T15:36:06+08:00">2020-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　在上一章中，我们在两种创建连接区域的河道方案中选择了较为合适的一种，就是在连接区域内增加一个四边形，通过调整连接区域中间位置的顶点高度，来形成一条两侧倾斜的河道。<br>　　要把连接处的3个四边形变为4个，就需要在地图单元的每条边上增加额外的顶点。首先我们回到<code>EdgeVertices.cs</code>脚本中，在这里我们来修改顶点的数量。首先使用IDE的重命名功能，将<code>v4</code>重命名为<code>v5</code>，接着将<code>v3</code>重命名为<code>v4</code>。注意，这里一定要使用IDE工具的重命名功能，不然只能手动的搜索整个项目中的脚本来重命名变量了，很可能导致不可预知的错误发生。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Vector3 v1, v2, v4, v5;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　重命名完成后，再添加一个新的变量<code>v3</code>。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> Vector3 v1, v2, v3, v4, v5;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　因为增加了新的顶点，我们就要修改构造函数。添加新增的这个顶点。<code>v3</code>是在连接区域的中央，也就是0.5的位置上，而与其左右相邻的两个顶点，就分别到了0.25和0.75的位置上。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EdgeVertices</span>(<span class="params">Vector3 corner1, Vector3 corner2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        v1 = corner1;</span><br><span class="line">        <span class="comment">//v2 = Vector3.Lerp(corner1, corner2, 1f / 3f);</span></span><br><span class="line">        <span class="comment">//v4 = Vector3.Lerp(corner1, corner2, 2f / 3f);</span></span><br><span class="line">        <span class="comment">//添加了新的v3顶点，其左右相邻的顶点位置也要相应的改变</span></span><br><span class="line">        v2 = Vector3.Lerp(corner1, corner2, <span class="number">0.25f</span>);</span><br><span class="line">        v3 = Vector3.Lerp(corner1, corner2, <span class="number">0.5f</span>);</span><br><span class="line">        v4 = Vector3.Lerp(corner1, corner2, <span class="number">0.75f</span>);</span><br><span class="line">        v5 = corner2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　同样的，我们在<code>TerraceLerp</code>方法中，也要将新的<code>v3</code>顶点添加进去。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> EdgeVertices <span class="title">TerraceLerp</span>(<span class="params">EdgeVertices a, EdgeVertices b, <span class="keyword">int</span> step</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        EdgeVertices result;</span><br><span class="line">        result.v1 = HexMetrics.TerraceLerp(a.v1, b.v1, step);</span><br><span class="line">        result.v2 = HexMetrics.TerraceLerp(a.v2, b.v2, step);</span><br><span class="line">        <span class="comment">//添加了新的v3顶点</span></span><br><span class="line">        result.v3 = HexMetrics.TerraceLerp(a.v3, b.v3, step);</span><br><span class="line">        result.v4 = HexMetrics.TerraceLerp(a.v4, b.v4, step);</span><br><span class="line">        result.v5 = HexMetrics.TerraceLerp(a.v5, b.v5, step);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们回到<code>HexMesh.cs</code>中，这里对<code>EdgeVertices.cs</code>中的方法进行了调用构建mesh，所以也要做出一些修改。首先是<code>TriangulateEdgeFan</code>方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeFan</span>(<span class="params">Vector3 center, EdgeVertices edge, Color color</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddTriangle(center, edge.v1, edge.v2);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        <span class="comment">//AddTriangle(center, edge.v2, edge.v4);</span></span><br><span class="line">        <span class="comment">//AddTriangleColor(color);</span></span><br><span class="line">        <span class="comment">//加入了新的顶点信息</span></span><br><span class="line">        AddTriangle(center, edge.v2, edge.v3);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">        AddTriangle(center, edge.v3, edge.v4);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line"></span><br><span class="line">        AddTriangle(center, edge.v4, edge.v5);</span><br><span class="line">        AddTriangleColor(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　然后要修改<code>TriangulateEdgeStrip</code>方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateEdgeStrip</span>(<span class="params">EdgeVertices e1, Color c1, EdgeVertices e2, Color c2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        AddQuad(e1.v1, e1.v2, e2.v1, e2.v2);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        <span class="comment">//AddQuad(e1.v2, e1.v4, e2.v2, e2.v4);</span></span><br><span class="line">        <span class="comment">//AddQuadColor(c1, c2);</span></span><br><span class="line">        <span class="comment">//添加了新的顶点信息</span></span><br><span class="line">        AddQuad(e1.v2, e1.v3, e2.v2, e2.v3);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">        AddQuad(e1.v3, e1.v4, e2.v3, e2.v4);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line"></span><br><span class="line">        AddQuad(e1.v4, e1.v5, e2.v4, e2.v5);</span><br><span class="line">        AddQuadColor(c1, c2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，我们就完成了添加顶点数量的相关代码。下图是添加顶点前后地图mesh的变化对比。在下一章中，我们将设置河道的高度，这样可以将地面与河道使用不同高度区分开来。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-10-1.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-10-2.png"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/adb88c20545b2f5b820f8ae539f56ace7271d9b8">Github代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
     
 
 
@@ -1172,102 +1281,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Arthur Delacroix">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Arthur's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/02/HexMap/5-14%20%E6%B7%BB%E5%8A%A0%E9%AB%98%E5%BA%A6%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA%E5%92%8C%E7%AC%94%E5%88%B7%E5%A4%A7%E5%B0%8F%E6%95%B0%E5%AD%97%E6%98%BE%E7%A4%BA/" class="post-title-link" itemprop="url">5-14 添加高度数字显示和笔刷大小数字显示</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-02 00:17:17" itemprop="dateCreated datePublished" datetime="2020-12-02T00:17:17+08:00">2020-12-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>　　在上一章中，我们完成了坐标显示UI的关凯功能，在这一章中我们将对现有的UI作出一些调整和补充。现在的地图编辑器UI中，基本所有的元素和选项都混在一起，没有进行分类，视觉效果上并不美观。这里我们创建一个<code>Image</code>组件，宽度设置为100，高度设置为1，分别在颜色选择UI、高度选择UI、笔刷选择UI下方插入并调整它们之间的间距。这样我们对地图编辑器UI中的各项进行了分类，使视觉效果更佳清晰。如下图：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-1.png"></p>
-<p>　　接下来，我们在通过Slider组件调整高度和笔刷大小的时候，并不能看到确切的数值，这里我们首先在<code>HexMapEditor.cs</code>中添加两个<code>Text</code>类型的变量，用于获取UI中高度和笔刷大小的文本，在文字后方加入对应的数值显示。代码如下：</p>
-<figure class="highlight csharp"><figcaption><span>HexMapEditor.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMapEditor</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//显示当前选择高度的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text elevationText = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">//显示当前笔刷大小的文本</span></span><br><span class="line">    [<span class="meta">SerializeField</span>] <span class="keyword">private</span> Text brushSizeText = <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置高度和笔刷大小默认显示数值</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: 0&quot;</span>;</span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: 0&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetElevation</span>(<span class="params"><span class="keyword">float</span> elevation</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在改变高度的同时，更新显示的文字信息</span></span><br><span class="line">        elevationText.text = <span class="string">&quot;Elevation: &quot;</span> + elevation.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetBrushSize</span>(<span class="params"><span class="keyword">float</span> size</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        …</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在设置笔刷大小的同时，更新显示的文字信息</span></span><br><span class="line">        brushSizeText.text = <span class="string">&quot;Brush Size: &quot;</span> + size.ToString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　最后，将ElevationToggle子物体中的Label与BrushSize_Text拖入对应<code>Hex Map Editor</code>变量位置即可。效果如下：</p>
-<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/5-14-2.png"></p>
-<p>　　至此，我们就完成了使用多个地图块拼接大地图，以及对应的摄像机控制、高度与颜色修改功能分离、添加笔刷等功能。在接下来的章节中，我们将为现在的地图添加更多的环境细节。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/commit/be4b35659b8979e71f2591964dd41459ca628cfd">Github代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
 
   
   <nav class="pagination">
@@ -1323,13 +1336,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">196k</span>
+    <span title="站点总字数">199k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:58</span>
+    <span title="站点阅读时长">3:01</span>
   </span>
 </div>
 <div class="busuanzi-count">

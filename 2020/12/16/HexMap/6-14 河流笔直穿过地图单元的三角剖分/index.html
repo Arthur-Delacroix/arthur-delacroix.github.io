@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="在上一章中，我们将有河流穿过和没河流穿过地地图单元进行了区分，并且创建了一个方法，专门对有河流穿过的地图单元进行构建。在这一章中，我们先分析最简单的情况：河流笔直穿过一个地图单元。并实现这种情况的构建。　　要构建一个笔直的河道，就需要把汇聚到地图单元中心的点，延伸成一条与河道宽度相同的直线。通过观察现在的三角剖分可以发现，如果我们只改变当前河流经过的扇形区域，对其进行拉伸或缩放，那其他两侧相邻">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6-14 河流笔直穿过地图单元的三角剖分">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/12/16/HexMap/6-14%20%E6%B2%B3%E6%B5%81%E7%AC%94%E7%9B%B4%E7%A9%BF%E8%BF%87%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="在上一章中，我们将有河流穿过和没河流穿过地地图单元进行了区分，并且创建了一个方法，专门对有河流穿过的地图单元进行构建。在这一章中，我们先分析最简单的情况：河流笔直穿过一个地图单元。并实现这种情况的构建。　　要构建一个笔直的河道，就需要把汇聚到地图单元中心的点，延伸成一条与河道宽度相同的直线。通过观察现在的三角剖分可以发现，如果我们只改变当前河流经过的扇形区域，对其进行拉伸或缩放，那其他两侧相邻">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-1.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-3.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-4.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-5.png">
+<meta property="article:published_time" content="2020-12-16T11:48:57.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.393Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="Game develop">
+<meta property="article:tag" content="Hex Map">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-1.png">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/12/16/HexMap/6-14%20%E6%B2%B3%E6%B5%81%E7%AC%94%E7%9B%B4%E7%A9%BF%E8%BF%87%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>6-14 河流笔直穿过地图单元的三角剖分 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/12/16/HexMap/6-14%20%E6%B2%B3%E6%B5%81%E7%AC%94%E7%9B%B4%E7%A9%BF%E8%BF%87%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6-14 河流笔直穿过地图单元的三角剖分
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-16 11:48:57" itemprop="dateCreated datePublished" datetime="2020-12-16T11:48:57+00:00">2020-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>　　在上一章中，我们将有河流穿过和没河流穿过地地图单元进行了区分，并且创建了一个方法，专门对有河流穿过的地图单元进行构建。在这一章中，我们先分析最简单的情况：河流笔直穿过一个地图单元。并实现这种情况的构建。<br>　　要构建一个笔直的河道，就需要把汇聚到地图单元中心的点，延伸成一条与河道宽度相同的直线。通过观察现在的三角剖分可以发现，如果我们只改变当前河流经过的扇形区域，对其进行拉伸或缩放，那其他两侧相邻的扇形区域就一定会产生破面或重面的情况。所以我们不仅要对当前扇形区域内的顶点进行计算，还会涉及到其两侧相邻的扇形区域内的顶点。<br>　　之前我们用5个顶点，将地图单元的每一条边分城了4等份，河道宽度为二分之一边长。而且通过之前的章节我们已经知道，地图单元的外接圆直径与边长相等。如果要实现河流在地图单元中心也保持这个宽度，那么需要将其两侧的扇形区域中，之前的顶点与地图单元重点重合，现在要变为距中心点四分之一距离处。左右两个各四分之一外接圆半径长度，两个组成二分之一外接圆半径长度，刚好跟河道宽度相同。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//河流宽度为二分之一cell边长，又已知边长与外接圆半径(cell外径outerRadius)相同</span></span><br><span class="line">    <span class="comment">//为了保持河道在cell中央的时候不会变形，且没有破面等现象产生</span></span><br><span class="line">    <span class="comment">//所以要将当前河流穿过区域左右两侧的外径，之前顶点与中心重合，现在变为各自距离中心四分之一处</span></span><br><span class="line">    Vector3 centerL = center + HexMetrics.GetFirstSolidCorner(direction.Previous()) * <span class="number">0.25f</span>;</span><br><span class="line">    Vector3 centerR = center + HexMetrics.GetSecondSolidCorner(direction.Next()) * <span class="number">0.25f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　我们计算出了两个新的顶点坐标，根据这两个坐标，使用<code>EdgeVertices</code>结构体来计算其余3个顶点的坐标，并将它们全都保存下来。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据两侧新的顶点位置，计算出其余顶点的位置</span></span><br><span class="line">    EdgeVertices m = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        Vector3.Lerp(centerL, e.v1, <span class="number">0.5f</span>),</span><br><span class="line">        Vector3.Lerp(centerR, e.v5, <span class="number">0.5f</span>)</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接着，我们修改中间顶点的高度，使其下降成为河道。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将河道中心的顶点高度下降</span></span><br><span class="line">    m.v3.y = center.y = e.v3.y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　然后，我们先使用<code>TriangulateEdgeStrip</code>方法来构建连接区域。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//通过计算后的顶点构建连接区域</span></span><br><span class="line">    TriangulateEdgeStrip(m, cell.Color, e, cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-1.png"></p>
+<p>　　我们观察构建的结果，发现好像河道还是向内压缩了。河道左右两边的顶点还是在向中间靠拢。结合下图、运行效果与<code>TriangulateEdgeStrip</code>方法来看。我们理想中的构建方式，应该是河道宽度保持不变，而河道左右两侧的平面，越接近中心位置就越窄。也就是下图中所表示的情况。而我们现在因为使用了<code>TriangulateEdgeStrip</code>方法来计算中间的三个顶点。导致这五个顶点是等距分布在梯形的中位线上的，结果也就是上图运行效果的样子。</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png"></p>
+<p>　　所以在这里，我们需要重载<code>TriangulateEdgeStrip</code>方法，使其按照新的方式来计算梯形中位线上的5个顶点。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>EdgeVertices.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EdgeVertices</span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 有河流经过一条边时，三角形变为梯形，提醒区域中位线的顶点分布不是平均的</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;corner1&quot;&gt;</span>梯形区域第一个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;corner2&quot;&gt;</span>提醒区域最后一个顶点<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;outerStep&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EdgeVertices</span>(<span class="params">Vector3 corner1, Vector3 corner2, <span class="keyword">float</span> outerStep</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//注意，这里不再是等距分布一条直线上的5个顶点</span></span><br><span class="line">        <span class="comment">//而是按照左右较窄，中间宽度为四分之一外径，这样分布的</span></span><br><span class="line">        v1 = corner1;</span><br><span class="line">        v2 = Vector3.Lerp(corner1, corner2, outerStep);</span><br><span class="line">        v3 = Vector3.Lerp(corner1, corner2, <span class="number">0.5f</span>);</span><br><span class="line">        v4 = Vector3.Lerp(corner1, corner2, <span class="number">1f</span> - outerStep);</span><br><span class="line">        v5 = corner2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们就可以回到构建河道连接区域的方法中，调用<code>TriangulateEdgeStrip</code>方法的重载。这里要注意我们计算梯形区域中位线上五个顶点的位置中间顶点，及其两侧的顶点计算方式不变，因为河道的宽度不变。主要是最外侧两个顶点的位置需要重新计算。这里观察上图我们发现，中位线是底边长度的四分之三，也就是外径长度的四分之三。而两侧顶点各偏移了八分之一外径长，也就是六分之一的中位线长。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//这里使用新的顶点计算方式，关键是两侧顶点的偏移量</span></span><br><span class="line">    <span class="comment">//参考图 http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-2.png</span></span><br><span class="line">    <span class="comment">//注意梯形中位线部分，中间河道为 1/4+1/4，只看左侧顶点偏移，为1/4的一半，也就是1/8</span></span><br><span class="line">    <span class="comment">//并且中位线是底边长的3/4，以中位线为计算基础，左右两个顶点其实各偏移了中位线的6/1</span></span><br><span class="line">    <span class="comment">//可以这么理解： 1/4 + 1/4 + (1/8 +1/8) 是中位线宽度，其中的1/4其实是中位线的1/3、而一侧偏移量是1/8，也就是中位线的1/6</span></span><br><span class="line">    EdgeVertices m = <span class="keyword">new</span> EdgeVertices(</span><br><span class="line">        Vector3.Lerp(centerL, e.v1, <span class="number">0.5f</span>),</span><br><span class="line">        Vector3.Lerp(centerR, e.v5, <span class="number">0.5f</span>),</span><br><span class="line">        <span class="number">1f</span> / <span class="number">6f</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，梯形区域的一部分就已经可以正常的构建出来了。如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-3.png"></p>
+<p>　　接下来我们将构建剩下的部分。梯形的顶边上只有三个顶点，无法用之前的方法进行顶点计算。这里我们手动添加顶点进行构建。首先创建河道两侧的三角形面片。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//之前构建的是梯形中位线到底边的部分</span></span><br><span class="line">    <span class="comment">//这里构建中位线到顶边的部分</span></span><br><span class="line">    <span class="comment">//由于之前所有方法均不适用于这里，所以手动添加顶点</span></span><br><span class="line">    <span class="comment">//首先构建河道两侧三角形区域</span></span><br><span class="line">    AddTriangle(centerL, m.v1, m.v2);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">    AddTriangle(centerR, m.v4, m.v5);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-4.png"></p>
+<p>　　通过观察运行结果，河道两边的三角形区域正确构建了出来。接下来构建中间河道的四边形部分。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TriangulateWithRiver</span>(<span class="params">HexDirection direction, HexCell cell, Vector3 center, EdgeVertices e</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//之前构建的是梯形中位线到底边的部分</span></span><br><span class="line">    <span class="comment">//这里构建中位线到顶边的部分</span></span><br><span class="line">    <span class="comment">//由于之前所有方法均不适用于这里，所以手动添加顶点</span></span><br><span class="line">    <span class="comment">//首先构建河道两侧三角形区域</span></span><br><span class="line">    AddTriangle(centerL, m.v1, m.v2);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">    AddTriangle(centerR, m.v4, m.v5);</span><br><span class="line">    AddTriangleColor(cell.Color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我们之前没有使用一个颜色值作为参数构建四边形区域的方法，这里我们重载<code>AddQuadColor</code>方法。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 使用一个颜色值构建四边形区域，河道在cell中心时候用到</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;color&quot;&gt;</span>cell自身的颜色值<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddQuadColor</span>(<span class="params">Color color</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">        colors.Add(color);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/6-14-5.png"></p>
+<p>　　至此，我们就完成了集中河流组合中最简单的一种：河流笔直穿过一个地图单元，这种情况下的地图单元构建。接下来的章节中，我们先来分析河流起点和终点应该如何进行三角构建，并实现。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Arthur-Delacroix/Tutorial-HexMap/tree/a2a6458abff017eae5ebb9397743f6641a524a41">Github代码</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+              <a href="/tags/Game-develop/" rel="tag"># Game develop</a>
+              <a href="/tags/Hex-Map/" rel="tag"># Hex Map</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/15/HexMap/6-13%20%E5%8C%BA%E5%88%86%E6%98%AF%E5%90%A6%E6%9C%89%E6%B2%B3%E6%B5%81/" rel="prev" title="6-13 区分是否有河流">
+                  <i class="fa fa-chevron-left"></i> 6-13 区分是否有河流
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/17/HexMap/6-15%20%E6%B2%B3%E6%B5%81%E7%9A%84%E8%B5%B7%E7%82%B9%E4%B8%8E%E7%BB%88%E7%82%B9/" rel="next" title="6-15 河流的起点与终点">
+                  6-15 河流的起点与终点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

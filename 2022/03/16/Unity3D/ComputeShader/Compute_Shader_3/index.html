@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="准备工作在上一章中，我们了解了每个线程块是按照什么顺序在图片上绘制的，但是我们只使用了一个内核来绘制，在这一章中，我们将使用多个内核来同时在一张图片上绘制图案  首先，我们打开 FirstComputeShader 脚本，修改之前的内核名称，添加一个int类型的变量用于获取传入图片的分辨率，同时要将方法名称改为和内核名称相同，如下：  12345678910#pragma kernel Solid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Compute Shader - 3 更多内核">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2022/03/16/Unity3D/ComputeShader/Compute_Shader_3/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="准备工作在上一章中，我们了解了每个线程块是按照什么顺序在图片上绘制的，但是我们只使用了一个内核来绘制，在这一章中，我们将使用多个内核来同时在一张图片上绘制图案  首先，我们打开 FirstComputeShader 脚本，修改之前的内核名称，添加一个int类型的变量用于获取传入图片的分辨率，同时要将方法名称改为和内核名称相同，如下：  12345678910#pragma kernel Solid">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic1.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic2.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic3.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic4.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic5.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic6.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic7.png?raw=true">
+<meta property="og:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic8.png?raw=true">
+<meta property="article:published_time" content="2022-03-16T23:07:03.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.393Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity 3D">
+<meta property="article:tag" content="Render">
+<meta property="article:tag" content="Compute Shader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic1.png?raw=true">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2022/03/16/Unity3D/ComputeShader/Compute_Shader_3/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unity Compute Shader - 3 更多内核 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E7%AD%89%E5%88%86%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2%E7%9A%84%E6%AD%A3%E6%96%B9%E5%BD%A2"><span class="nav-number">2.</span> <span class="nav-text">四等分不同颜色的正方形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E5%9B%BE%E7%89%87%E4%B8%AD%E9%97%B4%E7%BB%98%E5%88%B6%E4%B8%80%E4%B8%AA%E9%BB%84%E8%89%B2%E7%9A%84%E5%9C%86%E5%BD%A2"><span class="nav-number">3.</span> <span class="nav-text">在图片中间绘制一个黄色的圆形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%E8%93%9D%E8%89%B2%E6%AD%A3%E6%96%B9%E5%BD%A2"><span class="nav-number">4.</span> <span class="nav-text">绘制蓝色正方形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5"><span class="nav-number">5.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2022/03/16/Unity3D/ComputeShader/Compute_Shader_3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity Compute Shader - 3 更多内核
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 23:07:03" itemprop="dateCreated datePublished" datetime="2022-03-16T23:07:03+00:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity-3D/" itemprop="url" rel="index"><span itemprop="name">Unity 3D</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><p>在上一章中，我们了解了每个线程块是按照什么顺序在图片上绘制的，但是我们只使用了一个内核来绘制，在这一章中，我们将使用多个内核来同时在一张图片上绘制图案</p>
+<ul>
+<li>首先，我们打开 <code>FirstComputeShader</code> 脚本，修改之前的内核名称，添加一个int类型的变量用于获取传入图片的分辨率，同时要将方法名称改为和内核名称相同，如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#pragma kernel SolidRed</span><br><span class="line"></span><br><span class="line">RWTexture2D&lt;float4&gt; Result;</span><br><span class="line">int texResolution;</span><br><span class="line"></span><br><span class="line">[numthreads(8, 8, 1)]</span><br><span class="line">void SolidRed (uint3 id : SV_DispatchThreadID)</span><br><span class="line">&#123;</span><br><span class="line">    Result[id.xy] &#x3D; float4(1, 0, 0, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回到 <code>AssignTexture</code> 脚本中，添加一个string类型变量用来记录我们要使用Compute Shader中的哪个内核名称，接着修改与 <code>CSMain</code> 相关的代码，最后使用 <code>SetInt</code> 方法将图片分辨率传给Compute Shader，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class AssignTexture : MonoBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    public string kernelName&#x3D; &quot;SolidRed&quot;;</span><br><span class="line"></span><br><span class="line">    private void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        DispatchShader(texResolution &#x2F; 8, texResolution &#x2F; 8);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void InitShader()</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;获取指定名称内核的索引值</span><br><span class="line">        KernelHandle &#x3D; shader.FindKernel(kernelName);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;将图片的分辨率数据传给Compute Shader</span><br><span class="line">        shader.SetInt(&quot;texResolution&quot;, texResolution);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再次运行，我们就会看到，Quad上显示为一张红色的图片</p>
+<p>回到 <code>FirstComputeShader</code> 脚本，添加一个新的内核为 <code>Solidyellow</code>，并创建与之对应的方法，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#pragma kernel Solidyellow</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">[numthreads(8, 8, 1)]</span><br><span class="line">void Solidyellow(uint3 id : SV_DispatchThreadID)</span><br><span class="line">&#123;</span><br><span class="line">    Result[id.xy] &#x3D; float4(1, 1, 0, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码添加完成后，回到unity中，将inspector面板中的 <code>kernelName</code> 变量值改为 <code>Solidyellow</code>，再次运行，Quad就显示为一张纯黄色的图片了</p>
+<h4 id="四等分不同颜色的正方形"><a href="#四等分不同颜色的正方形" class="headerlink" title="四等分不同颜色的正方形"></a>四等分不同颜色的正方形</h4><p>在 <code>FirstComputeShader</code> 脚本中添加一个内核，名称为 <code>SplitScreen</code> 这个方法是用来将整个图片等分为4个部分，并为每个部分填上不同的颜色，效果如下：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic1.png?raw=true"></p>
+<p>按照上图思路，首先我们需要计算出当前传入图片分辨率的一半，然后使用Compute Shader中的 <code>step</code> 函数确定4个区域的颜色<br><code>step</code> 函数入参为两个浮点型参数，并返回一个布尔值的浮点表示，工作原理如下：</p>
+<ul>
+<li>step(edge, x)</li>
+<li>如果x大于或等于edge，则返回1.0。</li>
+<li>如果x小于edge，则返回0.0。</li>
+</ul>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#pragma kernel SplitScreen</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">[numthreads(8, 8, 1)]</span><br><span class="line">void SplitScreen(uint3 id : SV_DispatchThreadID)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;首先计算出当前传入图片分辨率的一半</span><br><span class="line">    &#x2F;&#x2F;图片是正方形，所以只需要计算一个边长即可</span><br><span class="line">    &#x2F;&#x2F;这里使用位运算，首先是因为边长一定是正整数，而且位运算比除法更快，性能更好</span><br><span class="line">    int halfRes &#x3D; texResolution &gt;&gt; 1;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;-step(edge, x)</span><br><span class="line">    &#x2F;&#x2F;如果x大于或等于edge，则返回1.0</span><br><span class="line">    &#x2F;&#x2F;如果x小于edge，则返回0.0</span><br><span class="line">    &#x2F;&#x2F;这样就将一张图切割为了4个部分，并未每个部分添加了不同的颜色</span><br><span class="line">    Result[id.xy] &#x3D; float4(step(halfRes, id.x), step(halfRes, id.y), 0, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就是上一章中介绍的DispatchThreadID中X与Y分别作为step中的第二个参数。例如当DispatchThreadID为(166,50,0)时，step(halfRes, id.x)就是step(128, 166)，此时step运算结果为1.0</p>
+<p>回到unity中，将inspector面板中的 <code>kernelName</code> 变量值改为 <code>SplitScreen</code>，运行后就可以看到之前示例图的效果了</p>
+<h4 id="在图片中间绘制一个黄色的圆形"><a href="#在图片中间绘制一个黄色的圆形" class="headerlink" title="在图片中间绘制一个黄色的圆形"></a>在图片中间绘制一个黄色的圆形</h4><p>接下来，我们尝试在图片中央画一个黄色的圆形，效果如下：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic2.png?raw=true"></p>
+<p>根据刚才绘制正方形的经验，我们可以创建一个内核函数，其中如果id.xy在圆上，就返回1，如果不在圆上，就返回0<br>这里我们要用到HLSL的另一个函数 <code>length</code>，用来判断两个点之间的距离。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float2 v &#x3D; float2(4, 3);</span><br><span class="line">length(v) &#x3D; 5;</span><br></pre></td></tr></table></figure>
+
+<p>有了判断距离的方法，我们还需要思考一个问题，在当前图上绘制时，坐标原点是左下角，即左下角位置为(0, 0)。如下图所示</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic3.png?raw=true"></p>
+<p>而我们需要绘制的圆形则在图片的中心，也就是我们想将坐标的原点移到图片中心，这样移动的话，图片左下角坐标就变成了(-128，-128)，而图片右上角坐标就变成了(127,127)，如下图所示</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic4.png?raw=true"></p>
+<p>按照这个思路，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#pragma kernel Circle</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">float inCircle(float2 pt, float radius)</span><br><span class="line">&#123;</span><br><span class="line">    if (length(pt) &lt; radius)</span><br><span class="line">    &#123;</span><br><span class="line">        return 1.0;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        return 0.0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[numthreads(8, 8, 1)]</span><br><span class="line">void Circle(uint3 id : SV_DispatchThreadID)</span><br><span class="line">&#123;</span><br><span class="line">    int halfRes &#x3D; texResolution &gt;&gt; 1;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;这里的&quot;-halfRes&quot;其实是在移动坐标原点</span><br><span class="line">    &#x2F;&#x2F;也就是x和y分别横向、纵向负方向移动了halfRes距离</span><br><span class="line">    &#x2F;&#x2F;也就是将坐标(0, 0)从左下角移动到了图片中间</span><br><span class="line">    &#x2F;&#x2F;现在图片左下角起始坐标为(-128,-128)了</span><br><span class="line">    float2 _pt &#x3D; (float2) ((int2) id.xy - halfRes);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;这里代入inCircle方法，判断图片中心点到(x,y)的距离是否大于半径</span><br><span class="line">    &#x2F;&#x2F;小于等于半径的话，就为1，否则就为0</span><br><span class="line">    float _res &#x3D; inCircle(_pt, 100.0);</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F;将结果转换为颜色值输出</span><br><span class="line">    Result[id.xy] &#x3D; float4(_res, _res, 0, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，<code>inCircle</code> 方法就是在判断每组坐标(x,y)是否在圆上，如下图所示，(x1, y1)不在圆上，<code>inCircle</code> 方法返回0，(x2, y2)在圆上，<code>inCircle</code> 方法返回1：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic5.png?raw=true"></p>
+<p>回到unity中，将inspector面板中的 <code>kernelName</code> 变量值改为 <code>Circle</code>，运行后就可以看到之前示例图的效果了</p>
+<h4 id="绘制蓝色正方形"><a href="#绘制蓝色正方形" class="headerlink" title="绘制蓝色正方形"></a>绘制蓝色正方形</h4><p>接下来，我们要在图片上绘制一个蓝色正方形，如下图所示：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic6.png?raw=true"></p>
+<p>通过观察最终效果图，绘制蓝色正方形与绘制黄色圆形的原理其实相似，都是通过判断一个点是否在当前图形范围内，只不过蓝色正方形是要判断当前一个点跟正方形上下左右四条边的关系，这里还是会用到 <code>step</code> 函数。同时使用一个 <code>float4</code> 类型的变量，用来记录正方形左下角起始点位置和长宽，<code>float4</code> 和C#中的 <code>Rect</code>有些类似，都是存储4个float类型的值，如下图所示：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic7.png?raw=true"></p>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#pragma kernel Square</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">float inSquare(float2 pt, float4 _rect)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;当前点跟矩形 左面 的边的关系</span><br><span class="line">    &#x2F;&#x2F;点在边左侧为0，右侧为1</span><br><span class="line">    float horz_L &#x3D; step(_rect.x, pt.x);</span><br><span class="line">    &#x2F;&#x2F;当前点跟矩形 右面 的边的关系</span><br><span class="line">    float horz_R &#x3D; step(_rect.x + _rect.z, pt.x);</span><br><span class="line">    &#x2F;&#x2F;其实这里只会出现3中情况，即</span><br><span class="line">    &#x2F;&#x2F;点在矩形左侧 0 - 0，点在矩形上 1 - 0，点在矩形右侧 1 - 1</span><br><span class="line">    float horz &#x3D; horz_L - horz_R;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;当前点与矩形 下面 的边的关系</span><br><span class="line">    float vert_B &#x3D; step(_rect.y, pt.y);</span><br><span class="line">    &#x2F;&#x2F;当前点与矩形 上面 的边的关系</span><br><span class="line">    float vert_T &#x3D; step(_rect.y + _rect.w, pt.y);</span><br><span class="line">    &#x2F;&#x2F;根据上面两个判断获取当前点在垂直方向与矩形的关系</span><br><span class="line">    float vert &#x3D; vert_B - vert_T;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;只有当前点在矩形上，即horz&#x3D;1和vert&#x3D;1，相乘才为1，其他时候都是0</span><br><span class="line">    return horz * vert;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[numthreads(8, 8, 1)]</span><br><span class="line">void Square(uint3 id : SV_DispatchThreadID)</span><br><span class="line">&#123;</span><br><span class="line">    float4 _rect &#x3D; float4(10.0f, 20.0f, 30.0f, 40.0f);</span><br><span class="line"></span><br><span class="line">    float _res &#x3D; inSquare((float2) id.xy, _rect);</span><br><span class="line"></span><br><span class="line">    Result[id.xy] &#x3D; float4(0, 0, _res, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就在当前你图片上绘制了一个自定义位置和边长的矩形了，效果如下：</p>
+<p><img src="https://github.com/Arthur-Delacroix/CrossmeSolution/blob/main/BlogPics/ComputeShader/Compute_Shader_3_Pic8.png?raw=true"></p>
+<p>现在，我们通过在图片上绘制一个四等分颜色不同的正方形和图片中间黄色的圆形，引入了 <code>step</code> 和 <code>length</code> 两个函数的使用方法</p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.unity.cn/ScriptReference/ComputeShader.SetInt.html">ComputeShader.SetInt</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity-3D/" rel="tag"># Unity 3D</a>
+              <a href="/tags/Render/" rel="tag"># Render</a>
+              <a href="/tags/Compute-Shader/" rel="tag"># Compute Shader</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/15/Unity3D/ComputeShader/Compute_Shader_2/" rel="prev" title="Unity Compute Shader - 2 脚本回顾">
+                  <i class="fa fa-chevron-left"></i> Unity Compute Shader - 2 脚本回顾
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/18/Unity3D/ComputeShader/Compute_Shader_4/" rel="next" title="Unity Compute Shader - 4 传输数据到Compute Shader">
+                  Unity Compute Shader - 4 传输数据到Compute Shader <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

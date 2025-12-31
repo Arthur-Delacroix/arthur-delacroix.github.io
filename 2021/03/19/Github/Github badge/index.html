@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="在Github中仓库中，有很多大神的README.md看上去十分炫酷，在标题下方会有很多各种颜色的小图标，这些图标显示了这个仓库的一些基本信息，比如被Fork的次数、Pull requests的次数、使用的开原协议等。这些小图标在Github中被称为Shields。一开始我也只是简单的查看这些大神的README.md中的源代码，来照着在自己的仓库中添加一些类似的Shields。不过有很多参数并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github badge">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2021/03/19/Github/Github%20badge/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="在Github中仓库中，有很多大神的README.md看上去十分炫酷，在标题下方会有很多各种颜色的小图标，这些图标显示了这个仓库的一些基本信息，比如被Fork的次数、Pull requests的次数、使用的开原协议等。这些小图标在Github中被称为Shields。一开始我也只是简单的查看这些大神的README.md中的源代码，来照着在自己的仓库中添加一些类似的Shields。不过有很多参数并">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.shields.io/badge/Lrft-Right-orange">
+<meta property="og:image" content="https://img.shields.io/badge/Lr--ft-Right-orange">
+<meta property="og:image" content="https://img.shields.io/badge/Lr%20ft-Rig_ht-orange">
+<meta property="og:image" content="https://img.shields.io/badge/Lr__ft-Right-orange">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?colorA=ff00ff&colorB=daa357">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-brightgreen">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-green">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-yellowgreen">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-yellow">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-orange">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-red">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-lightgrey">
+<meta property="og:image" content="https://img.shields.io/badge/left-right-blue">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?style=plastic">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?style=flat">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?style=flat-square">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?style=social">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?logo=Unity">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?logo=Adobe%20Lightroom%20Classic">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?logo=visual-studio-code">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?logo=unreal-engine&logoColor=violet">
+<meta property="og:image" content="https://img.shields.io/badge/Left-Right-green.svg?logo=bilibili&logoWidth=40">
+<meta property="og:image" content="https://img.shields.io/badge/Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg">
+<meta property="og:image" content="https://img.shields.io/badge/Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style=for-the-badge&colorA=ff00ff&colorB=daa357&logo=Blender&logoWidth=20&logoColor=black">
+<meta property="article:published_time" content="2021-03-19T20:45:31.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.390Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Github Blog">
+<meta property="article:tag" content="badge">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.shields.io/badge/Lrft-Right-orange">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2021/03/19/Github/Github%20badge/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Github badge | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%99%E6%80%81%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">1. 自定义静态内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%96%87%E5%AD%97%E8%83%8C%E6%99%AF%E8%89%B2"><span class="nav-number">2.</span> <span class="nav-text">2 文字背景色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">3 自定义样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%B0%8F%E5%9B%BE%E6%A0%87"><span class="nav-number">4.</span> <span class="nav-text">4 小图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8A%A0%E5%85%A5emoji"><span class="nav-number">5.</span> <span class="nav-text">5 加入emoji</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%B6%85%E7%BA%A7%E7%BC%9D%E5%90%88%E6%80%AA%EF%BC%81"><span class="nav-number">6.</span> <span class="nav-text">6 超级缝合怪！</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2021/03/19/Github/Github%20badge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github badge
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-19 20:45:31" itemprop="dateCreated datePublished" datetime="2021-03-19T20:45:31+00:00">2021-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Github/" itemprop="url" rel="index"><span itemprop="name">Github</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>　　在Github中仓库中，有很多大神的README.md看上去十分炫酷，在标题下方会有很多各种颜色的小图标，这些图标显示了这个仓库的一些基本信息，比如被Fork的次数、Pull requests的次数、使用的开原协议等。这些小图标在Github中被称为Shields。一开始我也只是简单的查看这些大神的README.md中的源代码，来照着在自己的仓库中添加一些类似的Shields。不过有很多参数并没有搞清楚，在这“Github Shields 相关设置”这个系列文章中，集中整理一下，给自己做个备忘。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/badges/shields">Github Shields 仓库连接</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://shields.io/">制作badge页面</a></p>
+</blockquote>
+<p>　　首先是比较简单的，打开这个网页之后，在顶部直接输入自己仓库名字完整的URL，这样会帮你自动生成若干个badge。这些badge是根据你的仓库动态生成的。当然，你也可以自己自定义想要生成的内容。接下来我们慢慢研究badge中一些简单的参数。</p>
+<h3 id="1-自定义静态内容"><a href="#1-自定义静态内容" class="headerlink" title="1. 自定义静态内容"></a>1. 自定义静态内容</h3><p>　　自定义静态内容的badge由4部分组成：默认连接 + Label + Message + Color。</p>
+<ul>
+<li>默认连接为 <code>https://img.shields.io/badge/</code></li>
+<li>Label为badge左侧的文字内容。</li>
+<li>Message为badge左侧的文字内容。</li>
+<li>Color为badge右侧文字的底色。</li>
+</ul>
+<p>　　其中Label、Message、Color三个参数的顺序不可改变，三个参数之间使用英文“-”相连接。以下为一个自定义静态内容的badge示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Lrft-Right-orange</span><br></pre></td></tr></table></figure>
+<p> <img src="https://img.shields.io/badge/Lrft-Right-orange"></p>
+<p>　　这里要注意输入的一些特殊字符的问题，列表如下：</p>
+<table>
+<thead>
+<tr>
+<th>特殊字符</th>
+<th>输入内容</th>
+<th>显示内容</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>破折号“–”</td>
+<td>–</td>
+<td>-</td>
+<td><img src="https://img.shields.io/badge/Lr--ft-Right-orange"></td>
+</tr>
+<tr>
+<td>英文半角空格</td>
+<td>%20或“_”</td>
+<td>一个半角空格</td>
+<td><img src="https://img.shields.io/badge/Lr%20ft-Rig_ht-orange"></td>
+</tr>
+<tr>
+<td>下划线“_”</td>
+<td>__(两个英文半角下划线)</td>
+<td>_</td>
+<td><img src="https://img.shields.io/badge/Lr__ft-Right-orange"></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="2-文字背景色"><a href="#2-文字背景色" class="headerlink" title="2 文字背景色"></a>2 文字背景色</h3><p>　　你也可以自定义左右两边的颜色值，这里使用的是RGB16位色值。示例代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357</span><br></pre></td></tr></table></figure>
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?colorA=ff00ff&colorB=daa357"></p>
+<p>　　这里的<code>colorA=ff00ff</code>表示左半边的背景色值，<code>colorB=daa357</code>表示右半边背景色值。参数之间使用英文<code>&amp;</code>符号连接。<br>　　除了使用16位RGB值改变背景色之外，还可以使用Shields一些自带的默认样式，列表如下，其实还有很多其他颜色名称，这里就不一一列举了，都可以使用RGB来代替。</p>
+<table>
+<thead>
+<tr>
+<th>颜色名称</th>
+<th>示例</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>brightgreen</td>
+<td><img src="https://img.shields.io/badge/left-right-brightgreen"></td>
+<td><code>https://img.shields.io/badge/left-right-brightgreen</code></td>
+</tr>
+<tr>
+<td>green</td>
+<td><img src="https://img.shields.io/badge/left-right-green"></td>
+<td><code>ttps://img.shields.io/badge/left-right-green</code></td>
+</tr>
+<tr>
+<td>yellowgreen</td>
+<td><img src="https://img.shields.io/badge/left-right-yellowgreen"></td>
+<td><code>https://img.shields.io/badge/left-right-yellowgreen</code></td>
+</tr>
+<tr>
+<td>yellow</td>
+<td><img src="https://img.shields.io/badge/left-right-yellow"></td>
+<td><code>https://img.shields.io/badge/left-right-yellow</code></td>
+</tr>
+<tr>
+<td>orange</td>
+<td><img src="https://img.shields.io/badge/left-right-orange"></td>
+<td><code>ttps://img.shields.io/badge/left-right-orange</code></td>
+</tr>
+<tr>
+<td>red</td>
+<td><img src="https://img.shields.io/badge/left-right-red"></td>
+<td><code>https://img.shields.io/badge/left-right-red</code></td>
+</tr>
+<tr>
+<td>lightgrey</td>
+<td><img src="https://img.shields.io/badge/left-right-lightgrey"></td>
+<td><code>ttps://img.shields.io/badge/left-right-lightgrey</code></td>
+</tr>
+<tr>
+<td>blue</td>
+<td><img src="https://img.shields.io/badge/left-right-blue"></td>
+<td><code>https://img.shields.io/badge/left-right-blue</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-自定义样式"><a href="#3-自定义样式" class="headerlink" title="3 自定义样式"></a>3 自定义样式</h3><p>　　Shields还提供了很多外观样式，具体代码和样式如下：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>示例</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>plastic</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=plastic"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=plastic</code></td>
+</tr>
+<tr>
+<td>flat</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat</code></td>
+</tr>
+<tr>
+<td>flat-square</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=flat-square"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=flat-square</code></td>
+</tr>
+<tr>
+<td>for-the-badge</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=for-the-badge</code></td>
+</tr>
+<tr>
+<td>social</td>
+<td><img src="https://img.shields.io/badge/Left-Right-green.svg?style=social"></td>
+<td><code>https://img.shields.io/badge/Left-Right-green.svg?style=social</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="4-小图标"><a href="#4-小图标" class="headerlink" title="4 小图标"></a>4 小图标</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://simpleicons.org/">小图标参考页面</a>　　</p>
+</blockquote>
+<p>　　在badge的左侧，还可以加入一些小图标，示例代码如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unity</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Unity"> </p>
+<p>　　这里还需要注意一点，有些Logo的名字是带空格的，比如Adobe Lightroom Classic，要显示这个Logo，不能直接使用英文半角空格，而是要使用<code>%20</code>作为转译符号。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;Adobe%20Lightroom%20Classic</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=Adobe%20Lightroom%20Classic"></p>
+<p>　　或者还可以使用半角英文减号“-”代替空格，也是一样的效果，示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;visual-studio-code</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=visual-studio-code"></p>
+<p>　　如果对Logo的颜色不满意，还可以更改Logo的颜色，颜色值使用16位RGB颜色。示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;unreal-engine&amp;logoColor&#x3D;violet</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=unreal-engine&logoColor=violet"></p>
+<p>　　感觉Logo跟文字部分过于紧凑，还可以调整水平位置Logo所占宽度。不过这个宽度增加之后，Logo只会出现在剧中位置。示例代码如下：
+　　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left-Right-green.svg?logo&#x3D;bilibili&amp;logoWidth&#x3D;40</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left-Right-green.svg?logo=bilibili&logoWidth=40"></p>
+<hr>
+<h3 id="5-加入emoji"><a href="#5-加入emoji" class="headerlink" title="5 加入emoji"></a>5 加入emoji</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://apps.timwhitlock.info/emoji/tables/unicode#">emoji UTF‑8查询 1</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/sanderhahn/emoticons/blob/master/emoticons.md">emoji UTF‑8查询 2</a></p>
+</blockquote>
+<p>　　emoji同样可以嵌入到徽章内，不过是以UTF‑8编码格式书写的。每2组数值之前，要加英文百分号<code>%</code>，代码示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img.shields.io/badge/Left_emoji%20%F0%9F%98%9C-%E2%9C%A8%20Right_emoji-brightgreen.svg"></p>
+<p>　　当然，也可以直接在网页上复制emoji，不过那样感觉就会很奇怪，在一堆代码里面出现了一个emoji的表情，感觉好像很不符合程序员的风格。</p>
+<hr>
+<h3 id="6-超级缝合怪！"><a href="#6-超级缝合怪！" class="headerlink" title="6 超级缝合怪！"></a>6 超级缝合怪！</h3><p>　　一个badge有多个参数，这些参数之间使用<code>&amp;</code>符号进行连接，没有先后顺序。所以依照这个特性，我们可以创建一个内容丰富、结构复杂的badge！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;img.shields.io&#x2F;badge&#x2F;Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style&#x3D;for-the-badge&amp;colorA&#x3D;ff00ff&amp;colorB&#x3D;daa357&amp;logo&#x3D;Blender&amp;logoWidth&#x3D;20&amp;logoColor&#x3D;black</span><br></pre></td></tr></table></figure>
+<p><img src="https://img.shields.io/badge/Left%E2%AD%90-Right%F0%9F%92%9D-brightgreen.svg?style=for-the-badge&colorA=ff00ff&colorB=daa357&logo=Blender&logoWidth=20&logoColor=black"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Github-Blog/" rel="tag"># Github Blog</a>
+              <a href="/tags/badge/" rel="tag"># badge</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/" rel="prev" title="Github Markdown 中的公式书写">
+                  <i class="fa fa-chevron-left"></i> Github Markdown 中的公式书写
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/23/Github/Github%20Profile%20%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/" rel="next" title="Github Profile 相关配置">
+                  Github Profile 相关配置 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

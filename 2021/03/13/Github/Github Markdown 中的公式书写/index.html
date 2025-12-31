@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="行内公式与行间公式一般公式分为两种形式，行内公式和行间公式。  行内公式：$\Gamma(z) &#x3D; \int_0^\infty t^{z-1}e^{-t}dt,.$  代码：$\Gamma(z) &#x3D; \int_0^\infty t^&amp;#123;z-1&amp;#125;e^&amp;#123;-t&amp;#125;dt\,.$  行间公式：$$\Gamma(z) &#x3D; \int_0^\infty t^{z-1}e^{-t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Markdown 中的公式书写">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="行内公式与行间公式一般公式分为两种形式，行内公式和行间公式。  行内公式：$\Gamma(z) &#x3D; \int_0^\infty t^{z-1}e^{-t}dt,.$  代码：$\Gamma(z) &#x3D; \int_0^\infty t^&amp;#123;z-1&amp;#125;e^&amp;#123;-t&amp;#125;dt\,.$  行间公式：$$\Gamma(z) &#x3D; \int_0^\infty t^{z-1}e^{-t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T12:28:34.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.390Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Github Blog">
+<meta property="article:tag" content="Mathjax">
+<meta property="article:tag" content="KaTeX">
+<meta property="article:tag" content="Next">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Github Markdown 中的公式书写 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E5%86%85%E5%85%AC%E5%BC%8F%E4%B8%8E%E8%A1%8C%E9%97%B4%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">行内公式与行间公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="nav-number">2.</span> <span class="nav-text">希腊字母</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E6%A0%87%E4%B8%8E%E4%B8%8B%E6%A0%87"><span class="nav-number">3.</span> <span class="nav-text">上标与下标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%AC%E5%8F%B7"><span class="nav-number">4.</span> <span class="nav-text">括号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%8B%AC%E5%8F%B7%E4%B8%8E%E6%96%B9%E6%8B%AC%E5%8F%B7"><span class="nav-number">4.1.</span> <span class="nav-text">小括号与方括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%8B%AC%E5%8F%B7"><span class="nav-number">4.2.</span> <span class="nav-text">大括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%96%E6%8B%AC%E5%8F%B7"><span class="nav-number">4.3.</span> <span class="nav-text">尖括号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E5%8F%96%E6%95%B4"><span class="nav-number">4.4.</span> <span class="nav-text">上取整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E5%8F%96%E6%95%B4"><span class="nav-number">4.5.</span> <span class="nav-text">下取整</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E5%92%8C%E4%B8%8E%E7%A7%AF%E5%88%86"><span class="nav-number">5.</span> <span class="nav-text">求和与积分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%82%E5%92%8C"><span class="nav-number">5.1.</span> <span class="nav-text">求和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%AF%E5%88%86"><span class="nav-number">5.2.</span> <span class="nav-text">积分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E4%B9%98"><span class="nav-number">5.3.</span> <span class="nav-text">连乘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">5.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%BC%8F%E4%B8%8E%E6%A0%B9%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">分式与根式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">分式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text">连分数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E5%BC%8F"><span class="nav-number">6.3.</span> <span class="nav-text">根式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">多行表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">7.1.</span> <span class="nav-text">分类表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F-1"><span class="nav-number">7.2.</span> <span class="nav-text">多行表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="nav-number">7.3.</span> <span class="nav-text">方程组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%87%BD%E6%95%B0%E4%B8%8E%E7%AC%A6%E5%8F%B7"><span class="nav-number">8.</span> <span class="nav-text">特殊函数与符号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0"><span class="nav-number">8.1.</span> <span class="nav-text">三角函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">8.2.</span> <span class="nav-text">比较运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%85%B3%E7%B3%BB%E4%B8%8E%E8%BF%90%E7%AE%97"><span class="nav-number">8.3.</span> <span class="nav-text">集合关系与运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%88%97"><span class="nav-number">8.4.</span> <span class="nav-text">排列</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2021/03/13/Github/Github%20Markdown%20%E4%B8%AD%E7%9A%84%E5%85%AC%E5%BC%8F%E4%B9%A6%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github Markdown 中的公式书写
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-13 12:28:34" itemprop="dateCreated datePublished" datetime="2021-03-13T12:28:34+00:00">2021-03-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Github/" itemprop="url" rel="index"><span itemprop="name">Github</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="行内公式与行间公式"><a href="#行内公式与行间公式" class="headerlink" title="行内公式与行间公式"></a>行内公式与行间公式</h2><p>一般公式分为两种形式，行内公式和行间公式。</p>
+<ul>
+<li>行内公式：$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$</li>
+</ul>
+<p>代码：<br><code>$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$</code></p>
+<ul>
+<li>行间公式：$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.$$</li>
+</ul>
+<p>代码：<br><code>$$\Gamma(z) = \int_0^\infty t^&#123;z-1&#125;e^&#123;-t&#125;dt\,.$$</code></p>
+<hr>
+<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>大写</th>
+<th>code</th>
+<th>小写</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alpha</td>
+<td></td>
+<td></td>
+<td>$\alpha$</td>
+<td><code>$\alpha$</code></td>
+</tr>
+<tr>
+<td>beta</td>
+<td></td>
+<td></td>
+<td>$\beta$</td>
+<td><code>$\beta$</code></td>
+</tr>
+<tr>
+<td>gamma</td>
+<td>$\Gamma$</td>
+<td><code>$\Gamma$</code></td>
+<td>$\gamma$</td>
+<td><code>$\gamma$</code></td>
+</tr>
+<tr>
+<td>delta</td>
+<td>$\Delta$</td>
+<td><code>$\Delta$</code></td>
+<td>$\delta$</td>
+<td><code>$\delta$</code></td>
+</tr>
+<tr>
+<td>epsilon</td>
+<td></td>
+<td></td>
+<td>$\epsilon$</td>
+<td><code>$\epsilon$</code></td>
+</tr>
+<tr>
+<td>zeta</td>
+<td></td>
+<td></td>
+<td>$\zeta$</td>
+<td><code>$\zeta$</code></td>
+</tr>
+<tr>
+<td>eta</td>
+<td></td>
+<td></td>
+<td>$\eta$</td>
+<td><code>$\eta$</code></td>
+</tr>
+<tr>
+<td>theta</td>
+<td>$\Theta$</td>
+<td><code>$\Theta$</code></td>
+<td>$\theta$</td>
+<td><code>$\theta$</code></td>
+</tr>
+<tr>
+<td>iota</td>
+<td></td>
+<td></td>
+<td>$\iota$</td>
+<td><code>$\iota$</code></td>
+</tr>
+<tr>
+<td>kappa</td>
+<td></td>
+<td></td>
+<td>$\kappa$</td>
+<td><code>$\kappa$</code></td>
+</tr>
+<tr>
+<td>lambda</td>
+<td>$\Lambda$</td>
+<td><code>$\Lambda$</code></td>
+<td>$\lambda$</td>
+<td><code>$\lambda$</code></td>
+</tr>
+<tr>
+<td>mu</td>
+<td></td>
+<td></td>
+<td>$\mu$</td>
+<td><code>$\mu$</code></td>
+</tr>
+<tr>
+<td>nu</td>
+<td></td>
+<td></td>
+<td>$\nu$</td>
+<td><code>$\nu$</code></td>
+</tr>
+<tr>
+<td>xi</td>
+<td>$\Xi$</td>
+<td><code>$\Xi$</code></td>
+<td>$\xi$</td>
+<td><code>$\xi$</code></td>
+</tr>
+<tr>
+<td>omicron</td>
+<td></td>
+<td></td>
+<td>$\omicron$</td>
+<td><code>$\omicron$</code></td>
+</tr>
+<tr>
+<td>pi</td>
+<td>$\Pi$</td>
+<td><code>$\Pi$</code></td>
+<td>$\pi$</td>
+<td><code>$\pi$</code></td>
+</tr>
+<tr>
+<td>rho</td>
+<td></td>
+<td></td>
+<td>$\rho$</td>
+<td><code>$\rho$</code></td>
+</tr>
+<tr>
+<td>sigma</td>
+<td>$\Sigma$</td>
+<td><code>$\Sigma$</code></td>
+<td>$\sigma$</td>
+<td><code>$\sigma$</code></td>
+</tr>
+<tr>
+<td>tau</td>
+<td></td>
+<td></td>
+<td>$\tau$</td>
+<td><code>$\tau$</code></td>
+</tr>
+<tr>
+<td>upsilon</td>
+<td>$\Upsilon$</td>
+<td><code>$\Upsilon$</code></td>
+<td>$\upsilon$</td>
+<td><code>$\upsilon$</code></td>
+</tr>
+<tr>
+<td>phi</td>
+<td>$\Phi$</td>
+<td><code>$\Phi$</code></td>
+<td>$\phi$</td>
+<td><code>$\phi$</code></td>
+</tr>
+<tr>
+<td>chi</td>
+<td></td>
+<td></td>
+<td>$\chi$</td>
+<td><code>$\chi$</code></td>
+</tr>
+<tr>
+<td>psi</td>
+<td>$\Psi$</td>
+<td><code>$\Psi$</code></td>
+<td>$\psi$</td>
+<td><code>$\psi$</code></td>
+</tr>
+<tr>
+<td>omega</td>
+<td>$\Omega$</td>
+<td><code>$\Omega$</code></td>
+<td>$\omega$</td>
+<td><code>$\omega$</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="上标与下标"><a href="#上标与下标" class="headerlink" title="上标与下标"></a>上标与下标</h2><p>上标和下标分别使用<code>^</code>与<code>_</code>表示，例如<code>$x_i^2$</code>输出为：$x_i^2$。<br>默认情况下，上、下标符号仅仅对下一个组起作用。一个组即单个字符或者使用<code>&#123; &#125;</code>包裹起来的内容。如果使用<code>$10^10$</code>输出为：$10^10$，而<code>$10^&#123;10&#125;$</code>才是 $10^{10}$。<br>同时，大括号还能消除二义性，例如<code>$x^5^6$</code>将得到一个错误。必须使用大括号来界定<code>^</code>的结合性，如<code>$&#123;x^5&#125;^6$</code>：${x^5}^6$，或者<code>$x^&#123;5^6&#125;$</code>：$x^{5^6}$。</p>
+<h2 id="括号"><a href="#括号" class="headerlink" title="括号"></a>括号</h2><h3 id="小括号与方括号"><a href="#小括号与方括号" class="headerlink" title="小括号与方括号"></a>小括号与方括号</h3><ul>
+<li>使用英文半角<code>( )</code>和<code>[ ]</code>即可。例如如<code>$(2+3)[4+4]$</code>输出为：$(2+3)[4+4]$</li>
+<li>使用<code>\left(</code>或<code>\right)</code>使符号大小与邻近的公式相适应（该语句适用于所有括号类型），如<code>$\left(\frac&#123;x&#125;&#123;y&#125;\right)$</code>输出为：$\left[\frac{x}{y}\right]$</li>
+</ul>
+<h3 id="大括号"><a href="#大括号" class="headerlink" title="大括号"></a>大括号</h3><ul>
+<li>由于大括号<code>&#123; &#125;</code>被用于分组，因此需要使用<code>\&#123;</code>和<code>\&#125;</code>表示大括号，也可以使用<code>\lbrace</code>和<code>\rbrace</code>来表示。如<code>$\&#123;a+b\&#125;:a-b$</code>或<code>$\lbrace a+b\rbrace:a-b$</code> 输出为：${a+b}:{a-b}$</li>
+</ul>
+<h3 id="尖括号"><a href="#尖括号" class="headerlink" title="尖括号"></a>尖括号</h3><ul>
+<li>区分于小于号和大于号，使用<code>\langle</code>和<code>\rangle</code>表示左尖括号和右尖括号。如<code>$\langle x \rangle$</code>输出为：$\langle x \rangle$</li>
+</ul>
+<h3 id="上取整"><a href="#上取整" class="headerlink" title="上取整"></a>上取整</h3><ul>
+<li>使用<code>\lceil</code>和<code>\rceil</code>表示上取整符号。如<code>$\lceil x \rceil$</code>输出为： $\lceil x \rceil$</li>
+</ul>
+<h3 id="下取整"><a href="#下取整" class="headerlink" title="下取整"></a>下取整</h3><ul>
+<li>使用<code>\lfloor</code>和<code>\rfloor</code>表示下取整符号。如<code>$\lfloor x \rfloor$</code>输出为：$\lfloor x \rfloor$</li>
+</ul>
+<h2 id="求和与积分"><a href="#求和与积分" class="headerlink" title="求和与积分"></a>求和与积分</h2><h3 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h3><ul>
+<li><code>\sum</code>用来表示求和符号，其下标表示求和下限，上标表示上限。如:<code>$\sum_&#123;r=1&#125;^n$</code>输出为：$\sum_{r=1}^n$</li>
+<li><code>$$\sum_&#123;r=1&#125;^n$$</code>行间公式输出为：<br>$$\sum_{r=1}^n$$</li>
+</ul>
+<h3 id="积分"><a href="#积分" class="headerlink" title="积分"></a>积分</h3><ul>
+<li><code>\int</code>用来表示积分符号，同样地，其上下标表示积分的上下限。如<code>$\int_&#123;r=1&#125;^\infty$</code>输出为：$\int_{r=1}^\infty$</li>
+<li>多重积分同样使用<code>int</code>，通过<code>i</code>的数量表示积分导数。例如：</li>
+</ul>
+<p><code>$\iint$</code>输出为：$\iint$</p>
+<p><code>$\iiint$</code>输出为：$\iiint$</p>
+<h3 id="连乘"><a href="#连乘" class="headerlink" title="连乘"></a>连乘</h3><ul>
+<li><code>$\prod &#123;a+b&#125;$</code>输出为：$\prod {a+b}$</li>
+<li><code>$\prod_&#123;i=1&#125;^&#123;K&#125;$</code>输出为：$\prod_{i=1}^{K}$</li>
+<li><code>$\prod_&#123;i=1&#125;^&#123;K&#125;$</code>输出为：$$\prod_{i=1}^{K}$$</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>与此类似的符号还有，</p>
+<ul>
+<li><code>$\prod$</code>输出为：$\prod$</li>
+<li><code>$\bigcup$</code>输出为：$\bigcup$</li>
+<li><code>$\bigcap$</code>输出为：$\bigcap$</li>
+<li><code>$arg\,\max_&#123;c_k&#125;$</code>输出为：$arg,\max_{c_k}$</li>
+<li><code>$arg\,\min_&#123;c_k&#125;$</code>输出为：$arg,\min_{c_k}$</li>
+<li><code>$\mathop &#123;argmin&#125;_&#123;c_k&#125;$</code>输出为：$\mathop {argmin}_{c_k}$</li>
+<li><code>$\mathop &#123;argmax&#125;_&#123;c_k&#125;$</code>输出为：$\mathop {argmax}_{c_k}$`</li>
+<li><code>$\max_&#123;c_k&#125;$</code>输出为：$\max_{c_k}$</li>
+<li><code>$\min_&#123;c_k&#125;$</code>输出为：$\min_{c_k}$</li>
+</ul>
+<h2 id="分式与根式"><a href="#分式与根式" class="headerlink" title="分式与根式"></a>分式与根式</h2><h3 id="分式"><a href="#分式" class="headerlink" title="分式"></a>分式</h3><ul>
+<li>使用<code>\frac ab</code>，<code>\frac</code>作用于其后的两个组<code>a</code>、<code>b</code> ，结果为。如果分子或分母不是单个字符，请使用<code>&#123; &#125;</code>来分组，比如<code>$\frac &#123;a+c+1&#125;&#123;b+c+2&#125;$</code>输出为：$\frac {a+c+1}{b+c+2}$</li>
+<li>使用<code>\over</code>来分隔一个组的前后两部分，如<code>&#123;a+1\over b+1&#125;</code>输出为：${a+1\over b+1}$</li>
+</ul>
+<h3 id="连分数"><a href="#连分数" class="headerlink" title="连分数"></a>连分数</h3><ul>
+<li>书写连分数表达式时，使用<code>\cfrac</code>代替<code>\frac</code>或者<code>\over</code>两者效果对比如下：</li>
+</ul>
+<p>使用<code>\frac</code>：</p>
+<p><code>$$x=a_0 + \frac &#123;1^2&#125;&#123;a_1 + \frac &#123;2^2&#125;&#123;a_2 + \frac &#123;3^2&#125;&#123;a_3 + \frac &#123;4^2&#125;&#123;a_4 + ...&#125;&#125;&#125;&#125;$$</code><br>输出为：<br>$$x=a_0 + \frac {1^2}{a_1 + \frac {2^2}{a_2 + \frac {3^2}{a_3 + \frac {4^2}{a_4 + …}}}}$$</p>
+<p>使用<code>\cfrac</code>：</p>
+<p><code>$$x=a_0 + \cfrac &#123;1^2&#125;&#123;a_1 + \cfrac &#123;2^2&#125;&#123;a_2 + \cfrac &#123;3^2&#125;&#123;a_3 + \cfrac &#123;4^2&#125;&#123;a_4 + ...&#125;&#125;&#125;&#125;$$</code><br>输出为：<br>$$x=a_0 + \cfrac {1^2}{a_1 + \cfrac {2^2}{a_2 + \cfrac {3^2}{a_3 + \cfrac {4^2}{a_4 + …}}}}$$</p>
+<h3 id="根式"><a href="#根式" class="headerlink" title="根式"></a>根式</h3><p>根式使用\sqrt 来表示。</p>
+<ul>
+<li>如开4次方：<code>$\sqrt[4]&#123;\frac xy&#125;$</code>输出为 ：$\sqrt[4]{\frac xy}$</li>
+<li>开平方：<code>$\sqrt &#123;a+b&#125;$</code>输出为：$\sqrt {a+b}$</li>
+</ul>
+<h2 id="多行表达式"><a href="#多行表达式" class="headerlink" title="多行表达式"></a>多行表达式</h2><h3 id="分类表达式"><a href="#分类表达式" class="headerlink" title="分类表达式"></a>分类表达式</h3><ul>
+<li>定义函数的时候经常需要分情况给出表达式，使用<code>\begin&#123;cases&#125;…\end&#123;cases&#125;</code> 。其中：<ul>
+<li>使用<code>\\</code>来分类</li>
+<li>使用<code>&amp;</code>指示需要对齐的位置</li>
+<li>使用<code>\</code>+<code>空格</code>表示空格<br>例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">f(n)</span><br><span class="line">\begin&#123;cases&#125;</span><br><span class="line">\cfrac n2, &amp;if\ n\ is\ even\\</span><br><span class="line">3n + 1, &amp;if\  n\ is\ odd</span><br><span class="line">\end&#123;cases&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+输出为：<br>$$<br>f(n)<br>\begin{cases}<br>\cfrac n2, &amp;if\ n\ is\ even\<br>3n + 1, &amp;if\  n\ is\ odd<br>\end{cases}<br>$$</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">L(Y,f(X)) &#x3D;</span><br><span class="line">\begin&#123;cases&#125;</span><br><span class="line">0, &amp; \text&#123;Y &#x3D; f(X)&#125;  \\</span><br><span class="line">1, &amp; \text&#123;Y $\neq$ f(X)&#125;</span><br><span class="line">\end&#123;cases&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>输出为：<br>$$<br>L(Y,f(X)) =<br>\begin{cases}<br>0, &amp; \text{Y = f(X)}  \<br>1, &amp; \text{Y $\neq$ f(X)}<br>\end{cases}<br>$$</p>
+<ul>
+<li>如果想分类之间的垂直间隔变大，可以使用<code>\\[2ex]</code>代替<code>\\</code>来分隔不同的情况。(<code>3ex</code>、<code>4ex</code>也可以用，<code>1ex</code>相当于原始距离）。如下所示：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">L(Y,f(X)) &#x3D;</span><br><span class="line">\begin&#123;cases&#125;</span><br><span class="line">0, &amp; \text&#123;Y &#x3D; f(X)&#125; \\[5ex]</span><br><span class="line">1, &amp; \text&#123;Y $\neq$ f(X)&#125;</span><br><span class="line">\end&#123;cases&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+输出为：<br>$$<br>L(Y,f(X)) =<br>\begin{cases}<br>0, &amp; \text{Y = f(X)} \[5ex]<br>1, &amp; \text{Y $\neq$ f(X)}<br>\end{cases}<br>$$</li>
+</ul>
+<h3 id="多行表达式-1"><a href="#多行表达式-1" class="headerlink" title="多行表达式"></a>多行表达式</h3><p>有时候需要将一行公式分多行进行显示，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\begin&#123;equation&#125;\begin&#123;split&#125; </span><br><span class="line">a&amp;&#x3D;b+c-d \\ </span><br><span class="line">&amp;\quad +e-f\\ </span><br><span class="line">&amp;&#x3D;g+h\\ </span><br><span class="line">&amp; &#x3D;i </span><br><span class="line">\end&#123;split&#125;\end&#123;equation&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>输出为：<br>$$<br>\begin{equation}\begin{split}<br>a&amp;=b+c-d \<br>&amp;\quad +e-f\<br>&amp;=g+h\<br>&amp; =i<br>\end{split}\end{equation}<br>$$<br>其中<code>begin&#123;equation&#125;</code>表示开始方程，<code>end&#123;equation&#125;</code>表示方程结束；<code>begin&#123;split&#125;</code>表示开始多行公式，<code>end&#123;split&#125;</code>表示结束；公式中用<code>\\</code>表示回车到下一行，<code>&amp;</code>表示对齐的位置。</p>
+<h3 id="方程组"><a href="#方程组" class="headerlink" title="方程组"></a>方程组</h3><p>使用<code>\begin&#123;array&#125;...\end&#123;array&#125;</code>与<code>\lef \&#123;</code>与<code>\right</code>。配合表示方程组，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\left \&#123; </span><br><span class="line">\begin&#123;array&#125;&#123;c&#125;</span><br><span class="line">a_1x+b_1y+c_1z&#x3D;d_1 \\ </span><br><span class="line">a_2x+b_2y+c_2z&#x3D;d_2 \\ </span><br><span class="line">a_3x+b_3y+c_3z&#x3D;d_3</span><br><span class="line">\end&#123;array&#125;</span><br><span class="line">\right.</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>输出为：<br>$$<br>\left {<br>\begin{array}{c}<br>a_1x+b_1y+c_1z=d_1 \<br>a_2x+b_2y+c_2z=d_2 \<br>a_3x+b_3y+c_3z=d_3<br>\end{array}<br>\right.<br>$$<br>注意：通常<code>MathJax</code>通过内部策略自己管理公式内部的空间，因此<code>a…b</code>与<code>a…….b</code>（<code>.</code>表示空格）都会显示为<code>ab</code> 。可以通过在<code>ab</code>间加入<code>\</code>，增加些许间隙，<code>\;</code>增加较宽的间隙，<code>\quad</code>与<code>\qquad</code>会增加更大的间隙。</p>
+<h2 id="特殊函数与符号"><a href="#特殊函数与符号" class="headerlink" title="特殊函数与符号"></a>特殊函数与符号</h2><h3 id="三角函数"><a href="#三角函数" class="headerlink" title="三角函数"></a>三角函数</h3><ul>
+<li><code>$\sin x$</code>输出为：$\sin x$</li>
+<li><code>$\arctanx$</code>输出为：$\arctan x$</li>
+</ul>
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><ul>
+<li>小于<code>$\lt$</code>：$\lt$</li>
+<li>大<code>$\gt$</code>：$\gt$</li>
+<li>小于等于<code>$\le$</code>：$\le$</li>
+<li>大于等于<code>$\ge$</code>：$\ge$</li>
+<li>不等于<code>$\ne$</code>：$\ne$</li>
+<li>可以在这些运算符前面加上<code>\not</code>，如<code>$\not\lt$</code>：输出为$\not\lt$</li>
+</ul>
+<h3 id="集合关系与运算"><a href="#集合关系与运算" class="headerlink" title="集合关系与运算"></a>集合关系与运算</h3><ul>
+<li>并集<code>$\cup$</code>：$\cup$</li>
+<li>交集<code>$\cap$</code>：$\cap$</li>
+<li>差集<code>$\setminus$</code>：$\setminus$</li>
+<li>子集<code>$\subset$</code>：$\subset$</li>
+<li>子集<code>$\subseteq$</code>：$\subseteq$</li>
+<li>非子集<code>$\subsetneq$</code>：$\subsetneq$</li>
+<li>父集<code>$\supset$</code>：$\supset$</li>
+<li>属于<code>$\in$</code>：$\in$</li>
+<li>不属于<code>$\notin$</code>：$\notin$</li>
+<li>空集<code>$\emptyset$</code>：$\emptyset$</li>
+<li>空<code>$\varnothing$</code>：$\varnothing$</li>
+</ul>
+<h3 id="排列"><a href="#排列" class="headerlink" title="排列"></a>排列</h3><ul>
+<li><code>$\binom&#123;n+1&#125;&#123;2k&#125;$</code>：$\binom{n+1}{2k}$</li>
+<li><code>$&#123;n+1 \choose 2k&#125;$</code>：${n+1 \choose 2k}$</li>
+</ul>
+<p>博客内图片宽度830px<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/25f0139637b7">https://www.jianshu.com/p/25f0139637b7</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Github-Blog/" rel="tag"># Github Blog</a>
+              <a href="/tags/Mathjax/" rel="tag"># Mathjax</a>
+              <a href="/tags/KaTeX/" rel="tag"># KaTeX</a>
+              <a href="/tags/Next/" rel="tag"># Next</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/18/HexMap/6-16%20%E4%B8%80%E6%8A%98%E6%B2%B3%E9%81%93%E7%9A%84%E6%9E%84%E5%BB%BA/" rel="prev" title="6-16 一折河道的构建">
+                  <i class="fa fa-chevron-left"></i> 6-16 一折河道的构建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/19/Github/Github%20badge/" rel="next" title="Github badge">
+                  Github badge <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

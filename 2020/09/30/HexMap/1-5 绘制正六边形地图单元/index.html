@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="在上一章中，我们已经排列好了每个地图单元的位置，但是每个地图单元的外观还是正方形的；这一章中，会将正方形的外观更换成正六边形的外观。 　　要将正方形地图元素外观替换为正六边形地图元素外观，这里首先删除Hex Cell预置上，除了Hex Cell脚本以外的所有组件，如下图：  　　接下来，创建HexMesh脚本，内容如下： HexMesh.cs12345678910111213141516171">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-5 绘制正六边形地图单元">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/09/30/HexMap/1-5%20%E7%BB%98%E5%88%B6%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="在上一章中，我们已经排列好了每个地图单元的位置，但是每个地图单元的外观还是正方形的；这一章中，会将正方形的外观更换成正六边形的外观。 　　要将正方形地图元素外观替换为正六边形地图元素外观，这里首先删除Hex Cell预置上，除了Hex Cell脚本以外的所有组件，如下图：  　　接下来，创建HexMesh脚本，内容如下： HexMesh.cs12345678910111213141516171">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-1.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-2.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-3.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-4.png">
+<meta property="og:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-5.png">
+<meta property="article:published_time" content="2020-09-30T18:23:39.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.390Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="Game develop">
+<meta property="article:tag" content="Hex Map">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-1.png">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/09/30/HexMap/1-5%20%E7%BB%98%E5%88%B6%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-5 绘制正六边形地图单元 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/09/30/HexMap/1-5%20%E7%BB%98%E5%88%B6%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-5 绘制正六边形地图单元
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-30 18:23:39" itemprop="dateCreated datePublished" datetime="2020-09-30T18:23:39+00:00">2020-09-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>　　在上一章中，我们已经排列好了每个地图单元的位置，但是每个地图单元的外观还是正方形的；这一章中，会将正方形的外观更换成正六边形的外观。</p>
+<p>　　要将正方形地图元素外观替换为正六边形地图元素外观，这里首先删除Hex Cell预置上，除了<code>Hex Cell</code>脚本以外的所有组件，如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-1.png"></p>
+<p>　　接下来，创建HexMesh脚本，内容如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="comment">//依赖MeshFilter和MeshRenderer组件</span></span><br><span class="line">[<span class="meta">RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HexMesh</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//存储计算生成后的mesh</span></span><br><span class="line">    <span class="keyword">private</span> Mesh hexMesh;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//存储所有正六边形的顶点位置信息</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Vector3&gt; vertices;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//索引，每个三角面片顶点的渲染顺序</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;<span class="keyword">int</span>&gt; triangles;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//初始化MeshFilter组件的，实例化hexMesh，并给其命名</span></span><br><span class="line">        GetComponent&lt;MeshFilter&gt;().mesh = hexMesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">        hexMesh.name = <span class="string">&quot;Hex Mesh&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化vertices和triangles组件</span></span><br><span class="line">        vertices = <span class="keyword">new</span> List&lt;Vector3&gt;();</span><br><span class="line">        triangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　脚本创建完成后，在Hex Grid物体下创建一个子物体，命名为Hex Mesh，并挂载<code>HexMesh</code>脚本。因为<code>HexMesh</code>脚本中有<code>[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]</code>语句，所以在Hex Mesh物体上会自动创建MeshFilter组件和MeshRenderer组件，但是MeshRenderer组件中没有默认的材质球，这里为其添加Unity自带的默认材质球，完成效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-2.png"></p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-3.png"></p>
+<p>　　接下来，回到<code>HexGrid</code>脚本中，在其Awake方法中，与取得Canvas组件相类似，可以取得HexMesh组件。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//存储Hex Mesh物体上的hexMesh脚本组件</span></span><br><span class="line"><span class="keyword">private</span> HexMesh hexMesh;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取Hex Mesh物体上的hexMesh脚本组件实例</span></span><br><span class="line">    hexMesh = GetComponentInChildren&lt;HexMesh&gt;();</span><br><span class="line"></span><br><span class="line">  …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　获取到HexMesh组件实例后，就可以调用其中的方法来构建正六边形的三角面片了，但是这里要注意，生成三角面片的方法调用，必须在<code>HexMesh</code>脚本初始化完成之后，所以这里在<code>HexGrid</code>的Start方法中调用构建三角面的方法，代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>exGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//调用绘制mesh的方法</span></span><br><span class="line">    hexMesh.Triangulate(cells);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　其实<code>HexMesh.Triangulate</code>方法在程序的任何阶段都可以被调用。在之后的一些步骤中，运行时对地图作出调整，我们还会调用这个方法，所以，在这个方法中，首先要清空旧的mesh、vertices、triangles这些变量的内容；接着读取存储所有HexCell实例的数组，依次录入其顶点Vector3信息和顶点顺序索引；然后将所有HexCell的这些信息全都保存在hexMesh的vertices和triangles数组中；最后，调用RecalculateNormals方法重新计算法线，使最后生成的三角面的视觉效果正确。<code>HexMesh</code>脚本修改代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 根据数组长度创建cell的Mesh</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cells&quot;&gt;</span>存储所有Hex Cell实例的数组<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//清空原有的数据</span></span><br><span class="line">    hexMesh.Clear();</span><br><span class="line">    vertices.Clear();</span><br><span class="line">    triangles.Clear();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//依次读取数组中的Hex Cell实例，录入每个Hex Cell的顶点信息</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cells.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Triangulate(cells[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将所有的顶点位置信息，顶点位置信息的索引存储到链表中</span></span><br><span class="line">    hexMesh.vertices = vertices.ToArray();</span><br><span class="line">    hexMesh.triangles = triangles.ToArray();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重新计算法线方向，使得三角面片可以正确的显示出来</span></span><br><span class="line">    hexMesh.RecalculateNormals();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过单个Hex Cell实例，计算其6个顶点位置，并创建三角形面片</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个Hex Cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　由于正六边形是由多个三角面片构成的，所以需要创建<code>AddTriangle</code>方法，这个方法入参为3个顶点的Vector3信息。将3个入参信息添加到vertices链表中，并且与其对应的索引值添加到triangles链表中，以备<code>Triangulate</code>方法利用两个链表统一生成三角面片，修改代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 添加单个三角面片的顶点位置信息和索引</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v1&quot;&gt;</span>顺时针 第一个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v2&quot;&gt;</span>顺时针 第二个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;v3&quot;&gt;</span>顺时针 第三个顶点的Vector3<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">AddTriangle</span>(<span class="params">Vector3 v1, Vector3 v2, Vector3 v3</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取当前vertices链表中已经录入的数量</span></span><br><span class="line">    <span class="keyword">int</span> vertexIndex = vertices.Count;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在vertices链表中添加新增的顶点位置信息</span></span><br><span class="line">    vertices.Add(v1);</span><br><span class="line">    vertices.Add(v2);</span><br><span class="line">    vertices.Add(v3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在triangles链表中添加新增顶点的索引</span></span><br><span class="line">    triangles.Add(vertexIndex);</span><br><span class="line">    triangles.Add(vertexIndex + <span class="number">1</span>);</span><br><span class="line">    triangles.Add(vertexIndex + <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，生成每个地图单元中三角面片的方法基本完成了，在正式生成之前，我们<code>需要</code>先完善<code>Triangulate(HexCell cell)</code>方法，首先测试生成每个正六边形地图元素的第一个三角面片，即从顶部第一个顶点开始计算的两个顶点和中点共同构成的三角面。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 通过单个Hex Cell实例，计算其6个顶点位置，并创建三角形面片</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cell&quot;&gt;</span>单个Hex Cell的实例<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell cell</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//获取单个cell的中点位置</span></span><br><span class="line">    Vector3 center = cell.transform.localPosition;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据中点位置计算出其余两个顶点的信息，将其传入添加单个三角面片信息的方法中</span></span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.corners[<span class="number">0</span>],</span><br><span class="line">        center + HexMetrics.corners[<span class="number">1</span>]</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，就为每个正六边形地图元素，生成了第一个三角面片。效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-4.png"></p>
+<p>　　通过观察上图可以得出，只要修改<code>private void Triangulate(HexCell cell)</code>方法内调用<code>AddTriangle</code>方法的部分，循环6次，即可生成全部的三角面片，修改代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据中点位置计算出其余的顶点位置信息</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    AddTriangle(</span><br><span class="line">        center,</span><br><span class="line">        center + HexMetrics.corners[i],</span><br><span class="line">        center + HexMetrics.corners[i + <span class="number">1</span>]</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在完成以上代码后，如果直接运行，Unity会弹出一个索引越界的错误，导致这个错误的原因是，当for循环中的i为6时，center + HexMetrics.corners[i + 1]中括号里的值为7，而HexMetrics.corners数组中只存储了6个顶点信息HexMetrics.corners[7]其实就是第一个顶点，即正六边形最上方的顶点，所以这里需要在corners数组的末尾添加一条数据，使HexMetrics.corners[7]指向第一个顶点的位置。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMetrics.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正六边形的六个顶点位置，其姿态为角朝上，从最上面一个顶点开始计算位置</span></span><br><span class="line"><span class="comment">//根据正六边形中点的位置，顺时针依次定义6个顶点的位置</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Vector3[] corners =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius),</span><br><span class="line">    <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">    <span class="keyword">new</span> Vector3(innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, -outerRadius),</span><br><span class="line">    <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">-0.5f</span> * outerRadius),</span><br><span class="line">    <span class="keyword">new</span> Vector3(-innerRadius, <span class="number">0f</span>, <span class="number">0.5f</span> * outerRadius),</span><br><span class="line">    <span class="comment">//正六边形其实只有6个顶点，但是当构建三角面片的时候，最后一个三角面片的顶点其实为：最后一个、第一个、中点，即corners[7]</span></span><br><span class="line">    <span class="comment">//为了减少在循环中的判断，这里添加一条数据，防止索引越界即可</span></span><br><span class="line">    <span class="keyword">new</span> Vector3(<span class="number">0f</span>, <span class="number">0f</span>, outerRadius)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>　　在corners数组中添加完数据后，运行效果如下图：</p>
+<p><img src="http://magi-melchiorl.gitee.io/pages/Pics/Hexmap/1-5-5.png"></p>
+<p>　　最后还有一点需要讨论，为什么我们不合并重叠的顶点？</p>
+<p>　　其实完全可以合并，并且还能将“面数”进行优化，比如只使用4个三角形面片就可以拼接成一个正六边形，而不是6个，但是在之后的步骤中，还会对正六边形地图元素作出一些其他的改动，如果现在优化顶点和面数，可能会导致之后的步骤变得更加复杂和难以处理。</p>
+<p>　　这一章我们已经生成了正确的正六边形地图元素，下一章将会重新排列这些地图元素的坐标，为之后的计算便捷做准备。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+              <a href="/tags/Game-develop/" rel="tag"># Game develop</a>
+              <a href="/tags/Hex-Map/" rel="tag"># Hex Map</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/29/HexMap/1-4%20%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E6%8E%92%E5%88%97%E6%96%B9%E5%BC%8F/" rel="prev" title="1-4 正六边形地图单元的排列方式">
+                  <i class="fa fa-chevron-left"></i> 1-4 正六边形地图单元的排列方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/01/HexMap/1-6%20%E4%BF%AE%E6%94%B9%E6%AD%A3%E5%85%AD%E8%BE%B9%E5%BD%A2%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E5%9D%90%E6%A0%87/" rel="next" title="1-6 修改正六边形地图单元的坐标">
+                  1-6 修改正六边形地图单元的坐标 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="在之前的章节中，我们完成了一个正六边形地图系统的基本框架。但是目前这个地图系统是无法与玩家产生任何交互的。在一般策略游戏中，地图系统最基本的交互方式，就是响应玩家的鼠标点击事件。即玩家鼠标左键单击一个地图单元，这个地图单元便会改变颜色，或者播放一段预置的动画，来响应玩家的操作。我们可以通过鼠标向场景中发射一条射线的方式，来检测鼠标是否点击在了某个地图单元上。 　　目前，我们先把交互代码放在He">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-8 获取鼠标点击位置">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="在之前的章节中，我们完成了一个正六边形地图系统的基本框架。但是目前这个地图系统是无法与玩家产生任何交互的。在一般策略游戏中，地图系统最基本的交互方式，就是响应玩家的鼠标点击事件。即玩家鼠标左键单击一个地图单元，这个地图单元便会改变颜色，或者播放一段预置的动画，来响应玩家的操作。我们可以通过鼠标向场景中发射一条射线的方式，来检测鼠标是否点击在了某个地图单元上。 　　目前，我们先把交互代码放在He">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-03T17:50:07.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.390Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity3D">
+<meta property="article:tag" content="Game develop">
+<meta property="article:tag" content="Hex Map">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-8 获取鼠标点击位置 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2020/10/03/HexMap/1-8%20%E8%8E%B7%E5%8F%96%E9%BC%A0%E6%A0%87%E7%82%B9%E5%87%BB%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-8 获取鼠标点击位置
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-03 17:50:07" itemprop="dateCreated datePublished" datetime="2020-10-03T17:50:07+00:00">2020-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity3D-Hex-Map/" itemprop="url" rel="index"><span itemprop="name">Unity3D Hex Map</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>　　在之前的章节中，我们完成了一个正六边形地图系统的基本框架。但是目前这个地图系统是无法与玩家产生任何交互的。在一般策略游戏中，地图系统最基本的交互方式，就是响应玩家的鼠标点击事件。即玩家鼠标左键单击一个地图单元，这个地图单元便会改变颜色，或者播放一段预置的动画，来响应玩家的操作。我们可以通过鼠标向场景中发射一条射线的方式，来检测鼠标是否点击在了某个地图单元上。</p>
+<p>　　目前，我们先把交互代码放在<code>HexGrid.cs</code>脚本里，随着项目在之后的章节中不断完善，将会把与玩家交互的代码移动到其他的脚本中。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//之后鼠标点击交互相关代码会移动到其他脚本中</span></span><br><span class="line">    <span class="comment">//检测鼠标左键是否点击</span></span><br><span class="line">    <span class="keyword">if</span> (Input.GetMouseButton(<span class="number">0</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        HandleInput();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 鼠标左键单击会调用此方法，以鼠标为发射点，经过主摄像机练成射线</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 检测射线穿过Collider的位置</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandleInput</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//射线起点为鼠标位置，经过主摄像机</span></span><br><span class="line">    Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//检测射线是否碰撞到了collider</span></span><br><span class="line">    RaycastHit hit;</span><br><span class="line">    <span class="keyword">if</span> (Physics.Raycast(inputRay, <span class="keyword">out</span> hit))</span><br><span class="line">    &#123;</span><br><span class="line">        TouchCell(hit.point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 将射线的触碰点转换到自身的坐标系中</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;position&quot;&gt;</span>触碰到的collider的位置<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + position);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们完成了鼠标左键单击后发射一条射线的功能，这条射线如果穿过了一个带有Collider组件的模型，那么将会返回一个Vector3的位置信息。但是，现在的地图单元是没有Collider组件的，我们在HexMesh.cs脚本中为它添加MeshCollider组件。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为了检测射线碰撞Collider</span></span><br><span class="line"><span class="keyword">private</span> MeshCollider meshCollider;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//初始化MeshFilter组件的，实例化hexMesh，并给其命名</span></span><br><span class="line">    GetComponent&lt;MeshFilter&gt;().mesh = hexMesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">    hexMesh.name = <span class="string">&quot;Hex Mesh&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//为HexMesh物体添加MeshCollider组件</span></span><br><span class="line">    meshCollider = gameObject.AddComponent&lt;MeshCollider&gt;();</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　为Hex Mesh这个物体添加了<code>MeshCollider</code>组件后，我们需要将创建的Mesh数据赋值给<code>MeshCollider</code>组件，这样它就可以根据Mesh信息成成碰撞网格了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexMesh.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Triangulate</span>(<span class="params">HexCell[] cells</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    …</span><br><span class="line"></span><br><span class="line">    meshCollider.sharedMesh = hexMesh;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，射线穿过Hex Mesh这个物体时，通过<code>MeshCollider</code>组件就可以返回射线的碰撞信息了。</p>
+<p>　　可能会有小伙伴问，为什么不使用更简单高效的<code>Box Collider</code>？这是因为<code>Box Collider</code>不能很准确的吻合正六边形地图单元的轮廓，尤其是在3个地图单元相邻的情况下，<code>Box Collider</code>可能会重叠到一起，最终导致我们无法判断鼠标到底点击在了哪个地图单元上。而且随着项目的不断深入，我们的地形单元并不会一直保持在同意水平面上。所以使用<code>MeshCollider</code>会更加方便计算和判断。</p>
+<p>　　以上代码完成后，我们在Unity的Scene窗口中点击任意一个地图单元，Console窗口中就会输出鼠标点击的坐标信息了。但是这个信息并没有体现出我们具体点击的是哪一个地图单元，所以需要将鼠标的点击的坐标信息，转换成六边形的坐标信息。这个步骤需要在HexCoordinates.cs中进行。</p>
+<p>　　我们需要在首先要在HexGrid.TouchCell方法内，添加对HexCoordinates.cs中发发的调用，这个方法命名为FromPosition，专门用来将射线触碰MeshCollider的坐标，转换成正六边形地图的坐标。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexGrid.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TouchCell</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将触碰点的坐标系，转换到自身的坐标系</span></span><br><span class="line">    position = transform.InverseTransformPoint(position);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//调用转换坐标的方法，定位具体点击到哪个cell上了</span></span><br><span class="line">    HexCoordinates coordinates = HexCoordinates.FromPosition(position);</span><br><span class="line"></span><br><span class="line">    Debug.Log(<span class="string">&quot;touched at &quot;</span> + coordinates.ToString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　现在，我们来思考FromPosition这个方法要处理的事情。要将原有的射线触碰Collider信息转换成正六边形地图信息，可以将X、Y、Z几个轴向分开处理。这里首先处理X轴坐标，只需要将转换前的坐标除以地图单元的宽度即可，而且当Z值为0的时候，X和Y是护卫相反数的。在这里我们先假设Z值为0，所以很容易就能得出X和Y的值。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HexCoordinates <span class="title">FromPosition</span>(<span class="params">Vector3 position</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//当Z为0的时候，X和Y互为相反数</span></span><br><span class="line">    <span class="comment">//X的值可以通过 实际X的值除以2倍内切圆半径来得到</span></span><br><span class="line">    <span class="keyword">float</span> x = position.x / (HexMetrics.innerRadius * <span class="number">2f</span>);</span><br><span class="line">    <span class="keyword">float</span> y = -x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接下来，Z不为0的时候，我们需要对X和Y进行偏移，才能得出正确的结果。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> offset = position.z / (HexMetrics.outerRadius * <span class="number">3f</span>);</span><br><span class="line">x -= offset;</span><br><span class="line">y -= offset;</span><br></pre></td></tr></table></figure>
+
+<p>　　当计算出X和Y的值后，我们可以利用X+Y+Z=0这个特性，求出Z的坐标。然后将这些坐标进行四舍五入，就可以得到转换后的正六边形地图坐标了。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
+
+<p>　　以上这些步骤虽然看起来没什么问题，但是仔细想一下就会发现，这样计算的最终坐标，很可能相加并不为0.让我们来加一段验证这个想法的代码：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对得出的坐标进行四舍五入，得到转换后的Hexmap坐标</span></span><br><span class="line"><span class="keyword">int</span> iX = Mathf.RoundToInt(x);</span><br><span class="line"><span class="keyword">int</span> iY = Mathf.RoundToInt(y);</span><br><span class="line"><span class="keyword">int</span> iZ = Mathf.RoundToInt(-x - y);</span><br><span class="line"></span><br><span class="line"><span class="comment">//验证X+Y+Z是否为0</span></span><br><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    Debug.LogWarning(<span class="string">&quot;rounding error!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HexCoordinates(iX, iZ);</span><br></pre></td></tr></table></figure>
+
+<p>　　我们再次运行程序的时候发现，这个报错信息确实会弹出。而且是发生在鼠标点击的位置接近正六边形边界的时候。所以应该是在四舍五的过程中出现了问题，因为离地图单元的中心越远，四舍五入时舍去的值就越多，所以我们做一个合理的假设：舍去值更大的坐标是错误的。</p>
+<p>　　知道了产生错误的原因，解决起来就比较简单了。解决方法就是废弃具有最大舍去增量的坐标值，然后用其它的两个坐标去重新构建它。这里我们只需要去重建X和Z，不需要关注Y，因为Y本来就是由X和Z求得的。代码如下：</p>
+<figure class="highlight csharp"><figcaption><span>HexCoordinates.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (iX + iY + iZ != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">float</span> dX = Mathf.Abs(x - iX);</span><br><span class="line">    <span class="keyword">float</span> dY = Mathf.Abs(y - iY);</span><br><span class="line">    <span class="keyword">float</span> dZ = Mathf.Abs(-x - y - iZ);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断哪个舍去的值最多</span></span><br><span class="line">    <span class="comment">//利用X+Y+Z=0的特性，使用两个舍去较小的值得，求出社区较大的那个</span></span><br><span class="line">    <span class="keyword">if</span> (dX &gt; dY &amp;&amp; dX &gt; dZ)</span><br><span class="line">    &#123;</span><br><span class="line">        iX = -iY - iZ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (dZ &gt; dY)</span><br><span class="line">    &#123;</span><br><span class="line">        iZ = -iX - iY;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　通过判断，我们重新计算四舍五入中，舍去的值最多的那个坐标。这样我们就得到了最终正确结果。</p>
+<p>　　在下一章中，我们利用本章判断鼠标点击在哪个地图单元上的功能，给被点击的地图单元改变颜色，让地图系统拥有最基本的交互。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+              <a href="/tags/Game-develop/" rel="tag"># Game develop</a>
+              <a href="/tags/Hex-Map/" rel="tag"># Hex Map</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/02/HexMap/1-7%20%E5%B0%86%E5%9D%90%E6%A0%87%E5%80%BC%E6%98%BE%E7%A4%BA%E5%9C%A8Inspector%E4%B8%8A/" rel="prev" title="1-7 将坐标值显示在Inspector上">
+                  <i class="fa fa-chevron-left"></i> 1-7 将坐标值显示在Inspector上
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/04/HexMap/1-9%20%E6%94%B9%E5%8F%98%E9%80%89%E4%B8%AD%E5%9C%B0%E5%9B%BE%E5%8D%95%E5%85%83%E7%9A%84%E9%A2%9C%E8%89%B2/" rel="next" title="1-9 改变选中地图单元的颜色">
+                  1-9 改变选中地图单元的颜色 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+      <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

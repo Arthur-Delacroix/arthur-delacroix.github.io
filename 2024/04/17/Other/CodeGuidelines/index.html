@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"arthur-delacroix.github.io","root":"/","scheme":"Gemini","version":"8.0.1","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="此篇Unity中C#代码规范，是经过长期在项目中总结的一些经验和规则，公大家学习参考。 规范目的 一个软件的生命周期中，80%的花费在于维护； 几乎没有任何一个软件，在其整个生命周期中，均由最初的开发人员来维护； 编码规范可以改善软件的可读性，可以让程序员尽快而彻底地理解新的代码。为了执行规范，每个软件开发人员必须一致遵守编码规范； 使用统一编码规范的主要原因，是使应用程序的结构和编码风格标准化，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity中C#代码规范">
+<meta property="og:url" content="https://arthur-delacroix.github.io/2024/04/17/Other/CodeGuidelines/index.html">
+<meta property="og:site_name" content="Arthur&#39;s Blog">
+<meta property="og:description" content="此篇Unity中C#代码规范，是经过长期在项目中总结的一些经验和规则，公大家学习参考。 规范目的 一个软件的生命周期中，80%的花费在于维护； 几乎没有任何一个软件，在其整个生命周期中，均由最初的开发人员来维护； 编码规范可以改善软件的可读性，可以让程序员尽快而彻底地理解新的代码。为了执行规范，每个软件开发人员必须一致遵守编码规范； 使用统一编码规范的主要原因，是使应用程序的结构和编码风格标准化，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-17T21:00:39.000Z">
+<meta property="article:modified_time" content="2025-12-31T12:23:06.393Z">
+<meta property="article:author" content="Arthur Delacroix">
+<meta property="article:tag" content="Unity 3D">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://arthur-delacroix.github.io/2024/04/17/Other/CodeGuidelines/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Unity中C#代码规范 | Arthur's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Arthur's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">117</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%84%E8%8C%83%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">规范目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E7%89%88"><span class="nav-number">2.</span> <span class="nav-text">排版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text">命名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E7%A0%81"><span class="nav-number">5.</span> <span class="nav-text">编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-SVN%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83"><span class="nav-number">6.</span> <span class="nav-text">Git&#x2F;SVN提交规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">7.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arthur Delacroix"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Arthur Delacroix</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Arthur-Delacroix/arthur-delacroix.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Arthur-Delacroix&#x2F;arthur-delacroix.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/7176171" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;7176171" rel="noopener" target="_blank"><i class="fas fa-play-circle fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://arthur-delacroix.github.io/2024/04/17/Other/CodeGuidelines/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Arthur Delacroix">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Arthur's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity中C#代码规范
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-17 21:00:39" itemprop="dateCreated datePublished" datetime="2024-04-17T21:00:39+00:00">2024-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Unity-3D/" itemprop="url" rel="index"><span itemprop="name">Unity 3D</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>此篇Unity中C#代码规范，是经过长期在项目中总结的一些经验和规则，公大家学习参考。</strong></p>
+<h4 id="规范目的"><a href="#规范目的" class="headerlink" title="规范目的"></a>规范目的</h4><ul>
+<li>一个软件的生命周期中，80%的花费在于维护；</li>
+<li>几乎没有任何一个软件，在其整个生命周期中，均由最初的开发人员来维护；</li>
+<li>编码规范可以改善软件的可读性，可以让程序员尽快而彻底地理解新的代码。为了执行规范，每个软件开发人员必须一致遵守编码规范；</li>
+<li>使用统一编码规范的主要原因，是使应用程序的结构和编码风格标准化，以便于阅读和理解这段代码；</li>
+<li>好的编码约定可使源代码严谨、可读性强且意义清楚，与其它语言约定相一致，并且尽可能的直观。</li>
+<li>推荐使用字体 Noto Sans Mono CJK sc - Regular</li>
+</ul>
+<h4 id="排版"><a href="#排版" class="headerlink" title="排版"></a>排版</h4><ul>
+<li>规则1 <ul>
+<li>程序块要采用缩进风格编写，缩进的空格数为4个，不允许使用TAB缩进。</li>
+<li>缩进使程序更易阅读，使用空格缩进可以适应不同操作系统与不同开发工具。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">public class PlayerData</span><br><span class="line">&#123;</span><br><span class="line">    public string playerName;</span><br><span class="line"></span><br><span class="line">    public bool playerSex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则2<ul>
+<li>左大括号（ <code>&#123;</code> ） 应该位于声明语声明句末尾的下一行，并独占一行，右大括号（ <code>&#125;</code> ）应该代码块末尾，并独占一行，同时与引用它们的语句左对齐。在函数体的开始、类和接口的定义、以及if、for、do、while、switch、case语句中的程序或者static、synchronized等语句块中都要采用如上的缩进方式。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">if (a &gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    DoStart();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则3<ul>
+<li>较长的语句、表达式或参数（大于80字符）要分成多行书写，长表达式要在低优先级操作符处划分新行，操作符放在新行之首，划分出的新行要进行适当的缩进，使排版整齐，语句可读。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">stepTimer &#x3D; Timer.Register(</span><br><span class="line">    _data.duration_Ms,</span><br><span class="line">    onComplete: () &#x3D;&gt; &#123; NextStep(); &#125;,</span><br><span class="line">    isLooped: false,</span><br><span class="line">    useRealTime: true);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则4<ul>
+<li>不允许把多个短语句写在一行中，即一行只写一条语句。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;错误例子</span><br><span class="line">Object o &#x3D; new Object(); Object b &#x3D; null;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;正确例子</span><br><span class="line">Object o &#x3D; new Object();</span><br><span class="line">Object b &#x3D; null;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则5<ul>
+<li><code>if</code>、<code>for</code>、<code>do</code>、<code>while</code>、<code>case</code>、<code>switch</code>、<code>default</code>等语句自占一行，且<code>if</code>、<code>for</code>、<code>do</code>、<code>while</code>、<code>switch</code>等语句的执行语句无论多少都要加括号<code>&#123; &#125;</code>，<code>case</code>的执行语句中如果定义变量必须加括号<code>&#123; &#125;</code>。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">if (a &gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    doStart();</span><br><span class="line">&#125;</span><br><span class="line">case x:</span><br><span class="line">&#123;</span><br><span class="line">    int i &#x3D; 9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则6<ul>
+<li>相对独立的程序块之间、变量之后必须加空行。 </li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">if(a &gt; b)</span><br><span class="line">&#123;</span><br><span class="line">    DoStart();</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;此处是空行</span><br><span class="line">return;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则7<ul>
+<li>在两个以上的关键字、变量、常量进行对等操作时，它们之间的操作符之前、之后或者前后要加空格；进行非对等操作时，如果是关系密切的立即操作符（如<code>.</code>），后不应加空格。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">if (a &#x3D;&#x3D; b)</span><br><span class="line">&#123;</span><br><span class="line">    objectA.doStart();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a *&#x3D; 2;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则8 类属性和类方法不要交叉放置，不同存取范围的属性或者方法也尽量不要交叉放置。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">类定义</span><br><span class="line">&#123;</span><br><span class="line">    公有属性定义</span><br><span class="line">    保护属性定义</span><br><span class="line">    私有属性定义</span><br><span class="line">    公有方法定义</span><br><span class="line">    保护方法定义</span><br><span class="line">    私有方法定义</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则9 修饰词按照指定顺序书写：<code>[Attribute] [访问权限] [static] [final]</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">[SerializeField] private static final String str &#x3D;  &quot;abc&quot;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><ul>
+<li><p>代码注释约定</p>
+<ul>
+<li>所有的方法和函数都应该以描述这段代码的功能的一段简明注释开始（方法是干什么）。这种描述不应该包括执行过程细节（它是怎么做的），因为这常常是随时间而变的，而且这种描述会导致不必要的注释维护工作，甚至成为错误的注释。代码本身和必要的嵌入注释将描述实现方法。</li>
+<li>当参数的功能不明显且当过程希望参数在一个特定的范围内时，也应描述传递给过程的参数。被过程改变的函数返回值和全局变量，特别是通过引用参数的那些，也必须在每个过程的起始处描述它们。</li>
+<li>注释的内容要清楚、明了，含义准确，防止注释二义性。</li>
+<li>修改代码同时修改相应的注释，以保证注释与代码的一致性。不再有用的注释要删除。</li>
+<li>避免在注释中使用缩写，特别是不常用缩写。在使用缩写时或之前，应对缩写进行必要的说明。</li>
+<li>不允许在一行代码或表达式的中间插入注释。</li>
+<li>源程序注释量必须在30％以上。</li>
+<li>由于每个文件的代码注释不一定都可以达到30%，建议以一个系统内部模块作为单位进行检查。</li>
+</ul>
+</li>
+<li><p>规则1</p>
+<ul>
+<li>每个类开头必须要有以下注释，在using代码块之下。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 一句话简述</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作用：（对此类的详细描述）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作者：（创建者的中文名字）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 编写日期：（模块创建日期，格式：YYYY-MM-DD）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 适用Unity版本：（2021.3.27f1c2 - 2022.3.3f1c1）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 脚本适用平台：（Android iOS）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 脚本使用注意事项：（例如：序列帧文件名称必须从0开始计数，即 图片名_0000 类似命名）</span><br><span class="line">&#x2F;&#x2F;&#x2F; TODO：（还需要完成的功能）</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>规则2</p>
+<ul>
+<li>每个方法开头必须要有以下注释<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 方法名称</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作用：（对这个方法的作用进行简单描述，包括所有参数的简单描述）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作者：（方法创建者的中文名字）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 编写日期：（方法创建日期，格式：YYYY-MM-DD）</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;_str1&quot;&gt;参数_str1的详细说明&lt;&#x2F;param&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;_str2&quot;&gt;参数_str2的详细说明&lt;&#x2F;param&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;returns&gt;返回值说明&lt;&#x2F;returns&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;exception&gt;异常说明&lt;&#x2F;exception&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;remarks&gt; </span><br><span class="line">&#x2F;&#x2F;&#x2F; 该方法详细文字说明</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;remarks&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;example&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;code&gt;调用此方法的代码示例&lt;&#x2F;code&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;example&gt;</span><br><span class="line">public  int TestClass(string _str1, string _str2)</span><br><span class="line">&#123;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>规则3</p>
+<ul>
+<li>其他人对代码做出修改后，要在“作者”一行中加入自己的名字(方法或类都是如此)。</li>
+<li>在“作用”一行的详细描述中，可以使用<code>@since YYYY-MM-DD</code>形式来表示从哪个日期开始，做出了什么样的修改，或添加了什么新的功能。</li>
+<li>在“作用”一行的详细描述中，可以使用<code>@deprecated YYYY-MM-DD</code>形式来表示从哪个日期开始，弃用了哪些功能。</li>
+<li>使用<code>@see 类名/方法名</code>形式来表示相关的类或者方法</li>
+<li>使用<code>@Override</code>来表示重载父类的方法，并对重载进行文字说明</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; 方法名称</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作用：@since 2023-05-15 添加了对AB包进行二次加密和解密的功能</span><br><span class="line">&#x2F;&#x2F;&#x2F;       @deprecated 2023-05-17 弃用了之前过于简单的加密方式</span><br><span class="line">&#x2F;&#x2F;&#x2F;       @Override 对ResetCharacter方法进行的重载，这里是重置新添加的中立生物的状态</span><br><span class="line">&#x2F;&#x2F;&#x2F; 作者：（方法创建者的中文名字）</span><br><span class="line">&#x2F;&#x2F;&#x2F; 编写日期：（方法创建日期，格式：YYYY-MM-DD）</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; ……</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>规则4</p>
+<ul>
+<li>类和方法中声明的变量、属性、字段，其上一行均要有<code>//</code>形式的注释说明。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">&#x2F;&#x2F;说明这个变量的具体作用</span><br><span class="line">[SerializeField] private static final String str &#x3D;  &quot;abc&quot;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>规则5</p>
+<ul>
+<li>在代码的功能、意图层次上进行注释，提供有用、额外的信息。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">&#x2F;&#x2F;如下注释意义不大。</span><br><span class="line">&#x2F;&#x2F; 如果 receiveFlag 为真</span><br><span class="line">if (receiveFlag)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;而如下的注释则给出了额外有用的信息。</span><br><span class="line">&#x2F;&#x2F; 如果从连结收到消息 </span><br><span class="line">if (receiveFlag)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>规则6</p>
+<ul>
+<li>对关键变量的定义和分支语句（条件分支、循环语句等）必须编写注释。</li>
+<li>这些语句往往是程序实现某一特定功能的关键，对于维护人员来说，良好的注释帮助更好的理解程序，有时甚至优于看设计文档。</li>
+</ul>
+</li>
+<li><p>规则7</p>
+<ul>
+<li>注释应考虑程序易读及外观排版的因素，使用的语言若是中、英兼有的，建议多使用中文，除非能用非常流利准确的英文表达。中文注释中需使用中文标点。方法和类描述的第一句话尽量使用简洁明了的话概括一下功能，然后加以句号。接下来的部分可以详细描述。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h4><ul>
+<li>规则1<ul>
+<li>类、接口、变量、函数等正确的命名以及合理地组织代码的结构，使代码成为自注释的，清晰准确的命名，可增加代码可读性，并减少不必要的注释。</li>
+<li>类名、方法名、枚举名使用意义完整的英文描述，并使用大驼峰命名法(Pascal)。</li>
+<li>接口名开头使用大写英文字母<code>I</code>，加意义完整的英文描述，并使用大驼峰命名法(Pascal)。</li>
+<li>变量、字段使用小驼峰命名法 (Camel)。</li>
+<li>局部变量、方法入参使用小驼峰命名法 (Camel)，并且变量名前要加英文半角下划线 （<code>_</code>）。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">public class PlayerData</span><br><span class="line">&#123;</span><br><span class="line">    private string playerName;</span><br><span class="line"></span><br><span class="line">    public void InitPlayer(string _playerName)</span><br><span class="line">    &#123;</span><br><span class="line">        playerName &#x3D; _playerName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则2<ul>
+<li>存取属性的方法采用setter 和 getter方法，动作方法采用动词和动宾结构。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;格式：</span><br><span class="line">&#x2F;&#x2F;get + 非布尔属性名()</span><br><span class="line">&#x2F;&#x2F;is + 布尔属性名()</span><br><span class="line">&#x2F;&#x2F;set + 属性名()</span><br><span class="line">&#x2F;&#x2F;动词()</span><br><span class="line">&#x2F;&#x2F;动词 + 宾语()</span><br><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">public String getType();</span><br><span class="line">public boolean isFinished();</span><br><span class="line">public void setVisible(boolean);</span><br><span class="line">public void show();</span><br><span class="line">public void addKeyListener(Listener);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则3<ul>
+<li>属性名使用意义完整的英文命名，其访问器使用小写名称并在前面加英文半角下划线 （<code>_</code>）。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例</span><br><span class="line">public string CharacterName</span><br><span class="line">&#123;</span><br><span class="line">    get</span><br><span class="line">    &#123;</span><br><span class="line">        return _characterName;</span><br><span class="line">    &#125;</span><br><span class="line">    set</span><br><span class="line">    &#123;</span><br><span class="line">        _characterName &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则4<ul>
+<li>常量名使用全大写的英文描述，英文单词之间用下划线分隔开，并且使用 static final修饰。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例： </span><br><span class="line">public static final int MAX_VALUE &#x3D; 1000;</span><br><span class="line">public static final String DEFAULT_START_DATE &#x3D; &quot;2001-12-08&quot;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则5<ul>
+<li>如果函数名超过15个字母，可采用以去掉元音字母的方法或者以行业内约定俗成的缩写方式缩写函数名。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">getCustomerInformation()  改为  getCustomerInfo()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>规则6</p>
+<ul>
+<li>namespace的命名，应按照功能范围划分并命名，防止产生冲突。</li>
+<li>部门内部产品使用“部门名称 + 模块名称”的方式命名。</li>
+<li>上线产品使用“产品名称 + 模块名称”的方式命名。</li>
+</ul>
+</li>
+<li><p>规则7</p>
+<ul>
+<li>准确的使用访问修饰符。</li>
+<li>不允许有类似标记为<code>public</code>的属性、变量等，只在该类内部进行访问的现象。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>调用方的位置</th>
+<th align="center">public</th>
+<th align="center">protected internal</th>
+<th align="center">protected</th>
+<th align="center">internal</th>
+<th align="center">private protected</th>
+<th align="center">private</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>在类内</td>
+<td align="center">✔️️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+</tr>
+<tr>
+<td>派生类（相同程序集）</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td>非派生类（相同程序集）</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">❌</td>
+<td align="center">✔️</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td>派生类（不同程序集）</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">✔️</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td>非派生类（不同程序集）</td>
+<td align="center">✔️</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+</tr>
+</tbody></table>
+<ul>
+<li>规则8<ul>
+<li>建议2    含有集合意义的属性命名，尽量包含其复数的意义。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">public List&lt;GameObject&gt; characters;</span><br><span class="line">public GameObject[] orderItems;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>规则8<ul>
+<li>1到3个字母缩写的单词，用全大写字母，大于3个字母的缩写单词，用大驼峰命名法</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;示例：</span><br><span class="line">public string IOHelper;</span><br><span class="line">public string HttpClient;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h4><ul>
+<li>规则1<ul>
+<li>一个文件不要定义两个类(并非指内部类)，方便程序的阅读与代码的维护。</li>
+</ul>
+</li>
+</ul>
+<h4 id="Git-SVN提交规范"><a href="#Git-SVN提交规范" class="headerlink" title="Git/SVN提交规范"></a>Git/SVN提交规范</h4><ul>
+<li><p>提交模板</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[类型] 类型关键字</span><br><span class="line">[标题] 此次提交是进行哪些改动简述</span><br><span class="line">[描述] 对此次提交进行详细的文字描述</span><br><span class="line">[Bug修复情况] 此行为可选填，下面会说明如何填写</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>提交类型，在提交更改时，第一行要写的关键字，可以较快的辨别该提交是那种类型的</p>
+</li>
+<li><p>提交类型可以有多个，例如一个修复BUG是修改了FBX模型，那么[类型]就是<code>Fix Art3D_Model</code>，两个类型之间用英文半角空格进行间隔</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Settings</td>
+<td>对项目配置进行了改变️</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>对文档进行了修改</td>
+</tr>
+<tr>
+<td>Feat</td>
+<td>加了新的功能</td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>修复了BUG</td>
+</tr>
+<tr>
+<td>Art_UI</td>
+<td>对UI素材进行了修改</td>
+</tr>
+<tr>
+<td>Art2D_Sprite</td>
+<td>对2D精灵类型的素材进行了修改</td>
+</tr>
+<tr>
+<td>Art3D_Model</td>
+<td>对3D类型是美术文件进行了修改，包括FBX模型、动作、材质以及模型对应的贴图，要在描述中进行详细说明</td>
+</tr>
+<tr>
+<td>Scene</td>
+<td>对场景文件进行了修改</td>
+</tr>
+<tr>
+<td>Refactor</td>
+<td>既不是修复bug也不是添加特征的代码重构</td>
+</tr>
+<tr>
+<td>Pref</td>
+<td>提高性能的更改，包括代码、各类美术素材设置、项目设置等，要在描述中进行详细说明</td>
+</tr>
+<tr>
+<td>Revert</td>
+<td>回滚，要写明回滚到哪个提交节点上，以及原因</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>BUG修复情况说明，如果此次提交为修复BUG，要写明之前的BUG是什么样子的，例如网络访问错误还是人物操作抖动等，如果是修改issue的话，要引用该issue</p>
+</li>
+<li><p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[类型] Fix Art3D_Model</span><br><span class="line">[标题] 修复了男性3号NPC在挥手时抖动的问题</span><br><span class="line">[描述] 男性3号NPC在挥手时抖动，是因为模型导出时连带的动画文件关键帧平滑有问题，已查明是blender的问题，使用maya重新导出，并在unity中进行了对应的动画压缩和代码调整</span><br><span class="line">[Bug修复情况]已经修复了男性3号NPC在挥手时抖动的问题 issue #1234</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/standard/design-guidelines/naming-guidelines">命名准则（微软）</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://google.github.io/styleguide/csharp-style.html">代码风格（谷歌）</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10797189/">《编写可读代码的艺术》</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/30223371/">《Effective C#》</a></p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/6849791/">《编写高质量代码 改善C#程序的157个建议》</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unity-3D/" rel="tag"># Unity 3D</a>
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/03/21/Hexo/Github%20Actions%E5%AE%9E%E7%8E%B0Hexo%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2/" rel="prev" title="Github Actions实现Hexo自动化部署">
+                  <i class="fa fa-chevron-left"></i> Github Actions实现Hexo自动化部署
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arthur Delacroix</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">247k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:44</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
